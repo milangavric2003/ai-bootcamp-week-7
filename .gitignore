@@ -5,3 +5,5 @@ results/*.json
 # Preserve the unchanged Week 7 baseline as submission evidence.
 !results/before.json
 !results/after.json
+!results/before-m3.json
+!results/after-m3.json

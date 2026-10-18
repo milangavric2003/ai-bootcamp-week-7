@@ -1,6 +1,7 @@
 # Dodatni eksperiment — M3: prag odbijanja
 
 Datum: 19. oktobar 2026. Status: implementirano i izmereno, 10/12 bez regresija.
+Vedran je 19. oktobra potvrdio da je M3 i ručno evaluiran.
 Ovo je dodatni eksperiment u odnosu na M1, ne deo jedne obavezne M1 promene.
 [M1 izveštaj](m1-report.md) i njegovi originalni JSON rezultati ostaju sačuvani.
 Predaja minimuma nije potvrđena; po Vedranovom izričitom zahtevu eksperiment
@@ -55,6 +56,10 @@ potvrđuje da je izmenjen samo `src/config.py`.
 
 ## CLI provera
 
+Sledeći konkretni izlazi potiču iz sačuvanih Codex izvršavanja. Vedran je potom
+u razgovoru potvrdio završenu ručnu evaluaciju M3. Zaseban terminalski log te
+njegove provere nije dostavljen; postojeći logovi ne pripisuju se Vedranu.
+
 - E10: sada `Refused: True`, `Citations: None` i poruka
   `I do not have enough grounded evidence in the provided corpus to answer that question.`
   Retrieved i dalje prikazuje iste slabe odlomke, ali oni nisu citirani kao odgovor.
@@ -67,6 +72,13 @@ potvrđuje da je izmenjen samo `src/config.py`.
 
 Svi novi dokazi su u [evidence/002-m3](evidence/002-m3/), izvan ignorisanih
 `results/*.json`, tako da mogu normalno da se dodaju u Git.
+
+JSON rezultati su dostupni i u standardnom direktorijumu:
+[results/before-m3.json](../results/before-m3.json) (M1, 9/12) i
+[results/after-m3.json](../results/after-m3.json) (M1 + M3, 10/12).
+To su bajt-po-bajt identične kopije JSON dokaza ispod, sa izuzecima u
+`.gitignore` kako bi mogle da se uključe u commit. Originalni
+`results/before.json` i `results/after.json` ostaju rezultati M1 eksperimenta.
 
 | Dokaz | Fajlovi |
 | --- | --- |
@@ -108,6 +120,8 @@ Vedran je analizirao opcije M6/M3 sa Codexom, izabrao M3 i prag 0.10 i zatražio
 implementaciju i evidenciju. Codex je napisao specifikaciju, promenio konfiguraciju,
 izvršio testove, merenja i CLI provere i sastavio ovaj izveštaj koristeći lokalni
 `speckit-implement` postupak. Ovde prikazana nova M3 izvršavanja uradio je Codex;
-Vedranova nezavisna ručna provera M3 još nije evidentirana. Njegova prethodna
+Vedran je zatim potvrdio završenu ručnu evaluaciju M3 i zatražio ažuriranje
+dokumentacije. Ta potvrda se evidentira kao njegov dodatni doprinos, odvojeno
+od Codex logova izvršavanja. Njegova prethodna
 nezavisna M1 provera ostaje dokumentovana u M1 izveštaju. Pregled drugog para i
 osoba koja vodi demonstraciju i dalje čekaju dogovor.

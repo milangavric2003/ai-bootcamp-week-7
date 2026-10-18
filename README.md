@@ -4,6 +4,24 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
+## Current state: M1 + optional M3
+
+The required M1 experiment improved evaluation from **6/12 to 9/12**.
+The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
+0.10 and improves **9/12 to 10/12**, fixing E10 without PASS-to-FAIL regressions.
+The saved M3 test run passes **35/35** tests. Vedran has confirmed completing
+manual M3 evaluation; see the [M3 report](docs/m3-report.md) for evidence and
+the distinction between his confirmation and Codex-generated execution logs.
+
+| Experiment | Before | After | Report |
+| --- | --- | --- | --- |
+| Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
+| Optional M3: refusal threshold | [before-m3.json](results/before-m3.json), 9/12 | [after-m3.json](results/after-m3.json), 10/12 | [M3 report](docs/m3-report.md) |
+
+The current code includes both improvements. E05 and E11 still fail; E06 passes
+the metric but still cites conflicting current and superseded policies.
+Preserve all four saved JSON files. Use a fresh output filename for new runs.
+
 ## Setup
 
 Python 3.12.
@@ -23,8 +41,9 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 | --- | --- |
 | `python -m src.cli --question "How often do passwords need to be changed?"` | Answer or refusal with citations (title, version, status) |
 | `python -m src.cli --question "..." --show-retrieved` | Also prints retrieved chunks with their scores |
-| `python -m src.eval_runner --out results/before.json` | Runs all 12 questions, prints the table and summary, saves the run |
+| `python -m src.eval_runner --out results/m3-verification.json` | Runs the current M1+M3 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
+| `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
 
 ## Project layout
 
@@ -47,11 +66,13 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 ## Rules for this week
 
 1. **Do not edit `eval/eval_set.json`.** Every run prints its SHA-256; runs with different hashes cannot be compared.
-2. Run the baseline first: `python -m src.eval_runner --out results/before.json`.
-3. Change one thing (see `docs/improvement-menu.md`), then run the same command with `--out results/after.json`.
+2. Save the unchanged baseline before implementation. This is already preserved in `results/before.json`; do not overwrite it using the current code.
+3. Measure each intentional change separately. M1 uses `before.json` / `after.json`; optional M3 uses `before-m3.json` / `after-m3.json`.
 4. Compare with `eval_compare` and put both runs and the comparison output in your report.
 
-Result files in `results/` are ignored by git. Copy the printed tables into your report.
+The four experiment JSON files above have exceptions in `.gitignore` and can be
+tracked. Other `results/*.json` files are ignored unless explicitly added.
+Include the JSON results and comparison output in the submission.
 
 ## Spec Kit
 
@@ -95,17 +116,18 @@ corpus, evaluation questions and metrics are unchanged.
 
 The saved [M1 report](docs/m1-report.md) records 35/35 passing tests and an
 evaluation improvement from 6/12 to 9/12. E04, E06 and E09 changed from FAIL to
-PASS, with no PASS-to-FAIL regressions. E05, E10 and E11 still fail; E06 passes
+PASS, with no PASS-to-FAIL regressions. At the M1 stage E05, E10 and E11 fail; E06 passes
 the metric but still cites both current and superseded remote-work policies.
 
-Implementation and measurement are complete. Independent verification, the
-other pair's review, contributor details and the demonstration lead remain to
-be finalized for submission. M2-M6 are alternatives, not additional required
-improvements.
+Vedran's independent M1 verification and contributions are recorded. The optional
+[M3 specification](specs/002-refusal-threshold/spec.md) and
+[M3 report](docs/m3-report.md) document the subsequent threshold change and his
+confirmation of manual M3 evaluation. The other pair's review and demonstration
+lead remain to be finalized. M2-M6 are alternatives, not additional required
+improvements; M3 is recorded separately as optional work.
 
-First run the unchanged baseline and document at least two failures. Then invoke
-the skills in Codex chat, one step at a time. These are chat skills, not PowerShell
-commands:
+The implementation workflow uses the following skills after baseline measurement
+and failure documentation. These are chat skills, not PowerShell commands:
 
 | Skill | Use |
 | --- | --- |
@@ -123,10 +145,9 @@ No extra integrations, extensions, or community presets are enabled. Git branche
 and commits can be managed with ordinary Git commands. The bundled workflow is
 available, but the homework can be completed using the individual skills above.
 
-Before implementation, save `results/before.json`. After the single change, run
-the tests, save `results/after.json`, and compare both runs using the commands
-above. Include the actual JSON files and comparison output in the submission;
-the JSON files are ignored by Git unless explicitly added. The report must explain
+The completed measurements are linked above. Keep the required M1 and optional
+M3 comparisons separate, and save any new verification to a fresh filename.
+Include the actual JSON files and comparison output in the submission. The report must explain
 regressions and remaining limitations. Two documented failures do not require two
 fixes, and a measured hypothesis may turn out to be unconfirmed.
 

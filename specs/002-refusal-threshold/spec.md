@@ -3,6 +3,11 @@
 Datum: 19. oktobar 2026. Specifikacija zapisana pre izmene konfiguracije.
 Polazno stanje: M1, 9/12, `REFUSAL_THRESHOLD=0.02`.
 
+Status posle implementacije: hipoteza potvrđena — 10/12, E10 popravljen,
+bez regresija, 35/35 testova. Vedran je potvrdio završenu ručnu evaluaciju M3.
+Rezultati i poreklo dokaza: [M3 izveštaj](../../docs/m3-report.md).
+Hipoteza i kriterijumi ispod sačuvani su kao specifikacija pre implementacije.
+
 ## Propust i hipoteza
 
 - E10: `What is the current company stock price?` treba odbiti. Sistem umesto

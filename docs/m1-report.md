@@ -170,6 +170,8 @@ Evidencija doprinosa prema potvrdama Milana i Vedrana i sačuvanim dokazima:
   pokretanje 35 testova, ponovno merenje svih 12 eval pitanja, oba poređenja,
   ručna provera odgovora i citata E04/E09 i potvrda ograničenja E06. Sačuvao je
   logove provera i potvrdio rezultate, uz AI pomoć opisanu iznad.
+  U zasebnom dodatnom M3 eksperimentu izabrao je promenu praga i potvrdio
+  završenu ručnu evaluaciju; detalji i poreklo dokaza su u [M3 izveštaju](m3-report.md).
 - Osoba koja vodi demonstraciju Week 7: **još nije određena**.
 - Drugi par i njihov komentar (jedna promena; podrška zaključku rezultatima;
   izostavljene regresije/ograničenja): **peer review još nije pribavljen**.
@@ -185,5 +187,7 @@ M1 sa rezultatom 9/12 ostaje osnova obavezne predaje. Na Vedranov zahtev je
 odbijanja sa 0.02 na 0.10 daje 10/12, popravlja E10 bez regresija i prolazi
 35 testova. Specifikacija, novi rezultati i doprinosi navedeni su u tom izveštaju;
 ovaj dokument i originalni before/after JSON fajlovi opisuju samo M1.
+Vedran je potvrdio završenu ručnu M3 evaluaciju. M3 rezultati su dostupni kao
+[before-m3.json](../results/before-m3.json) i [after-m3.json](../results/after-m3.json).
 Predaja minimuma nije potvrđena; dodatni eksperiment je urađen na izričit zahtev
 korisnika pre potvrde predaje, iako zadatak napredni deo predviđa posle nje.

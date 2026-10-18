@@ -86,7 +86,22 @@ constraints. The repository-root project is the working copy;
 Current experiment: [baseline, documented failures, and work order](docs/baseline.md),
 [change specification](specs/001-sentence-chunking/spec.md), and
 [implementation plan](specs/001-sentence-chunking/plan.md). The baseline is saved;
-the planned M1 improvement has not been implemented yet.
+M1 improvement is implemented in commit `be8a881`.
+
+M1 replaces character-based chunking with whole sentence packing
+(`CHUNK_STRATEGY="sentences"`), using the existing target size of 140 characters.
+Oversized sentences remain whole, without overlap. Retrieval, answering, the
+corpus, evaluation questions and metrics are unchanged.
+
+The saved [M1 report](docs/m1-report.md) records 35/35 passing tests and an
+evaluation improvement from 6/12 to 9/12. E04, E06 and E09 changed from FAIL to
+PASS, with no PASS-to-FAIL regressions. E05, E10 and E11 still fail; E06 passes
+the metric but still cites both current and superseded remote-work policies.
+
+Implementation and measurement are complete. Independent verification, the
+other pair's review, contributor details and the demonstration lead remain to
+be finalized for submission. M2-M6 are alternatives, not additional required
+improvements.
 
 First run the unchanged baseline and document at least two failures. Then invoke
 the skills in Codex chat, one step at a time. These are chat skills, not PowerShell

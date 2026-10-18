@@ -1,0 +1,3 @@
+# Optional development tooling, separate from the local RAG pipeline.
+-r requirements.txt
+specify-cli==1.2.1

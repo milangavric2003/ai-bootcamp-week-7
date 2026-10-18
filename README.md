@@ -52,3 +52,71 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 4. Compare with `eval_compare` and put both runs and the comparison output in your report.
 
 Result files in `results/` are ignored by git. Copy the printed tables into your report.
+
+## Spec Kit
+
+This repository uses [GitHub Spec Kit](https://github.com/github/spec-kit) 1.2.1
+as optional development tooling. The Codex integration installs skills in
+`.agents/skills/`; shared templates, PowerShell helpers, and project principles
+are in `.specify/`. The RAG pipeline still uses only `requirements.txt`.
+
+To reproduce the tooling installation, activate the project virtual environment
+and run from the repository root:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+specify version
+specify integration status --json
+```
+
+The repository already contains the initialized files. A fresh clone needs the
+CLI installation above, not another `specify init`. The original initialization
+command was:
+
+```powershell
+specify init --here --force --non-interactive --integration codex --script ps
+```
+
+The [project constitution](.specify/memory/constitution.md) records the assignment
+constraints. The repository-root project is the working copy;
+`rag-week-7-weak-checkpoint/` and `week06/` are preserved references.
+
+### Use for this homework
+
+First run the unchanged baseline and document at least two failures. Then invoke
+the skills in Codex chat, one step at a time. These are chat skills, not PowerShell
+commands:
+
+| Skill | Use |
+| --- | --- |
+| `$speckit-specify` | Specify one chosen improvement using observed evaluation failures. Include the hypothesis, expected effect, regression risk, and verification. |
+| `$speckit-plan` | Plan that change using the existing local Python pipeline. |
+| `$speckit-tasks` | Break the plan into implementation and verification tasks. |
+| `$speckit-implement` | Implement the specified change and verify it. |
+| `$speckit-converge` | Check whether the implementation and evidence satisfy the specification. |
+
+`$speckit-constitution` is already applied for initial setup. Reuse it when project
+principles need an amendment. The installed clarification, analysis, and checklist
+skills are available when useful. There is no need to invoke every installed skill.
+
+No extra integrations, extensions, or community presets are enabled. Git branches
+and commits can be managed with ordinary Git commands. The bundled workflow is
+available, but the homework can be completed using the individual skills above.
+
+Before implementation, save `results/before.json`. After the single change, run
+the tests, save `results/after.json`, and compare both runs using the commands
+above. Include the actual JSON files and comparison output in the submission;
+the JSON files are ignored by Git unless explicitly added. The report must explain
+regressions and remaining limitations. Two documented failures do not require two
+fixes, and a measured hypothesis may turn out to be unconfirmed.
+
+The skills are installed locally. If a running Codex session does not list them,
+start a new session in this repository. If Windows blocks a `.ps1` helper, run
+that helper with a process-local execution policy, for example:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .specify/scripts/powershell/resolve-template.ps1 constitution-template -Json
+```
+
+This does not change the persistent Windows execution policy. For upstream setup
+details, see the [existing-project guide](https://github.github.io/spec-kit/guides/existing-projects.html).

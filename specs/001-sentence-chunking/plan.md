@@ -5,7 +5,10 @@
 **Feature directory**: `specs/001-sentence-chunking/`. Identifikator feature-a
 koji helper prikazuje kao `BRANCH` nije nova Git grana; stvarna grana je `main`.
 
-**Status**: Plan spreman za `$speckit-tasks`. Implementacija nije započeta.
+**Status**: Implementacija M1 i merenje završeni. 35/35 testova, 9/12 eval,
+E04/E06/E09 FAIL → PASS, bez PASS → FAIL regresija. Videti
+[izveštaj](../../docs/m1-report.md) i [tasks.md](tasks.md).
+Dalji tekst čuva dizajn i hipotezu napisane pre implementacije.
 
 ## Summary
 
@@ -66,7 +69,7 @@ specs/001-sentence-chunking/
   data-model.md
   contracts/chunking.md
   quickstart.md
-  tasks.md                    # sledeća faza; još ne postoji
+  tasks.md                    # izvršeni zadaci implementacije i merenja
 docs/
   baseline.md
   evidence/001-*

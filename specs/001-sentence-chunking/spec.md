@@ -4,7 +4,9 @@
 
 **Created**: 2026-10-18
 
-**Status**: Draft — specifikacija i plan; poboljšanje još nije implementirano
+**Status**: Implementirano i izmereno — samo M1, 35/35 testova i 9/12 eval;
+E04/E09 PASS, bez novih padova. [Izveštaj](../../docs/m1-report.md);
+ljudski podaci i peer review čekaju dopunu pre predaje.
 
 **Input**: Početna analiza Week 7 zadatka, sačuvan baseline i najmanje dva
 konkretna eval propusta. Predlog jedne promene je M1 iz menija poboljšanja.

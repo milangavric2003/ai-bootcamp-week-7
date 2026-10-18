@@ -4,3 +4,4 @@ __pycache__/
 results/*.json
 # Preserve the unchanged Week 7 baseline as submission evidence.
 !results/before.json
+!results/after.json

@@ -1,0 +1,47 @@
+{
+  "baseline_sha256": "b5d400c79fad025926b3ef5e81a005508e32389596e8fed6e4c46d0654eac5cd",
+  "protected_files_unchanged": {
+    "eval/eval_set.json": true,
+    "src/__init__.py": true,
+    "src/cli.py": true,
+    "src/corpus.py": true,
+    "src/eval_compare.py": true,
+    "src/eval_runner.py": true,
+    "src/rag.py": true,
+    "src/retrieval.py": true,
+    "tests/test_eval_compare.py": true,
+    "tests/test_eval_metrics.py": true,
+    "tests/test_eval_set.py": true,
+    "tests/test_rag.py": true,
+    "tests/test_retrieval.py": true
+  },
+  "original_starter_matches_baseline": {
+    "eval/eval_set.json": true,
+    "src/__init__.py": true,
+    "src/chunking.py": true,
+    "src/cli.py": true,
+    "src/config.py": true,
+    "src/corpus.py": true,
+    "src/eval_compare.py": true,
+    "src/eval_runner.py": true,
+    "src/rag.py": true,
+    "src/retrieval.py": true,
+    "tests/test_chunking.py": true,
+    "tests/test_eval_compare.py": true,
+    "tests/test_eval_metrics.py": true,
+    "tests/test_eval_set.py": true,
+    "tests/test_rag.py": true,
+    "tests/test_retrieval.py": true
+  },
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "question_count": 12,
+  "changed_settings": [
+    "CHUNK_STRATEGY"
+  ],
+  "per_question_metric_regressions": [],
+  "implementation_diff_files": [
+    "src/chunking.py",
+    "src/config.py",
+    "tests/test_chunking.py"
+  ]
+}

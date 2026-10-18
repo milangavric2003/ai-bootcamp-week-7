@@ -1,0 +1,16 @@
+Question:
+What is the current company stock price?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-05-chunk-1] Multi-factor authentication (MFA) is required for email, VPN and all internal tools.
+[hb-09-chunk-1] Parking is limited: spaces are shared and reserved through facilities app, first come, first served.
+
+Refused: False
+Citations:
+  hb-05-chunk-1: Passwords and access (version 2026, current)
+  hb-09-chunk-1: Office access and parking (version 2026, current)
+
+Retrieved:
+  0.0769  hb-05-chunk-1: Multi-factor authentication (MFA) is required for email, VPN and all internal tools.
+  0.0667  hb-09-chunk-1: Parking is limited: spaces are shared and reserved through facilities app, first come, first served.

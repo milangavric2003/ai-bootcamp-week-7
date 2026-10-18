@@ -1,8 +1,9 @@
 # Week 7 — M1: rezultat pre/posle
 
-Datum: 18. oktobar 2026. Implementacija i merenje završeni; Milanov doprinos i
-ljudski review evidentirani. Vedranov doprinos, osoba koja vodi demonstraciju
-i peer review drugog para čekaju dopunu pre predaje.
+Datum implementacije: 18. oktobar 2026. Dopunjeno 19. oktobra 2026. posle
+Vedranove nezavisne provere. Implementacija, merenje i doprinosi oba člana su
+evidentirani. Osoba koja vodi demonstraciju i peer review drugog para čekaju
+dopunu pre predaje.
 
 ## Propust, hipoteza i jedna promena
 
@@ -25,7 +26,7 @@ odgovaranje, pitanja i metrike nisu menjani. Izuzetak za završni JSON u
 
 ## Provera i dokazi
 
-Sve komande izvršene su iz root-a istim `.venv` interpreterom, Python 3.13.7,
+Milanova početna i završna merenja izvršena su iz root-a istim `.venv` interpreterom, Python 3.13.7,
 pytest 8.3.3:
 
 ```powershell
@@ -54,6 +55,50 @@ Originalni `results/before.json` nije prepisan.
 | CLI odgovori i citati E04/E09/E06 | [001-cli-after.txt](evidence/001-cli-after.txt) |
 | Implementacioni diff (src/tests) | [001-implementation.diff](evidence/001-implementation.diff) |
 | Hash i scope provera | [001-integrity-after.json](evidence/001-integrity-after.json) |
+
+## Vedranova nezavisna provera
+
+Vedran je 18–19. oktobra 2026. na grani `baseline-finish` samostalno pokrenuo
+testove i celu evaluaciju, uporedio rezultat sa baseline-om i Milanovim M1
+rezultatom i ručno pregledao CLI odgovore i citate. Okruženje: Windows,
+Python **3.14.7**, pytest **8.3.3**; verzija Pythona razlikuje se od Milanove.
+
+- Testovi: **35 passed** u ponovljenom pokretanju.
+- Evaluacija: **9/12**; E05, E10 i E11 ostaju FAIL.
+- Poređenje sa baseline-om: popravljeni E04/E06/E09, bez regresija; promenjen
+  je samo `CHUNK_STRATEGY`.
+- Poređenje sa Milanovim `after.json`: svih 12 ishoda nepromenjeno, bez razlika
+  u zbirnim metrikama i podešavanjima; otisak eval skupa se poklapa.
+- E04: potvrđen citat važećeg dokumenta sa rokom do pet radnih dana nakon
+  odobrenja menadžera.
+- E09: potvrđeni IT portal / Hardware i rok, oba iz važećeg dokumenta.
+- E06: potvrđeno preostalo ograničenje — odgovor citira i važeća tri dana i
+  zastarela dva dana nedeljno, iako automatska metrika daje PASS.
+
+Pri proveri su uz pomoć Codexa razjašnjena dva problema okruženja. Prvo
+pokretanje testova završilo je sa 34 passed i jednom greškom pripreme `tmp_path`
+zbog Windows dozvola. Ponavljanje sa zasebnim privremenim direktorijumom i
+isključenim pytest kešom prolazi svih 35 testova. Prvo poređenje evaluacija
+odbijeno je zbog CRLF završetaka redova lokalnog eval fajla. Codex je potvrdio
+identičan JSON sadržaj i vratio tačne LF bajtove iz commita; Vedran je potom
+ponovio evaluaciju i oba poređenja. Pitanja i računanje metrika nisu menjani.
+Prvobitni logovi ostaju sačuvani uz uspešna ponavljanja.
+
+Dokazi su u [Vedranovom direktorijumu](evidence/vedran-20261018-235137/):
+
+| Dokaz | Fajl |
+| --- | --- |
+| Uspešno ponovljeni testovi | [pytest-rerun.txt](evidence/vedran-20261018-235137/pytest-rerun.txt) |
+| Ponovljena evaluacija i otisak skupa | [eval-rerun.txt](evidence/vedran-20261018-235137/eval-rerun.txt) |
+| Poređenje sa baseline-om | [compare-before-rerun.txt](evidence/vedran-20261018-235137/compare-before-rerun.txt) |
+| Poređenje sa Milanovim M1 rezultatom | [compare-after.txt](evidence/vedran-20261018-235137/compare-after.txt) |
+| Ručna provera E04 | [E04-cli.txt](evidence/vedran-20261018-235137/E04-cli.txt) |
+| Ručna provera E09 | [E09-cli.txt](evidence/vedran-20261018-235137/E09-cli.txt) |
+| Ograničenje E06 | [E06-cli.txt](evidence/vedran-20261018-235137/E06-cli.txt) |
+
+Log evaluacije beleži novi rezultat kao
+`results/after-vedran-20261019-000502.json`; dodatni JSON rezultati su ignorisani
+Git-om i treba ih eksplicitno uključiti ili priložiti ako se predaju kao dokaz.
 
 ## Izmereni rezultat
 
@@ -113,13 +158,18 @@ pisanje testova, izvršavanje pune evaluacije i CLI provera, pregled diff-a i
 ovaj nacrt izveštaja. Provera predloga zasniva se na stvarnim izlazima 35 testova,
 12 eval pitanja, poređenju i čitanju citata; ne na tvrdnji asistenta.
 
-Evidencija doprinosa prema potvrdi Milana:
+Codex je Vedranu pomogao u pregledu projekta, pripremi komandi, dijagnostici
+dozvola i završetaka redova i dopuni dokumentacije. Vedran je izvršio komande
+i lično proverio CLI izlaze; rezultati su potkrepljeni sačuvanim logovima.
+
+Evidencija doprinosa prema potvrdama Milana i Vedrana i sačuvanim dokazima:
 
 - Član 1 — **Milan**: planiranje, implementacija i ljudski review, uz AI pomoć
   opisanu iznad.
-- Član 2 — **Vedran**: još nema realizovanog doprinosa. Mogući naredni doprinos
-  su dodatna testiranja i provere; konkretan rad i rezultate dopuniti kada budu
-  završeni.
+- Član 2 — **Vedran**: nezavisna provera M1 na grani `baseline-finish` —
+  pokretanje 35 testova, ponovno merenje svih 12 eval pitanja, oba poređenja,
+  ručna provera odgovora i citata E04/E09 i potvrda ograničenja E06. Sačuvao je
+  logove provera i potvrdio rezultate, uz AI pomoć opisanu iznad.
 - Osoba koja vodi demonstraciju Week 7: **još nije određena**.
 - Drugi par i njihov komentar (jedna promena; podrška zaključku rezultatima;
   izostavljene regresije/ograničenja): **peer review još nije pribavljen**.
@@ -127,3 +177,13 @@ Evidencija doprinosa prema potvrdi Milana:
 Implementacija je završena; ovaj dokument nije konačna predaja dok se navedene
 preostale stavke ne popune. Milanov ljudski review je evidentiran odvojeno od
 zahtevanog pregleda drugog para, koji još nije pribavljen.
+
+## Dogovor o dodatnom eksperimentu
+
+M1 sa rezultatom 9/12 ostaje osnova obavezne predaje. Na Vedranov zahtev je
+19. oktobra urađen zaseban [M3 eksperiment](m3-report.md): podizanje praga
+odbijanja sa 0.02 na 0.10 daje 10/12, popravlja E10 bez regresija i prolazi
+35 testova. Specifikacija, novi rezultati i doprinosi navedeni su u tom izveštaju;
+ovaj dokument i originalni before/after JSON fajlovi opisuju samo M1.
+Predaja minimuma nije potvrđena; dodatni eksperiment je urađen na izričit zahtev
+korisnika pre potvrde predaje, iako zadatak napredni deo predviđa posle nje.

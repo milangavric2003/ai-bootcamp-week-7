@@ -1,0 +1,24 @@
+{
+  "commit": "bb9737e981ea7a2025aa1a4ac67224b8db690053",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "hashes": {
+    "src/chunking.py": "429b363d4760b66a83431ab125c6f50bc8b51c824beb344b71fdfe6ef6afa571",
+    "src/cli.py": "344016d03eb119043e4ea1828feb0b9ae1ae8f445a8e37cd56757dcea9442233",
+    "src/config.py": "7a42ca0ae0847b761ffe4fe8f8f36f76f6ab3410de0d5654ba8a3f695eb21a9c",
+    "src/corpus.py": "15d1e5580411ef5e2b4fe880afbb5ea7472e3ecf406eea7db1dafb2943491504",
+    "src/eval_compare.py": "ad4404efe8b41e32ec6ab2b62280c10a165958c96e79dad3c4abac2db615a666",
+    "src/eval_runner.py": "b0c0dc9b9452634c40907d60a76082aeb976b9f0785dea87841a1668656c9226",
+    "src/rag.py": "02c89bb4e469272e0cb71d97a1004028035861b4e6a80a777f55ddd9f9d9b6f1",
+    "src/retrieval.py": "020625ed92f75ef0e7b18e40ef6732d02d62e28f2451a49ae8ea9b3804ec3202",
+    "src/__init__.py": "58bd0fdba999b97227d517b3d7b5d4d8148303b4cb328c40870d5033f38a3ee3",
+    "tests/test_chunking.py": "97bc31b8f6bdb429f096b7f7d3dc5c66a98cc62115cfb6e382617a2034e3bee5",
+    "tests/test_eval_compare.py": "952902b21382f28e7ed4576980575015007baa4a15e85eb233607b07e18aa469",
+    "tests/test_eval_metrics.py": "9e354f3ab01f2642225b590d0d1ced82c3aa563dbc3834af7f01ced6356fd01a",
+    "tests/test_eval_set.py": "362214fdfd55c73aa89414da97e6b583b3c5ee59e0a81e789765b7f5c4c44036",
+    "tests/test_rag.py": "4b2b39da2e0985f51a6a83761a1917cf7371f1828edcd7bfb8534fe871c279b2",
+    "tests/test_retrieval.py": "ae38a515299f1472a15cdb83dc8b09d4f6f4c2379d4a853063d37c01dac6bd3c",
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "results/before.json": "b5d400c79fad025926b3ef5e81a005508e32389596e8fed6e4c46d0654eac5cd",
+    "results/after.json": "f94ea5ed5df80266c3e0a52ed3e3158b2bfcc3b1c6c4e94d45ebf880fdeefedf"
+  }
+}

@@ -15,7 +15,7 @@ STOPWORDS_ENABLED = False
 CURRENT_ONLY = False
 
 # Answering
-REFUSAL_THRESHOLD = 0.02
+REFUSAL_THRESHOLD = 0.10
 CITATION_MIN_SCORE = None  # None or a float score
 
 

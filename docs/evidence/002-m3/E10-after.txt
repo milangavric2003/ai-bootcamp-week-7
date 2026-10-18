@@ -1,0 +1,13 @@
+Question:
+What is the current company stock price?
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:
+  0.0769  hb-05-chunk-1: Multi-factor authentication (MFA) is required for email, VPN and all internal tools.
+  0.0667  hb-09-chunk-1: Parking is limited: spaces are shared and reserved through facilities app, first come, first served.

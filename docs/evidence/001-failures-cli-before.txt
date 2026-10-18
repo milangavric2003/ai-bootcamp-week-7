@@ -1,0 +1,119 @@
+E04
+Command: python -m src.cli --question "How many business days does a laptop replacement take?" --show-retrieved
+
+Question:
+How many business days does a laptop replacement take?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced. After manager approval, a replacement laptop is set up by IT staff with
+[hb-01-chunk-2] iness days. Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware. Accessories such as m
+
+Refused: False
+Citations:
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+  hb-01-chunk-2: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.2174  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced. After manager approval, a replacement laptop is set up by IT staff with
+  0.1739  hb-01-chunk-2: iness days. Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware. Accessories such as m
+
+E05
+Command: python -m src.cli --question "How long until I get a new notebook computer?" --show-retrieved
+
+Question:
+How long until I get a new notebook computer?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-06-chunk-0] New colleagues follow a two-week onboarding plan. A buddy is assigned in your first week and helps you get started with tools, people and te
+[hb-07-chunk-1] weeks in advance in HR portal. Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+
+Refused: False
+Citations:
+  hb-06-chunk-0: Onboarding (version 2026, current)
+  hb-07-chunk-1: Annual leave (version 2026, current)
+
+Retrieved:
+  0.1538  hb-06-chunk-0: New colleagues follow a two-week onboarding plan. A buddy is assigned in your first week and helps you get started with tools, people and te
+  0.0833  hb-07-chunk-1: weeks in advance in HR portal. Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+
+E06
+Command: python -m src.cli --question "How many days per week can I work remotely?" --show-retrieved
+
+Question:
+How many days per week can I work remotely?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-02-chunk-0] Remote work: employees can work remotely up to 2 days per week. Remote days per week are agreed with your team lead. Remote work days can be
+[hb-02-chunk-1] lead. Remote work days can be moved within same week.
+
+Refused: False
+Citations:
+  hb-02-chunk-0: Remote work policy (version 2024, superseded)
+  hb-02-chunk-1: Remote work policy (version 2024, superseded)
+
+Retrieved:
+  0.4815  hb-02-chunk-0: Remote work: employees can work remotely up to 2 days per week. Remote days per week are agreed with your team lead. Remote work days can be
+  0.4000  hb-02-chunk-1: lead. Remote work days can be moved within same week.
+
+E09
+Command: python -m src.cli --question "Where do I request a replacement laptop and how long does it take?" --show-retrieved
+
+Question:
+Where do I request a replacement laptop and how long does it take?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced. After manager approval, a replacement laptop is set up by IT staff with
+[hb-01-chunk-2] iness days. Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware. Accessories such as m
+
+Refused: False
+Citations:
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+  hb-01-chunk-2: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.2609  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced. After manager approval, a replacement laptop is set up by IT staff with
+  0.2174  hb-01-chunk-2: iness days. Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware. Accessories such as m
+
+E10
+Command: python -m src.cli --question "What is the current company stock price?" --show-retrieved
+
+Question:
+What is the current company stock price?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-09-chunk-1] e day. Parking is limited: spaces are shared and reserved through facilities app, first come, first served.
+[hb-05-chunk-1] MFA) is required for email, VPN and all internal tools. Never share passwords, also not with colleagues from IT.
+
+Refused: False
+Citations:
+  hb-09-chunk-1: Office access and parking (version 2026, current)
+  hb-05-chunk-1: Passwords and access (version 2026, current)
+
+Retrieved:
+  0.0588  hb-09-chunk-1: e day. Parking is limited: spaces are shared and reserved through facilities app, first come, first served.
+  0.0526  hb-05-chunk-1: MFA) is required for email, VPN and all internal tools. Never share passwords, also not with colleagues from IT.
+
+E11
+Command: python -m src.cli --question "What is the parental leave policy?" --show-retrieved
+
+Question:
+What is the parental leave policy?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-07-chunk-1] weeks in advance in HR portal. Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+[hb-07-chunk-0] Annual leave policy: employees get 22 days of annual leave per calendar year. Leave requests must be made two weeks in advance in HR portal.
+
+Refused: False
+Citations:
+  hb-07-chunk-1: Annual leave (version 2026, current)
+  hb-07-chunk-0: Annual leave (version 2026, current)
+
+Retrieved:
+  0.1667  hb-07-chunk-1: weeks in advance in HR portal. Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+  0.1600  hb-07-chunk-0: Annual leave policy: employees get 22 days of annual leave per calendar year. Leave requests must be made two weeks in advance in HR portal.

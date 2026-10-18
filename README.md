@@ -83,6 +83,11 @@ constraints. The repository-root project is the working copy;
 
 ### Use for this homework
 
+Current experiment: [baseline, documented failures, and work order](docs/baseline.md),
+[change specification](specs/001-sentence-chunking/spec.md), and
+[implementation plan](specs/001-sentence-chunking/plan.md). The baseline is saved;
+the planned M1 improvement has not been implemented yet.
+
 First run the unchanged baseline and document at least two failures. Then invoke
 the skills in Codex chat, one step at a time. These are chat skills, not PowerShell
 commands:

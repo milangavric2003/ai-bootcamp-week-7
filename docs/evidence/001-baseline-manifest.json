@@ -1,0 +1,42 @@
+{
+  "measured_pipeline_commit": "d28cfcf1a1aa5f312acef2109958907fc65ce5fb",
+  "created_at": "2026-10-18T05:03:01+00:00",
+  "python_version": "3.13.7",
+  "pytest_version": "8.3.3",
+  "test_command": "python -m pytest",
+  "test_result": "18 passed",
+  "eval_command": "python -m src.eval_runner --out results/before.json",
+  "baseline_file": "results/before.json",
+  "baseline_file_sha256": "b5d400c79fad025926b3ef5e81a005508e32389596e8fed6e4c46d0654eac5cd",
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "config": {
+    "CHUNK_STRATEGY": "chars",
+    "CHUNK_SIZE": 140,
+    "CHUNK_OVERLAP": 30,
+    "TOP_K": 2,
+    "RETRIEVAL_MIN_SCORE": 0.01,
+    "STOPWORDS_ENABLED": false,
+    "CURRENT_ONLY": false,
+    "REFUSAL_THRESHOLD": 0.02,
+    "CITATION_MIN_SCORE": null
+  },
+  "files_sha256": {
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "src/__init__.py": "da347dee6bd3bb948c5515e7b3f387671889840e5b0778549f7b757ec41eba21",
+    "src/chunking.py": "c76a323cb6318ccea2c1353a791bedceae1465790e201e51660077bd863c11cf",
+    "src/cli.py": "2738d4a75843f5b9a3d485bbfc9dc94af8359508493d387c3f984c05ddb8501f",
+    "src/config.py": "9314d807555b6d14474c3611cf83d704bdc84a1c459618e85c9b2ee1ad62ddbb",
+    "src/corpus.py": "52cceca071e43682705234713d12a4b94bbf3617e9e7c44cfcba1f6f94a6ef78",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/rag.py": "46d32c44c7cd16984d7232e29669a08e6aabcd4b892ab3e0a294e52d784b7a48",
+    "src/retrieval.py": "8926b82f0ca43aecefe9a78217853f72799f7bd20339562a04fcaceed6506ab1",
+    "tests/test_chunking.py": "d33f69d55e8e11f6ddb5af7492514fd31d0edb2b28de0ecb6237a77fb554d822",
+    "tests/test_eval_compare.py": "d9afbcc24874602089286607761ebcad19befacbfb740566a913ad324fba602c",
+    "tests/test_eval_metrics.py": "5182050547bd451ad00c444aeef1068e6dfb9f4ad0d3fd91b5afefbff6b4a790",
+    "tests/test_eval_set.py": "fce5c28c87562d18e1b3aaf281e493080ea8827c6791447fdecef38ee5e1e6c6",
+    "tests/test_rag.py": "ebe447d6b9a962338b339c7248956f0f60dd3ea10823a111c09e22f0b232463c",
+    "tests/test_retrieval.py": "2969b0fe4566185c7d3309fdd4bce7c0a4adcfb0630d4ec9199c7e5f08231fcd"
+  },
+  "starter_files_identical": true
+}

@@ -1,9 +1,10 @@
-# Future validation guide
+# Setup and validation guide
 
-These are instructions for the later implementation turn. The Gemma backend does
-not exist yet, and these commands have not been executed as part of planning.
-Run from the repository root using the existing virtual environment. Use fresh
-evidence names/directories if any target already exists.
+The Gemma backend is implemented. Offline verification passes 127 tests and
+reproduces 10/12 with identical baseline rows. Live checks await the local key;
+see `docs/gemma-report.md` for actual evidence. Run from the repository root using
+the existing virtual environment. Use fresh evidence names/directories: the
+original-before and retained runs are already saved and must not be overwritten.
 
 ## 1. Separate work and preserve the baseline
 
@@ -12,7 +13,8 @@ subsequent request to commit and push the plan. For implementation, use an isola
 checkout if sharing a working directory with Vedran. Do not switch his active
 checkout or reuse his uncommitted changes. No additional checkout has been created.
 
-Before changing runtime code:
+The following unchanged baseline was captured before runtime edits. It is retained
+for review; use a different directory for any new experiment:
 
 ```powershell
 New-Item -ItemType Directory -Path docs/evidence/005-gemma -Force
@@ -28,11 +30,10 @@ is 10/12 with E05/E11 failing, but use the newly observed result as evidence.
 
 ## 2. Implement and validate offline behavior
 
-Generate tasks from this design and implement the optional answerer on its branch.
-Promote `contracts/.env.example` to the root; ignore `.env` and local variants
-before creating the real secret file. Pin/install the dotenv dependency through
-the project's requirements. No dependency installation is authorized by this
-planning document alone.
+Tasks, optional answering code, root `.env.example`, secret ignore rules and the
+pinned dotenv dependency are implemented. Install requirements into your local
+project environment if needed; then run the suite. Unit-test fixtures prevent
+unmocked Google calls even if your real `.env` enables Gemma.
 
 Then run the complete suite without a key:
 
@@ -57,9 +58,17 @@ Fill `GEMINI_API_KEY` locally. Leave the default `ANSWER_BACKEND=extractive` unt
 explicitly selecting `gemma`. Environment variables override `.env`. Never put
 the key in a shell argument, public config snapshot, evidence or commit.
 
-Use the model and settings from the contract. Run a small live supported-answer
-case and an evidence-missing case outside the fixed evaluation to verify model
-access, completion settings, response shape, JSON parsing and source validation.
+Use the model and settings from the contract. Set `ANSWER_BACKEND=gemma` in `.env`
+and run the supplied synthetic library probe:
+
+```powershell
+.\.venv\Scripts\python.exe docs/evidence/005-gemma/live_probe.py
+```
+
+It makes at most two requests outside the fixed evaluation to check supported
+answering and evidence refusal. Inspect the 17:00 fact and its citation manually;
+the script's behavior check alone does not validate every claim. Use this to verify
+model access, completion settings, response shape, JSON parsing and source validation.
 Freeze the prompt/settings after that probe. A key does not guarantee quota or
 model access; stop and record failures rather than change models automatically.
 

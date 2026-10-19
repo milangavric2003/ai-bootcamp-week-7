@@ -2,7 +2,7 @@
 
 **Created**: 2026-10-19
 
-**Status**: Design only; implementation deferred by the user
+**Status**: Implemented locally on 2026-10-20; live quality and embedding integration pending
 
 **Feature branch**: `feat/gemma-generation`
 
@@ -145,9 +145,9 @@ Prompting and valid citation IDs alone do not establish factual support.
 
 ## Assumptions and scope
 
-- The user subsequently requested a separate branch and publication of this plan.
-  Documentation is on `feat/gemma-generation`; runtime code, package installation,
-  live requests and new evaluation runs remain outside this documentation change.
+- The user requested a separate branch and publication of this plan, then authorized
+  implementation on 2026-10-20. Local implementation and offline verification are
+  recorded in `docs/gemma-report.md`; live quality evidence still needs credentials.
 - Google AI Studio free-tier access was confirmed by the user. Key, project quota
   and live model access remain to be checked when credentials become available.
 - Vedran implements embeddings separately. Generation can be built using mocked

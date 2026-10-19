@@ -1,7 +1,9 @@
 import argparse
+import sys
 
 from .chunking import build_chunks
 from .corpus import load_corpus
+from .generation_errors import GenerationError
 from .rag import build_grounded_answer
 
 
@@ -16,7 +18,11 @@ def main() -> None:
     args = parse_args()
     chunks = build_chunks(load_corpus())
     by_id = {chunk.chunk_id: chunk for chunk in chunks}
-    result = build_grounded_answer(args.question, chunks)
+    try:
+        result = build_grounded_answer(args.question, chunks)
+    except GenerationError as error:
+        print(f"Answering failed: {error}", file=sys.stderr)
+        raise SystemExit(1) from None
 
     print("Question:")
     print(args.question)

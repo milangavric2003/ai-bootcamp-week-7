@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "questions": 12,
+  "passed": 10,
+  "protected_files_unchanged": 35,
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "same_per_question_results": true,
+  "same_original_settings": true,
+  "same_run_answer_trace_records": 12
+}

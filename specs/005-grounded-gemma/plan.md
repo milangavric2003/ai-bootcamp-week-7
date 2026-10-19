@@ -4,7 +4,11 @@
 
 **Feature branch**: `feat/gemma-generation`
 
-**Status**: Plan only. No implementation, installation, API request or new eval run.
+**Status**: Implemented locally on 2026-10-20; 127 tests pass and offline evaluation
+reproduces 10/12. Live Gemma quality and embedding integration remain pending.
+
+The design below was written before implementation. Actual execution evidence and
+remaining checks are recorded in [the implementation report](../../docs/gemma-report.md).
 
 ## Summary
 
@@ -224,5 +228,5 @@ user subsequently requested publication on a new branch, `feat/gemma-generation`
 Shared `.specify/feature.json` remains pinned to the previous feature. No extension hook
 configuration exists, so there are no before/after-plan hooks to run.
 
-Design stops here. Runtime files, real environment setup, unit tests and
-before/after execution are deferred to the requested implementation turn.
+The initial design stopped here. The user subsequently authorized implementation;
+see `tasks.md` for completed local work and credential/embedding-dependent tasks.

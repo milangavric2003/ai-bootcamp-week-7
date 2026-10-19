@@ -4,6 +4,14 @@ Datum: 19. oktobar 2026. Status: dogovoren redosled dodatnih eksperimenata.
 
 ## Najnoviji dogovor: plan za Gemma API, bez implementacije
 
+**Ažuriranje 20. oktobra 2026:** korisnik je odobrio implementaciju na
+`feat/gemma-generation`. Opcioni Gemma adapter je implementiran; 127 testova prolazi,
+a isključeni režim reprodukuje 10/12 i identične eval redove. Nema lokalnog ključa:
+live proba i merenje kvaliteta ostaju otvoreni. Vedranov embeddings rad ostaje
+odvojen. Detalji i dokazi: [Gemma izveštaj](gemma-report.md).
+
+Sledeći pasusi čuvaju istoriju dogovora o prvobitnom planiranju.
+
 Korisnik je potvrdio da **M2 ostaje isključen**, a **Vedran radi embedding
 retrieval**. Codex sada priprema samo zaseban plan za grounded LLM odgovor;
 implementacija dolazi u sledećem koraku, posle pregleda plana. Na naknadni zahtev

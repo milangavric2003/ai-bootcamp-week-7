@@ -1,6 +1,10 @@
 .venv/
 __pycache__/
 .pytest_cache/
+# Local credentials; retain only placeholder templates.
+.env
+.env.*
+!.env.example
 results/*.json
 # Preserve the unchanged Week 7 baseline as submission evidence.
 !results/before.json

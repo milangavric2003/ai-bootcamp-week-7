@@ -1,6 +1,9 @@
 # Week 7 RAG checkpoint
 
-A small local question-answering tool over a fictional employee handbook. It retrieves chunks, answers with chunk citations and refuses questions the handbook does not cover. It runs offline: no API keys, no network, no paid services.
+A small question-answering tool over a fictional employee handbook. It retrieves
+chunks, answers with chunk citations and refuses questions the handbook does not
+cover. The default extractive mode runs offline without an API key. This branch
+also implements optional grounded Gemma generation through Google's Gemini API.
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
@@ -36,10 +39,11 @@ E06 now cites only the current policy. Irrelevant padding citations remain
 possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
-M5 is complete and M2 is measured but disabled. The user's human review is next,
-followed by their embedding experiment targeting E05. Grounded LLM answering
-and refusal for E11 remain a separate later experiment. No 12/12 result is
-promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
+M5 is complete and M2 is measured but disabled. Human review remains for the user;
+Vedran owns the separate embedding experiment targeting E05. Grounded LLM answering
+is implemented on `feat/gemma-generation`; live capability and quality evaluation
+await the local API key. No 12/12 result is promised.
+The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
 experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
 
@@ -56,7 +60,55 @@ python -m pytest              # or ./scripts/run_tests.sh
 
 All tests pass on the starting state. Tests check mechanics, not quality; quality is measured by the eval runner.
 
+## Optional Gemma answering
+
+On `feat/gemma-generation`, the answerer sends the question and every returned
+top-k chunk's text/metadata to `gemma-4-26b-a4b-it` via Google's Gemini API. Final
+citations include only the selected supporting chunks. Valid evidence refusals
+retain the existing refusal message; API/validation failures stop the run.
+Retrieval and M2 are unchanged. See the [implementation report](docs/gemma-report.md).
+
+Install requirements, then create your local environment file if it does not exist:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Copy-Item -LiteralPath .env.example -Destination .env
+```
+
+Edit `.env` locally: add `GEMINI_API_KEY` and select `ANSWER_BACKEND=gemma`.
+No real key is supplied in the tracked [template](.env.example). Existing process
+environment overrides `.env`; `.env` is ignored by Git and its values are not
+expanded into other settings. Keep `STOPWORDS_ENABLED=False`.
+
+Once the key is ready, run the synthetic live capability probe before evaluation:
+
+```powershell
+.\.venv\Scripts\python.exe docs/evidence/005-gemma/live_probe.py
+.\.venv\Scripts\python.exe -m src.cli --question "How often do passwords need to be changed?" --show-retrieved
+```
+
+The probe makes at most two generation requests, over a fictional library passage
+outside the fixed eval set. Inspect the answer's 17:00 fact and citations manually.
+No live request has been verified yet; access, quota, settings and model behavior
+remain to be checked with your key. There is no retry or automatic model fallback.
+
+For measured runs, set `GEMMA_TRACE_PATH` to a **fresh `.jsonl` filename**. It saves
+same-run answer text, decisions, retrieval IDs/scores, latency and returned token
+usage. A new process refuses to reuse an existing trace. API keys and raw provider
+errors are excluded. Public settings and the prompt fingerprint are recorded in
+the existing evaluation config snapshot.
+
+The unchanged fixed metrics inspect facts in cited chunks, not generated prose.
+Review all 12 answers manually. See [setup and comparison commands](specs/005-grounded-gemma/quickstart.md).
+The current offline implementation passes **127 tests** and reproduces **10/12**
+with all baseline evaluation rows identical; that is compatibility evidence, not
+a measured Gemma quality improvement. Unit tests block all unmocked Google calls.
+
 ## Commands
+
+Commands use the selected `ANSWER_BACKEND` from the process environment or root
+`.env`; default is `extractive`. Set `ANSWER_BACKEND=extractive` for offline evals
+if your local `.env` enables Gemma.
 
 | Command | What it does |
 | --- | --- |
@@ -74,6 +126,7 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 - `src/config.py`: every tunable setting in one place. The eval runner saves all values with each run.
 - `src/corpus.py`: ten handbook documents with title, section, version and status.
 - `src/chunking.py`, `src/retrieval.py`, `src/rag.py`: the pipeline.
+- `src/generation.py`, `src/gemma_client.py`, `src/generation_prompt.py`: optional grounded generation, strict output validation and Google transport.
 - `src/eval_runner.py`, `src/eval_compare.py`: evaluation and comparison.
 - `eval/eval_set.json`: the fixed eval set.
 - `docs/improvement-menu.md`: one-change options.

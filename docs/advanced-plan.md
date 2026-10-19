@@ -2,6 +2,32 @@
 
 Datum: 19. oktobar 2026. Status: dogovoren redosled dodatnih eksperimenata.
 
+## Najnoviji dogovor: plan za Gemma API, bez implementacije
+
+Korisnik je potvrdio da **M2 ostaje isključen**, a **Vedran radi embedding
+retrieval**. Codex sada priprema samo zaseban plan za grounded LLM odgovor;
+implementacija dolazi u sledećem koraku, posle pregleda plana. Na naknadni zahtev
+korisnika napravljena je grana `feat/gemma-generation` za commit i push dokumentacije.
+To ažurira ranije pominjanje korisnika kao vlasnika embeddings koraka.
+
+Izabran je Google AI Studio ključ za besplatni nivo Gemini API-ja, sa modelom
+`gemma-4-26b-a4b-it`. Ključ dolazi kasnije; dostupnost i kvote proveravaju se uživo.
+LLM dobija pitanje i tekst svih pronađenih top-k chunk-ova sa metapodacima,
+ne embedding vektore. Citira samo podršku za odgovor i odbija kada dokaz nedostaje.
+
+- [Specifikacija](../specs/005-grounded-gemma/spec.md)
+- [Plan integracije i odvojenih merenja](../specs/005-grounded-gemma/plan.md)
+- [Primer okruženja bez ključa](../specs/005-grounded-gemma/contracts/.env.example)
+
+Plan je dokumentacija i ne menja pipeline. Dokumentacija je na zasebnoj grani
+`feat/gemma-generation`; za istovremeni rad u istom lokalnom
+checkout-u potrebna je i odvojena radna kopija/worktree. Embeddings i LLM se mere
+odvojeno: osnovno poređenje za LLM je embeddings + postojeći odgovor naspram istog
+embeddings retrieval-a + Gemma. Uslov zadatka da napredni rad dolazi posle predatog
+minimuma ostaje vidljiv; predaja nije potvrđena ovim planom.
+
+## Raniji dogovor i evidencija eksperimenata
+
 Preporuka: birati eksperimente prema propustu, ne prolaziti M1–M6 kao obaveznu
 listu. M5 je implementiran i izmeren. Korisnik je odobrio M2 na `main`,
 zatim sopstveni human review i implementaciju embeddings kao sledeći korak.
@@ -130,6 +156,10 @@ zapisati mali zaseban skup ručnih parafraza i pitanja bez odgovora, van
 Ne prilagođavati kod pojedinačnim ID-jevima ili formulacijama.
 
 ## Status plana
+
+Najnoviji dogovor i novi Gemma plan su navedeni na početku dokumenta. Sledeći
+pasus čuva prethodni status; njegovo navođenje korisnika kao vlasnika embeddings
+koraka zamenjeno je dogovorom da to radi Vedran.
 
 M5 je implementiran i izmeren. M2 je implementiran, izmeren i isključen po
 korisnikovoj odluci zbog regresije E09; [izveštaj](m2-report.md) čuva sve rezultate.

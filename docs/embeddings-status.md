@@ -1,5 +1,11 @@
 # Lokalni embeddings — status implementacije
 
+Naknadni status: Vedran je izvršio punu evaluaciju pri pragu 0.10 (10/12,
+E05 popravljen, E10 regresija). Zatim je uvedena zasebna
+[kalibracija praga](embedding-threshold-report.md): embeddings 0.50 daje 11/12,
+lexical ostaje 0.10 i 10/12; 86/86 testova prolazi. Tekst ispod čuva istorijsku
+evidenciju prvobitne implementacije koraka 2/3, pre tih merenja.
+
 Datum: 19. oktobar 2026. Na Vedranov zahtev implementirani su koraci 2/3 plana:
 lokalni model i tačna pretraga istih odlomaka u memoriji. **70/70 testova prolazi.**
 Leksička putanja ostaje podrazumevana i reprodukuje baseline **10/12**.

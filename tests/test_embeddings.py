@@ -144,7 +144,7 @@ def test_embedding_results_flow_to_existing_answer_and_refusal(encoder, monkeypa
     assert not supported.refused
     assert supported.citations == ["a"]
     assert "laptop deadline" in supported.answer
-    monkeypatch.setattr(config, "REFUSAL_THRESHOLD", 0.6)
+    monkeypatch.setattr(config, "EMBEDDING_REFUSAL_THRESHOLD", 0.6)
     refused = build_grounded_answer("notebook", [chunk("b", "partial")])
     assert refused.refused
     assert refused.citations == []

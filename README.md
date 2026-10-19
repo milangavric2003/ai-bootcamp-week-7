@@ -26,9 +26,12 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
 
 An optional local embeddings backend is now implemented for a separate advanced
 experiment. The default remains lexical retrieval; the expanded offline unit
-suite passes **70/70** tests. The lexical results still match the retained 10/12
-baseline. Full embeddings evaluation and threshold calibration are the next
-steps; no improvement in evaluation is claimed yet. See the
+suite now passes **86/86** tests. The lexical results still match the retained 10/12
+baseline. The first embeddings run at threshold 0.10 gave 10/12 (E05 fixed,
+E10 regressed). A separate development-set calibration selected cosine refusal
+threshold **0.50**, yielding **11/12** with E10 fixed and no new regressions.
+E11 remains a failure. Lexical refusal stays at **0.10**. See the
+[threshold report](docs/embedding-threshold-report.md),
 [implementation notes](docs/embeddings-status.md) and
 [quickstart](specs/005-local-embeddings/quickstart.md).
 
@@ -45,7 +48,7 @@ possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
 M5 is complete and M2 is measured but disabled. The local embeddings component
-targeting E05 is implemented; its full comparison remains to be run. Grounded LLM answering
+targeting E05 is implemented and measured, including separate threshold calibration. Grounded LLM answering
 and refusal for E11 remain a separate later experiment. No 12/12 result is
 promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
@@ -76,8 +79,9 @@ The setup commands need network access. Subsequent retrieval uses only the
 local pinned model cache in `.cache/embeddings`, on CPU. Embeddings map texts
 to 384-dimensional vectors and rank the same eligible chunks by cosine
 similarity in memory. The M5 filter runs before encoding. TOP_K, citation rules
-and thresholds keep their existing values; those thresholds are not calibrated
-for cosine similarity. See the quickstart above before running full evaluation.
+and the retrieval minimum keep their existing values. Refusal uses 0.10 for
+lexical scores and the separately calibrated 0.50 for embeddings cosine scores.
+See the quickstart above before running full evaluation.
 
 ## Commands
 

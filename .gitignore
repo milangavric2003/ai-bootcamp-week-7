@@ -10,3 +10,5 @@ results/*.json
 !results/after-m3.json
 !results/before-m5.json
 !results/after-m5.json
+!results/before-embedding-threshold.json
+!results/after-embedding-threshold.json

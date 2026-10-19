@@ -139,8 +139,11 @@ Zadržano leksičko stanje daje 10/12. Na Vedranov zahtev implementirani su kora
 M5 filter. Prošireni offline testovi prolaze 70/70, a leksički rezultati ostaju
 identični baseline-u. [Implementaciona beleška](embeddings-status.md) i
 [quickstart](../specs/005-local-embeddings/quickstart.md) opisuju upotrebu.
-Puna embeddings evaluacija, kalibracija i ljudski review tog eksperimenta još
-nisu evidentirani kao završeni. Grounded LLM ostaje zaseban kasniji eksperiment.
+Vedran je potom izvršio punu embeddings evaluaciju pri 0.10: 10/12, E05
+popravljen i E10 regresija. Na njegov zahtev urađena je zasebna
+[kalibracija](embedding-threshold-report.md): embeddings prag 0.50 daje 11/12,
+bez novih padova; lexical prag ostaje 0.10 i rezultat 10/12. Prolazi 86 testova.
+Vedranov review nove kalibracije još nije potvrđen. Grounded LLM ostaje zaseban kasniji eksperiment.
 Ovaj dokument ne zamenjuje specifikaciju svakog kasnijeg eksperimenta.
 Plan je pripremljen uz Codex i read-only istraživački pregled. Brojevi polaze
 od sačuvanih merenja; budući efekti su hipoteze.

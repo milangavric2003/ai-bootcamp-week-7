@@ -4,7 +4,7 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current state: M1 + optional M3
+## Current state: M1 + optional M3 and M5
 
 The required M1 experiment improved evaluation from **6/12 to 9/12**.
 The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
@@ -13,24 +13,29 @@ The saved M3 test run passes **35/35** tests. Vedran has confirmed completing
 manual M3 evaluation; see the [M3 report](docs/m3-report.md) for evidence and
 the distinction between his confirmation and Codex-generated execution logs.
 
+The optional M5 experiment now excludes superseded sources before ranking.
+Evaluation remains **10/12 without regressions**, while E06 citation precision
+improves **0.50 → 1.00** and mean citation precision **0.60 → 0.65**.
+The current suite passes **43/43** tests; see the [M5 report](docs/m5-report.md).
+
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
 | Optional M3: refusal threshold | [before-m3.json](results/before-m3.json), 9/12 | [after-m3.json](results/after-m3.json), 10/12 | [M3 report](docs/m3-report.md) |
+| Optional M5: current versions | [before.json](docs/evidence/003-m5/before.json), 10/12 | [after.json](docs/evidence/003-m5/after.json), 10/12 | [M5 report](docs/m5-report.md) |
 
-The current code includes both improvements. E05 and E11 still fail; E06 passes
-the metric but still cites conflicting current and superseded policies.
-Preserve all four saved JSON files. Use a fresh output filename for new runs.
+The current code includes all three improvements. E05 and E11 still fail;
+E06 now cites only the current policy. Irrelevant padding citations remain
+possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
-M5 next, M2 optional, then a small local embedding comparison. Each experiment
+M5 is complete; M2 and a small local embedding comparison are future options. Each experiment
 is measured separately; completing every menu option or reaching 12/12 is not
 required. The [M5 specification](specs/003-current-version-filter/spec.md) and
-[implementation plan](specs/003-current-version-filter/plan.md) are prepared;
-M5 is not implemented yet.
+[implementation plan](specs/003-current-version-filter/plan.md) link to the completed work.
 All further optional work this week depends on available time. LLM answer
 generation is a separate possible experiment only if time remains. Keep this
-plan on `main` and create a separate branch when starting M5 implementation.
+plan on `main`; M5 was also implemented on `main` at the user's request.
 
 ## Setup
 
@@ -51,9 +56,10 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 | --- | --- |
 | `python -m src.cli --question "How often do passwords need to be changed?"` | Answer or refusal with citations (title, version, status) |
 | `python -m src.cli --question "..." --show-retrieved` | Also prints retrieved chunks with their scores |
-| `python -m src.eval_runner --out results/m3-verification.json` | Runs the current M1+M3 code on all 12 questions; use a fresh filename for repeats |
+| `python -m src.eval_runner --out results/current-verification.json` | Runs the current M1+M3+M5 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
+| `python -m src.eval_compare docs/evidence/003-m5/before.json docs/evidence/003-m5/after.json` | M5: no changed pass/fail outcomes, improved citation precision, only CURRENT_ONLY changed |
 
 ## Project layout
 
@@ -77,7 +83,7 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 
 1. **Do not edit `eval/eval_set.json`.** Every run prints its SHA-256; runs with different hashes cannot be compared.
 2. Save the unchanged baseline before implementation. This is already preserved in `results/before.json`; do not overwrite it using the current code.
-3. Measure each intentional change separately. M1 uses `before.json` / `after.json`; optional M3 uses `before-m3.json` / `after-m3.json`.
+3. Measure each intentional change separately. M1 uses `before.json` / `after.json`; optional M3 uses `before-m3.json` / `after-m3.json`; M5 uses the pair in `docs/evidence/003-m5/`.
 4. Compare with `eval_compare` and put both runs and the comparison output in your report.
 
 The four experiment JSON files above have exceptions in `.gitignore` and can be
@@ -136,6 +142,9 @@ confirmation of manual M3 evaluation. The other pair's review and demonstration
 lead remain to be finalized. M2-M6 are alternatives, not additional required
 improvements; M3 is recorded separately as optional work.
 
+The subsequent [M5 report](docs/m5-report.md) records current-version filtering,
+43 passing tests, improved E06 citations and unchanged 10/12 outcomes.
+
 The implementation workflow uses the following skills after baseline measurement
 and failure documentation. These are chat skills, not PowerShell commands:
 
@@ -156,7 +165,7 @@ and commits can be managed with ordinary Git commands. The bundled workflow is
 available, but the homework can be completed using the individual skills above.
 
 The completed measurements are linked above. Keep the required M1 and optional
-M3 comparisons separate, and save any new verification to a fresh filename.
+M3 and M5 comparisons separate, and save any new verification to a fresh filename.
 Include the actual JSON files and comparison output in the submission. The report must explain
 regressions and remaining limitations. Two documented failures do not require two
 fixes, and a measured hypothesis may turn out to be unconfirmed.

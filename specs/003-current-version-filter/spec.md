@@ -1,9 +1,12 @@
 # Feature Specification: Current-version evidence (M5)
 
-**Feature Branch**: planning on `main`; implementation should use a separate branch.
+**Feature Branch**: `main`, per the user's explicit implementation instruction.
 **Created**: 2026-10-19
-**Status**: Specified, not implemented
+**Status**: Implemented and measured on 2026-10-19; 43 tests pass, 10/12 without regressions.
 **Input**: Plan advanced work from M1+M3, choosing changes by observed failures.
+
+Results: [M5 report](../../docs/m5-report.md). The original hypothesis and
+acceptance criteria below remain the preimplementation specification.
 
 ## User Scenarios & Testing
 
@@ -78,12 +81,12 @@ original required experiment as the submission record.
 ## Assumptions
 
 - The merged M1+M3 state (10/12) is the starting point.
-- All further optional work this week depends on available time. This M5
-  specification does not commit the pair to implementation this week. Start
-  implementation on a separate branch when ready; prioritize the required report
-  and demonstration. LLM generation is a separate possible later experiment.
+- All further optional work this week depends on available time. The user
+  subsequently requested M5 implementation now on main, without a new branch.
+  LLM generation is a separate possible later experiment.
 - Existing source statuses are authoritative; this does not infer version dates.
 - M5 does not address synonyms or distinguish parental leave from annual leave.
 - This is optional work, separate from the required M1 experiment. The assignment
   places optional implementation after submission of the minimum; submission is
-  still unconfirmed. Planning can proceed without assuming it has happened.
+  still unconfirmed. The user explicitly authorized implementation now; retain
+  that timing caveat rather than claiming the minimum was submitted.

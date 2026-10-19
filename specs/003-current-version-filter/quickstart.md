@@ -1,42 +1,58 @@
 # Validation Guide: M5
 
-Run from repository root with the project virtual environment. These are future
-implementation checks, not claims that M5 has run. Complete minimum submission
-first, then use a separate implementation branch and a fresh evidence folder.
-Do not overwrite an earlier experiment directory on a repeat.
+M5 is implemented on main at the user's request. All 43 tests pass; evaluation
+remains 10/12, E06 citation precision is 1.00, and mean precision is 0.65.
+See the [report](../../docs/m5-report.md) for measured results and limitations.
 
-## Before changing code
+Run commands from repository root with the project virtual environment.
+Preserve the saved evidence; use fresh filenames when repeating evaluation.
 
-Save commit, Python/pytest versions, configuration and hashes. Document E06's
-contradiction and E05/E11's expected/actual outcomes and failure types.
-
-```powershell
-New-Item -ItemType Directory -Path docs/evidence/003-m5
-.venv/Scripts/python.exe -m pytest
-.venv/Scripts/python.exe -m src.eval_runner --out docs/evidence/003-m5/before.json
-.venv/Scripts/python.exe -m src.eval_compare results/after-m3.json docs/evidence/003-m5/before.json
-.venv/Scripts/python.exe -m src.cli --question "How many days per week can I work remotely?" --show-retrieved
-```
-
-Baseline: 35 tests pass and 10/12 eval questions pass; comparison has no result
-or configuration differences. Save command outputs as evidence.
-
-## After implementing only M5
+## Compare the saved controlled experiment
 
 ```powershell
-.venv/Scripts/python.exe -m pytest
-.venv/Scripts/python.exe -m src.eval_runner --out docs/evidence/003-m5/after.json
 .venv/Scripts/python.exe -m src.eval_compare docs/evidence/003-m5/before.json docs/evidence/003-m5/after.json
+```
+
+Expected: no changed pass/fail outcomes, same eval hash, only CURRENT_ONLY
+False → True. Mean citation precision rises 0.60 → 0.65. E05/E11 still fail.
+
+## Verify the current implementation independently
+
+```powershell
+.venv/Scripts/python.exe -m pytest
+$m5RunFile = 'results/m5-verification-' + [guid]::NewGuid().ToString('N') + '.json'
+.venv/Scripts/python.exe -m src.eval_runner --out $m5RunFile
+.venv/Scripts/python.exe -m src.eval_compare docs/evidence/003-m5/after.json $m5RunFile
 .venv/Scripts/python.exe -m src.cli --question "How many days per week can I work remotely?" --show-retrieved
 ```
 
-Hypothesis: no lost passes, same eval hash, only CURRENT_ONLY False → True.
-E06 cites 3 days per week and retrieves/cites no superseded source. Unit tests
-check mixed/empty eligibility and the disabled path. Inspect E04/E09/E10/E11/E05
-as controls and preserve outputs. If results differ, report that rather than
-changing thresholds in the same experiment.
+Expected: 43 passed and 10/12; comparison to the saved after run has no changes
+in settings, outcomes or summary metrics. E06 cites 3 days per week and retrieves
+and cites no superseded source. Inspect both source versions and answer text:
+an automatic PASS alone cannot prove the two-day contradiction is gone.
 
-Save tests, eval tables, comparisons, CLI outputs, hashes and code diff. Write
-docs/m5-report.md with the decision, regressions, historical-query limitation,
-AI assistance and contributions. A result of 10/12 can confirm E06's improved
-citations. Official metrics must remain unchanged.
+Also inspect E04's duration, E09's request location and duration, E10's refusal,
+E05/E11's remaining failures, and E02's unrelated padding citation.
+Eligibility tests cover mixed statuses, ordering, empty results and disabling the
+filter; the integration tests cover actual E06 citations and refusal without
+eligible evidence.
+
+The saved tests ran outside the sandbox because Windows temporary/cache access
+was denied there. No project or system setting was changed to resolve that.
+
+## Baseline provenance and compatibility
+
+Before code changes at commit ab83d92, the same pytest and eval_runner commands
+saved 35 passing tests and 10/12. The fresh before run matches M3's after run
+except timestamp. Failures and CLI evidence were documented before implementation.
+
+Do not recreate before.json with the current enabled-filter code. For a fresh
+historical baseline use an isolated checkout of ab83d92 and a fresh output
+directory. The saved integrity verification additionally confirms that running
+the current implementation with CURRENT_ONLY disabled in an isolated process
+reproduces the saved before result apart from timestamp.
+
+The [evidence directory](../../docs/evidence/003-m5/) contains before/after JSON,
+test and CLI logs, comparison, hashes and implementation diff. No official eval
+questions or metric code changed. Historical questions cannot retrieve
+superseded sources while the filter is enabled.

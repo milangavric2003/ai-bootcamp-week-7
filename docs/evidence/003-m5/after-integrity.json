@@ -1,0 +1,46 @@
+{
+  "changed_files": [
+    "src/config.py",
+    "src/retrieval.py",
+    "tests/test_rag.py",
+    "tests/test_retrieval.py"
+  ],
+  "changed_settings": {
+    "CURRENT_ONLY": [
+      false,
+      true
+    ]
+  },
+  "eval_hash_matches": true,
+  "no_pass_regressions": true,
+  "E06_current_only": true,
+  "disabled_mode_reproduces_baseline": true,
+  "hashes": {
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "results/after-m3.json": "055c2b4bf71c8d0450b4da9767fa69c895cca6ce302c45854d72b724f9a889dd",
+    "results/after.json": "f94ea5ed5df80266c3e0a52ed3e3158b2bfcc3b1c6c4e94d45ebf880fdeefedf",
+    "results/before-m3.json": "7f15a737c8dba1d701f0ac7fd751e60e03b51047cbb28647f18ac30d3c9ea55d",
+    "results/before.json": "b5d400c79fad025926b3ef5e81a005508e32389596e8fed6e4c46d0654eac5cd",
+    "src/__init__.py": "da347dee6bd3bb948c5515e7b3f387671889840e5b0778549f7b757ec41eba21",
+    "src/chunking.py": "03a8aa6bb74e567349cb0e15cdb21aaae42b7afb00563dad2f91e4e7dd3c6c27",
+    "src/cli.py": "2738d4a75843f5b9a3d485bbfc9dc94af8359508493d387c3f984c05ddb8501f",
+    "src/config.py": "b3403387b36c7fb9f985895ca1be4aa1861969c87897e827fba70d928e8111b2",
+    "src/corpus.py": "52cceca071e43682705234713d12a4b94bbf3617e9e7c44cfcba1f6f94a6ef78",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/rag.py": "46d32c44c7cd16984d7232e29669a08e6aabcd4b892ab3e0a294e52d784b7a48",
+    "src/retrieval.py": "e5663fa167ff4e0e296b4af7aa53820024f2779ae731ef2278c542fb1a224a70",
+    "tests/test_chunking.py": "0b6b31e7abc74b671ecd12aa4fef8082059c511330e925331a9160b289c05885",
+    "tests/test_eval_compare.py": "d9afbcc24874602089286607761ebcad19befacbfb740566a913ad324fba602c",
+    "tests/test_eval_metrics.py": "5182050547bd451ad00c444aeef1068e6dfb9f4ad0d3fd91b5afefbff6b4a790",
+    "tests/test_eval_set.py": "fce5c28c87562d18e1b3aaf281e493080ea8827c6791447fdecef38ee5e1e6c6",
+    "tests/test_rag.py": "dbfeaa6d1620de3c037289b42e192c5ce141b0bdf78d2dce5409d723a2d71441",
+    "tests/test_retrieval.py": "d1d035a5765a61b31c0406564e72772e84074187f8be580cbee876e1c51e263c"
+  },
+  "changed_rows": [
+    "E02",
+    "E06"
+  ],
+  "M3_baseline_exact_except_timestamp": true,
+  "all_question_metrics_non_decreasing": true
+}

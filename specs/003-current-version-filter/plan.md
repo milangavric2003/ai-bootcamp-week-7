@@ -1,7 +1,9 @@
 # Implementation Plan: Current-version evidence (M5)
 
-**Branch**: planning on `main`; separate implementation branch later
+**Branch**: `main`, per the user's explicit implementation instruction on 2026-10-19
 **Date**: 2026-10-19 | **Spec**: [spec.md](spec.md)
+**Status**: Completed; [report](../../docs/m5-report.md), 43 passing tests,
+10/12 with improved citation precision and no regressions.
 
 ## Summary
 
@@ -30,14 +32,14 @@ Pre-research and post-design checks reach the same conclusion:
 
 - One controlled change: PASS. M5 only; M2 and embeddings are future experiments.
 - Fixed evaluation: PASS. No edits to questions or metric code.
-- Evidence before code: PASS for planning; implementation first saves fresh
-  tests, eval and CLI E06/E05/E11 with expected/actual behavior and failure type.
+- Evidence before code: PASS. Fresh tests, eval and CLI E06/E05/E11 were saved
+  with expected/actual behavior and failure types before pipeline changes.
 - Local and simple: PASS. Existing config/architecture, no dependencies.
 - Honest results: PASS by design; report contradictions, unchanged failures,
   regressions and the historical-query limitation.
-- Submission sequence: planning proceeds; optional implementation is scheduled
-  after minimum submission. Submission is unconfirmed. Prior M3 timing deviation
-  stays documented; this plan does not waive the assignment.
+- Submission sequence: submission is unconfirmed. On 2026-10-19 the user explicitly
+  authorized M5 implementation now on main. Proceed under that instruction and
+  retain the assignment-order caveat; do not claim the minimum was submitted.
 
 ## Project Structure
 
@@ -95,8 +97,9 @@ otherwise preserve the negative result.
 
 ## Scope of Completion
 
-Specification, research and design only. Task generation and implementation
-follow separately; no tasks.md or implementation completion is implied.
-All additional work this week is conditional on available time. Keep planning
-documents on main; create a new branch when starting M5. LLM generation may be
-planned separately only if time remains after required submission and demo work.
+All tasks in tasks.md are complete. M5 is retained: E06 has only current evidence,
+its precision improves from 0.50 to 1.00, mean precision rises 0.60 to 0.65,
+and all ten existing eval passes remain. Eight new tests bring the total to 43.
+Baseline and after evidence, comparison, diff and integrity checks are saved.
+M2, embeddings and LLM generation remain outside this implementation and depend
+on available time. No separate branch was created, as instructed by the user.

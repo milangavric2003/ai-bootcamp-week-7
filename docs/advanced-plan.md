@@ -3,29 +3,34 @@
 Datum: 19. oktobar 2026. Status: plan, bez novih izmena RAG pipeline-a.
 
 Preporuka: birati eksperimente prema propustu, ne prolaziti M1–M6 kao obaveznu
-listu. Prvo M5, zatim po želji jedan M2 eksperiment, pa malo poređenje lokalnog
-embedding retrieval-a sa najboljim zadržanim leksičkim stanjem. Ne čekati 12/12
-da bi se probali embeddings i ne obećavati da će ih oni dati.
+listu. M5 je sada implementiran i izmeren; ako ostane vremena, slede opcioni M2
+i malo poređenje lokalnog embedding retrieval-a sa zadržanim leksičkim stanjem.
+Ne čekati 12/12 da bi se probali embeddings i ne obećavati da će ih oni dati.
 
 Sav dalji dodatni rad ove nedelje zavisi od raspoloživog vremena: M5, M2,
 embeddings i kasnija poboljšanja mogu se odložiti ili preskočiti. Prednost imaju
 završetak obavezne predaje i priprema demonstracije. LLM generisanje odgovora
 razmatra se samo ako posle toga ostane vremena, kao zaseban specificiran i
 izmeren eksperiment; nije deo planiranog M5 ili embedding poređenja.
-Plan se čuva na `main`, a implementacija M5 počinje na novoj grani kada bude
-vremena za nju.
+Plan se čuva na `main`. Korisnik je potom izričito zatražio M5 implementaciju
+na istoj grani, bez nove grane; taj korak je završen.
 
 ## Šta je već završeno
 
 - Obavezni M1: 6/12 → 9/12, zaseban [izveštaj](m1-report.md).
 - Dodatni M3: 9/12 → 10/12, zaseban [izveštaj](m3-report.md).
+- Dodatni M5: 10/12 → 10/12 bez regresija, 43 testa; E06 precision 0.50 → 1.00,
+  mean citation precision 0.60 → 0.65. [Izveštaj](m5-report.md).
 - M3 već predstavlja drugu, posebno izmerenu promenu kakvu dopušta napredni cilj.
   Nisu obavezni svi M koraci niti embedding tehnika.
-- Zadatak napredni deo predviđa posle predaje minimuma. M3 je urađen ranije;
-  odstupanje ostaje dokumentovano. Pre novih implementacija završiti komentar
-  drugog para, ime demo lead-a i predaju minimuma. Predaja nije potvrđena.
+- Zadatak napredni deo predviđa posle predaje minimuma. M3 i M5 su urađeni na
+  izričit zahtev pre potvrđene predaje; odstupanje ostaje dokumentovano. Komentar
+  drugog para, demo lead i predaja minimuma ostaju za ljudsku potvrdu.
 
 ## Polazni problemi
+
+Stanje u tabeli je polazno M1+M3, pre M5. Aktuelni E06 odgovor sada sadrži
+samo current izvore; E05/E11 ostaju isti neuspešni slučajevi.
 
 | Slučaj | Trenutno stanje | Šta treba proveriti |
 | --- | --- | --- |
@@ -43,12 +48,12 @@ odbio bi i E04 pri sadašnjem ocenjivanju.
 | Korak | Jedna namera | Cilj i rizik | Odluka |
 | --- | --- | --- | --- |
 | 0 | Sačuvati trenutno M1+M3 stanje | Potvrditi 10/12; sačuvati testove, eval, konfiguraciju, commit i CLI E05/E11/E06 | Ne prepisivati prethodne dokaze |
-| 1: M5 | Isključiti superseded izvore pre rangiranja | E06 bez zastarele politike; istorijska pitanja gube stare izvore | Zadržati ako nema novih padova i CLI potvrđuje bolji odgovor |
+| 1: M5, završeno | Isključiti superseded izvore pre rangiranja | E06 bez zastarele politike; istorijska pitanja gube stare izvore | Zadržan: CLI potvrđuje poboljšanje, nema regresija |
 | 2: M2, opciono | Ukloniti unapred zadate česte engleske reči iz oba toka tokena | Manje šuma; novi skorovi mogu izazvati pogrešna odbijanja | Jedan fiksni opšti spisak; bez usputne promene praga |
 | 3: embeddings | Uporediti jedan lokalni retrieval model sa zadržanim leksičkim stanjem | E05 je semantički cilj; E11 može dobiti sličan, nepodržan kontekst | Prijaviti dobitke, regresije, vreme, zavisnosti i cenu |
 | 4, samo po nalazu | Posebno poboljšanje procene dovoljnog dokaza ili praga odbijanja | Razlikovati temu od podrške tvrdnji za E11 | Nova specifikacija i merenje; bez hardkodovanja E11 |
 
-M5 je sledeći konkretno specificiran korak:
+Završeni M5 korak:
 [specifikacija](../specs/003-current-version-filter/spec.md),
 [plan implementacije](../specs/003-current-version-filter/plan.md).
 M2 nije preduslov za embeddings. Ako je glavni cilj učenje semantičke pretrage,
@@ -89,7 +94,8 @@ ali troši računar i zahteva početno preuzimanje modela.
 
 ## Isti protokol za svaki korak
 
-1. Zaseban branch i specifikacija pre promene, sa hipotezom i rizikom regresije.
+1. Zasebna specifikacija pre promene, sa hipotezom i rizikom regresije. Grana
+   prema dogovoru; M5 je na izričit zahtev korisnika urađen na main.
 2. Testovi i kompletan eval pre promene, sačuvani u novom direktorijumu dokaza.
 3. Jedna promena; testovi i kompletan isti eval posle nje.
 4. `src.eval_compare` nad tim parom; isti eval SHA-256, promenjena podešavanja
@@ -106,7 +112,8 @@ Ne prilagođavati kod pojedinačnim ID-jevima ili formulacijama.
 
 ## Status plana
 
-Planiranje je završeno; M5, M2 i embeddings nisu implementirani.
+M5 je implementiran i izmeren; svih deset zadataka je završeno. M2 i embeddings
+nisu implementirani, a LLM generisanje ostaje opciono ako ostane vremena.
 Ovaj dokument ne zamenjuje specifikaciju svakog kasnijeg eksperimenta.
 Plan je pripremljen uz Codex i read-only istraživački pregled. Brojevi polaze
 od sačuvanih merenja; budući efekti su hipoteze.

@@ -1,0 +1,188 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 13 items
+
+tests\test_retrieval.py ...FF.FF                                         [ 61%]
+tests\test_rag.py ...FF                                                  [100%]
+
+================================== FAILURES ===================================
+___________ test_current_filter_preserves_eligible_order_and_input ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020836733950>
+
+    def test_current_filter_preserves_eligible_order_and_input(monkeypatch) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", True)
+        chunks = [
+            make_chunk("z", "current rule"),
+            make_chunk("old", "old rule", status="superseded"),
+            make_chunk("a", "another rule", status="draft"),
+        ]
+        original = chunks.copy()
+    
+>       eligible = searchable_chunks(chunks)
+
+tests\test_retrieval.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [Chunk(chunk_id='z', doc_id='d', title='T', version='2026', status='current', text='current rule'), Chunk(chunk_id='ol...ed', text='old rule'), Chunk(chunk_id='a', doc_id='d', title='T', version='2026', status='draft', text='another rule')]
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+_________ test_superseded_best_match_cannot_displace_current_evidence _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020836854180>
+
+    def test_superseded_best_match_cannot_displace_current_evidence(monkeypatch) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", True)
+        chunks = [
+            make_chunk("old", "remote work", status="superseded"),
+            make_chunk("new", "remote work allows three days weekly"),
+        ]
+    
+>       results = retrieve_top_k("remote work", chunks, k=1)
+
+tests\test_retrieval.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\retrieval.py:48: in retrieve_top_k
+    for chunk in searchable_chunks(chunks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [Chunk(chunk_id='old', doc_id='d', title='T', version='2026', status='superseded', text='remote work'), Chunk(chunk_id='new', doc_id='d', title='T', version='2026', status='current', text='remote work allows three days weekly')]
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+__________ test_no_eligible_chunks_returns_empty_results[statuses0] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020836821D00>
+statuses = []
+
+    @pytest.mark.parametrize("statuses", [[], ["superseded"]])
+    def test_no_eligible_chunks_returns_empty_results(monkeypatch, statuses) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", True)
+        chunks = [make_chunk(str(i), "remote work", status) for i, status in enumerate(statuses)]
+    
+>       assert searchable_chunks(chunks) == []
+
+tests\test_retrieval.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = []
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+__________ test_no_eligible_chunks_returns_empty_results[statuses1] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020836821590>
+statuses = ['superseded']
+
+    @pytest.mark.parametrize("statuses", [[], ["superseded"]])
+    def test_no_eligible_chunks_returns_empty_results(monkeypatch, statuses) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", True)
+        chunks = [make_chunk(str(i), "remote work", status) for i, status in enumerate(statuses)]
+    
+>       assert searchable_chunks(chunks) == []
+
+tests\test_retrieval.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [Chunk(chunk_id='0', doc_id='d', title='T', version='2026', status='superseded', text='remote work')]
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+__________ test_remote_policy_citations_follow_current_filter[True] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020836834B50>
+current_only = True
+
+    @pytest.mark.parametrize("current_only", [False, True])
+    def test_remote_policy_citations_follow_current_filter(monkeypatch, current_only) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", current_only)
+        chunks = build_chunks(load_corpus())
+        chunks_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+    
+>       result = build_grounded_answer("How many days per week can I work remotely?", chunks)
+
+tests\test_rag.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\rag.py:27: in build_grounded_answer
+    results = retrieve_top_k(question, chunks)
+src\retrieval.py:48: in retrieve_top_k
+    for chunk in searchable_chunks(chunks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [Chunk(chunk_id='hb-01-chunk-0', doc_id='hb-01', title='Equipment replacement', version='2026', status='current', text...Remote work policy', version='2024', status='superseded', text='Remote work days can be moved within same week.'), ...]
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+___________ test_only_superseded_evidence_is_refused_when_filtered ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000208368924E0>
+
+    def test_only_superseded_evidence_is_refused_when_filtered(monkeypatch) -> None:
+        monkeypatch.setattr(config, "CURRENT_ONLY", True)
+        chunks = [Chunk(chunk_id="old", doc_id="policy", title="Policy", version="2024",
+                        status="superseded", text="Remote work permits two days weekly.")]
+    
+>       result = build_grounded_answer("remote work", chunks)
+
+tests\test_rag.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\rag.py:27: in build_grounded_answer
+    results = retrieve_top_k(question, chunks)
+src\retrieval.py:48: in retrieve_top_k
+    for chunk in searchable_chunks(chunks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [Chunk(chunk_id='old', doc_id='policy', title='Policy', version='2024', status='superseded', text='Remote work permits two days weekly.')]
+
+    def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+        if config.CURRENT_ONLY:
+>           raise NotImplementedError("CURRENT_ONLY = True is not implemented yet.")
+E           NotImplementedError: CURRENT_ONLY = True is not implemented yet.
+
+src\retrieval.py:37: NotImplementedError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\cacheprovider.py:475
+  C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.venv\Lib\site-packages\_pytest\cacheprovider.py:475: PytestCacheWarning: could not create cache path C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.pytest_cache\v\cache\nodeids: [WinError 5] Access is denied: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+.venv\Lib\site-packages\_pytest\cacheprovider.py:429
+  C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.venv\Lib\site-packages\_pytest\cacheprovider.py:429: PytestCacheWarning: could not create cache path C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.pytest_cache\v\cache\lastfailed: [WinError 5] Access is denied: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+.venv\Lib\site-packages\_pytest\stepwise.py:51
+  C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.venv\Lib\site-packages\_pytest\stepwise.py:51: PytestCacheWarning: could not create cache path C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\.pytest_cache\v\cache\stepwise: [WinError 5] Access is denied: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.pytest_cache\\v\\cache'
+    session.config.cache.set(STEPWISE_CACHE_DIR, [])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_retrieval.py::test_current_filter_preserves_eligible_order_and_input
+FAILED tests/test_retrieval.py::test_superseded_best_match_cannot_displace_current_evidence
+FAILED tests/test_retrieval.py::test_no_eligible_chunks_returns_empty_results[statuses0]
+FAILED tests/test_retrieval.py::test_no_eligible_chunks_returns_empty_results[statuses1]
+FAILED tests/test_rag.py::test_remote_policy_citations_follow_current_filter[True]
+FAILED tests/test_rag.py::test_only_superseded_evidence_is_refused_when_filtered
+=================== 6 failed, 7 passed, 3 warnings in 0.13s ===================

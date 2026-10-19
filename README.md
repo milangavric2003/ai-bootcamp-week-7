@@ -22,7 +22,7 @@ The current suite passes **43/43** tests; see the [M5 report](docs/m5-report.md)
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
 | Optional M3: refusal threshold | [before-m3.json](results/before-m3.json), 9/12 | [after-m3.json](results/after-m3.json), 10/12 | [M3 report](docs/m3-report.md) |
-| Optional M5: current versions | [before.json](docs/evidence/003-m5/before.json), 10/12 | [after.json](docs/evidence/003-m5/after.json), 10/12 | [M5 report](docs/m5-report.md) |
+| Optional M5: current versions | [before-m5.json](results/before-m5.json), 10/12 | [after-m5.json](results/after-m5.json), 10/12 | [M5 report](docs/m5-report.md) |
 
 The current code includes all three improvements. E05 and E11 still fail;
 E06 now cites only the current policy. Irrelevant padding citations remain
@@ -59,7 +59,7 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 | `python -m src.eval_runner --out results/current-verification.json` | Runs the current M1+M3+M5 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
-| `python -m src.eval_compare docs/evidence/003-m5/before.json docs/evidence/003-m5/after.json` | M5: no changed pass/fail outcomes, improved citation precision, only CURRENT_ONLY changed |
+| `python -m src.eval_compare results/before-m5.json results/after-m5.json` | M5: no changed pass/fail outcomes, improved citation precision, only CURRENT_ONLY changed |
 
 ## Project layout
 
@@ -83,10 +83,10 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 
 1. **Do not edit `eval/eval_set.json`.** Every run prints its SHA-256; runs with different hashes cannot be compared.
 2. Save the unchanged baseline before implementation. This is already preserved in `results/before.json`; do not overwrite it using the current code.
-3. Measure each intentional change separately. M1 uses `before.json` / `after.json`; optional M3 uses `before-m3.json` / `after-m3.json`; M5 uses the pair in `docs/evidence/003-m5/`.
+3. Measure each intentional change separately. M1 uses `before.json` / `after.json`; optional M3 uses `before-m3.json` / `after-m3.json`; M5 uses `before-m5.json` / `after-m5.json`.
 4. Compare with `eval_compare` and put both runs and the comparison output in your report.
 
-The four experiment JSON files above have exceptions in `.gitignore` and can be
+The six experiment JSON files above have exceptions in `.gitignore` and can be
 tracked. Other `results/*.json` files are ignored unless explicitly added.
 Include the JSON results and comparison output in the submission.
 

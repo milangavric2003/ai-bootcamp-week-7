@@ -98,6 +98,12 @@ potpunosti osim timestamp-a; završna konfiguracija ostaje uključena.
 Svi dokazi su u [evidence/003-m5](evidence/003-m5/), gde JSON fajlovi nisu
 obuhvaćeni pravilom `results/*.json` i mogu normalno da se verzionišu.
 
+Za isti raspored kao M1/M3, sačuvane su i bajt-po-bajt identične kopije:
+[results/before-m5.json](../results/before-m5.json) i
+[results/after-m5.json](../results/after-m5.json), uz izuzetke u `.gitignore`.
+To su ista izvorna merenja, ne nova izvršavanja; 10/12 u oba fajla ne znači
+da su rezultati identični: E06 citati i preciznost se menjaju.
+
 | Dokaz | Fajlovi |
 | --- | --- |
 | Pre-implementaciona dijagnoza | [baseline.md](evidence/003-m5/baseline.md) |

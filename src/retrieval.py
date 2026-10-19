@@ -50,10 +50,18 @@ def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> lis
     if k <= 0:
         raise ValueError("k must be > 0")
 
-    scored = [
-        RetrievalResult(chunk=chunk, score=lexical_score(query, chunk.text))
-        for chunk in searchable_chunks(chunks)
-    ]
+    if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+        raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+    eligible = searchable_chunks(chunks)
+    if not eligible or not query.strip():
+        return []
+    if config.RETRIEVAL_BACKEND == "embeddings":
+        from .embeddings import score_chunks
+        scores = score_chunks(query, eligible)
+    else:
+        scores = [lexical_score(query, chunk.text) for chunk in eligible]
+    scored = [RetrievalResult(chunk=chunk, score=score)
+              for chunk, score in zip(eligible, scores, strict=True)]
     filtered = [item for item in scored if item.score >= config.RETRIEVAL_MIN_SCORE]
     filtered.sort(key=lambda item: (-item.score, item.chunk.chunk_id))
     return filtered[:k]

@@ -1,0 +1,11 @@
+{
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "device": "cpu",
+  "cache_dir": "D:\\AIBootcamp\\week07\\ai-bootcamp-week-7\\.cache\\embeddings",
+  "dimensions": 384,
+  "max_sequence_length": 256,
+  "prepare_seconds": 17.3406
+}
+D:\AIBootcamp\week07\ai-bootcamp-week-7\src\prepare_embeddings.py:16: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  "dimensions": model.get_sentence_embedding_dimension(),

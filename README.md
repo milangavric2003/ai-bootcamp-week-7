@@ -24,6 +24,14 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
 **disabled** (`STOPWORDS_ENABLED=False`). The retained pipeline reproduces
 **10/12**, and **53/53 tests pass** in both modes. See the [M2 report](docs/m2-report.md).
 
+An optional local embeddings backend is now implemented for a separate advanced
+experiment. The default remains lexical retrieval; the expanded offline unit
+suite passes **70/70** tests. The lexical results still match the retained 10/12
+baseline. Full embeddings evaluation and threshold calibration are the next
+steps; no improvement in evaluation is claimed yet. See the
+[implementation notes](docs/embeddings-status.md) and
+[quickstart](specs/005-local-embeddings/quickstart.md).
+
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
@@ -36,8 +44,8 @@ E06 now cites only the current policy. Irrelevant padding citations remain
 possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
-M5 is complete and M2 is measured but disabled. The user's human review is next,
-followed by their embedding experiment targeting E05. Grounded LLM answering
+M5 is complete and M2 is measured but disabled. The local embeddings component
+targeting E05 is implemented; its full comparison remains to be run. Grounded LLM answering
 and refusal for E11 remain a separate later experiment. No 12/12 result is
 promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
@@ -56,12 +64,28 @@ python -m pytest              # or ./scripts/run_tests.sh
 
 All tests pass on the starting state. Tests check mechanics, not quality; quality is measured by the eval runner.
 
+### Optional local embeddings
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-embeddings.txt
+.\.venv\Scripts\python.exe -m src.prepare_embeddings
+.\.venv\Scripts\python.exe -m src.cli --retrieval-backend embeddings --question "How long until I get a new notebook computer?" --show-retrieved
+```
+
+The setup commands need network access. Subsequent retrieval uses only the
+local pinned model cache in `.cache/embeddings`, on CPU. Embeddings map texts
+to 384-dimensional vectors and rank the same eligible chunks by cosine
+similarity in memory. The M5 filter runs before encoding. TOP_K, citation rules
+and thresholds keep their existing values; those thresholds are not calibrated
+for cosine similarity. See the quickstart above before running full evaluation.
+
 ## Commands
 
 | Command | What it does |
 | --- | --- |
 | `python -m src.cli --question "How often do passwords need to be changed?"` | Answer or refusal with citations (title, version, status) |
 | `python -m src.cli --question "..." --show-retrieved` | Also prints retrieved chunks with their scores |
+| `python -m src.cli --retrieval-backend embeddings --question "..." --show-retrieved` | Offline local semantic retrieval after explicit model setup |
 | `python -m src.eval_runner --out results/current-verification.json` | Runs the current M1+M3+M5 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
@@ -74,6 +98,7 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 - `src/config.py`: every tunable setting in one place. The eval runner saves all values with each run.
 - `src/corpus.py`: ten handbook documents with title, section, version and status.
 - `src/chunking.py`, `src/retrieval.py`, `src/rag.py`: the pipeline.
+- `src/embeddings.py`, `src/prepare_embeddings.py`: optional local model and in-memory cosine retrieval; explicit first-time download.
 - `src/eval_runner.py`, `src/eval_compare.py`: evaluation and comparison.
 - `eval/eval_set.json`: the fixed eval set.
 - `docs/improvement-menu.md`: one-change options.

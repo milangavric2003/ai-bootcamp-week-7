@@ -1,0 +1,2 @@
+# Optional local semantic retrieval; base lexical setup stays in requirements.txt.
+sentence-transformers==6.1.0

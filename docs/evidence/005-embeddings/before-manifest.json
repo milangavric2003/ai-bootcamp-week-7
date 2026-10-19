@@ -1,0 +1,32 @@
+{
+  "commit": "0615f72b0a3966ced38d55a76b573aac68dc6535",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "baseline": "docs/evidence/004-m2/retained.json",
+  "hashes": {
+    "src\\chunking.py": "429b363d4760b66a83431ab125c6f50bc8b51c824beb344b71fdfe6ef6afa571",
+    "src\\cli.py": "344016d03eb119043e4ea1828feb0b9ae1ae8f445a8e37cd56757dcea9442233",
+    "src\\config.py": "f7457cd6a216cb8d5e490ff31980fcda54caaf9ca282693be182eea6df05ddec",
+    "src\\corpus.py": "15d1e5580411ef5e2b4fe880afbb5ea7472e3ecf406eea7db1dafb2943491504",
+    "src\\eval_compare.py": "ad4404efe8b41e32ec6ab2b62280c10a165958c96e79dad3c4abac2db615a666",
+    "src\\eval_runner.py": "b0c0dc9b9452634c40907d60a76082aeb976b9f0785dea87841a1668656c9226",
+    "src\\rag.py": "02c89bb4e469272e0cb71d97a1004028035861b4e6a80a777f55ddd9f9d9b6f1",
+    "src\\retrieval.py": "340532e9f20fc1ff0f75657ceed4d74afdfc5e83e88a8469a53928172c076b33",
+    "src\\__init__.py": "58bd0fdba999b97227d517b3d7b5d4d8148303b4cb328c40870d5033f38a3ee3",
+    "tests\\test_chunking.py": "97bc31b8f6bdb429f096b7f7d3dc5c66a98cc62115cfb6e382617a2034e3bee5",
+    "tests\\test_eval_compare.py": "952902b21382f28e7ed4576980575015007baa4a15e85eb233607b07e18aa469",
+    "tests\\test_eval_metrics.py": "9e354f3ab01f2642225b590d0d1ced82c3aa563dbc3834af7f01ced6356fd01a",
+    "tests\\test_eval_set.py": "362214fdfd55c73aa89414da97e6b583b3c5ee59e0a81e789765b7f5c4c44036",
+    "tests\\test_rag.py": "b57a3b66dd54d5aaf529033e506369c8889e79619303dd58dec29dcdcbc95aea",
+    "tests\\test_retrieval.py": "5478b7ca9a066d14cc41f3c5d38555c23fc19b804f0615539920d7c8d61c5512",
+    "results\\after-assistant-lf-check.json": "06698de3bdd09f132a0503a76e2cb5d51ac1d2693c254741d6dfa9514c0e4472",
+    "results\\after-m3.json": "055c2b4bf71c8d0450b4da9767fa69c895cca6ce302c45854d72b724f9a889dd",
+    "results\\after-m5.json": "b4526830ddaa9895468822b2c59d23430892c2ceffe11ad6a5e13ca0e9294923",
+    "results\\after-vedran-20261018-235137.json": "41ac3d807ef082946bfd6fbf00ca18ee71710e5541d1300b36eb9db2c463b486",
+    "results\\after-vedran-20261019-000502.json": "9e7d8fd43b6b1271dbdd81747ef9e292d89f21093dfd221ce2822448748f03d7",
+    "results\\after.json": "f94ea5ed5df80266c3e0a52ed3e3158b2bfcc3b1c6c4e94d45ebf880fdeefedf",
+    "results\\before-m3.json": "7f15a737c8dba1d701f0ac7fd751e60e03b51047cbb28647f18ac30d3c9ea55d",
+    "results\\before-m5.json": "f0fc84988d9f0c7efc4bc074f8b38cde32eb5c9472fb1fab2b4369d4f51ce8c5",
+    "results\\before.json": "b5d400c79fad025926b3ef5e81a005508e32389596e8fed6e4c46d0654eac5cd",
+    "eval\\eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064"
+  }
+}

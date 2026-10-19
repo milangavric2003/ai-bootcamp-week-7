@@ -1,0 +1,7 @@
+.venv/Scripts/python.exe : Live probe failed: Gemma network request failed or timed out; no automatic retry.
+At line:5 char:1
++ .venv/Scripts/python.exe docs/evidence/005-gemma/live_probe.py 2>&1 | ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Live probe fail...utomatic retry.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

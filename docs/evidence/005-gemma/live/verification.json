@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "same_retrieval_for_all_questions": true,
+  "runtime_matches_frozen_manifest": true,
+  "changed_settings": {
+    "ANSWER_BACKEND": [
+      "extractive",
+      "gemma"
+    ]
+  },
+  "comparison_warning": null,
+  "before_summary": {
+    "passed": 10,
+    "total": 12,
+    "behaviour_accuracy": 0.9167,
+    "retrieval_hit_rate": 0.8889,
+    "mean_citation_precision": 0.65
+  },
+  "after_summary": {
+    "passed": 11,
+    "total": 12,
+    "behaviour_accuracy": 0.9167,
+    "retrieval_hit_rate": 0.8889,
+    "mean_citation_precision": 1.0
+  },
+  "fixed": [
+    "E11"
+  ],
+  "regressed": [],
+  "same_run_answer_records": 12,
+  "eval_remote_requests": 10,
+  "eval_local_refusals": 2,
+  "eval_usage": {
+    "promptTokenCount": 4534,
+    "candidatesTokenCount": 426,
+    "totalTokenCount": 4960
+  },
+  "eval_remote_latency_ms": {
+    "min": 1132.822,
+    "mean": 1745.569,
+    "median": 1754.305,
+    "max": 2549.492
+  },
+  "successful_remote_requests_including_probe_and_cli": 13,
+  "usage_including_probe_and_cli": {
+    "promptTokenCount": 5733,
+    "candidatesTokenCount": 490,
+    "totalTokenCount": 6223
+  },
+  "provider_billing_audited": false
+}

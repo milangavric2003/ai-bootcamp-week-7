@@ -47,8 +47,8 @@ before retrieval, and an operational error stops the unchanged evaluator.
 
 - [X] T015 Update README.md, docs/advanced-plan.md, docs/gemma-report.md and specs/005-grounded-gemma/quickstart.md with implemented setup, actual verification and remaining limitations.
 - [X] T016 Verify hashes/diff/secret ignores and save implementation evidence in docs/evidence/005-gemma/; leave eval/eval_set.json, metric code, retrieval, M2 and reference directories unchanged.
-- [ ] T017 Once the local key exists, run non-eval live capability checks, freeze prompt/settings and save actual responses in docs/evidence/005-gemma/live/.
-- [ ] T018 Run full fixed lexical extraction-versus-Gemma comparison with same-run traces; manually review all 12 generated answers and a CLI changed case in docs/gemma-report.md.
+- [X] T017 Once the local key exists, run non-eval live capability checks, freeze prompt/settings and save actual responses in docs/evidence/005-gemma/live/.
+- [X] T018 Run full fixed lexical extraction-versus-Gemma comparison with same-run traces; manually review all 12 generated answers and a CLI changed case in docs/gemma-report.md.
 - [ ] T019 After Vedran's frozen embedding result is integrated separately, run extraction-versus-Gemma with that exact retrieval configuration and record the separate comparison in docs/gemma-report.md.
 
 ## Dependencies and execution order
@@ -79,11 +79,17 @@ do not count mocks as a measured RAG quality improvement.
 
 ## Execution status (2026-10-20)
 
-T001-T016 are complete. The suite passes 127/127; the disabled backend reproduces
-all 12 original evaluation rows and 10/12 overall, with 35 protected baseline files
-unchanged. See `docs/gemma-report.md` and `docs/evidence/005-gemma/verification.json`.
+T001-T018 are complete. The initial implementation passed 127/127 tests and the
+disabled backend reproduced all 12 original evaluation rows and 10/12 overall,
+with 35 protected baseline files unchanged. After supporting Google's newer key
+format, 134/134 tests pass. The user supplied a local key, the synthetic live probe
+passed, and the frozen lexical comparison improves 10/12 to 11/12, fixing E11 with
+no PASS-to-FAIL regressions. All 12 saved answers were inspected against sources;
+E09 includes both requested parts, and the E11 CLI check reproduces refusal.
 
-T017-T018 await the local Google API key. T019 additionally awaits Vedran's frozen
-embedding result. No live model quality, peer review or submission is claimed.
+T019 awaits Vedran's frozen embedding result. E05 remains a retrieval miss and
+changes from an incorrect answer to a refusal; behavior accuracy stays unchanged.
+See `docs/gemma-report.md` and `docs/evidence/005-gemma/live/verification.json`.
+No independent peer review or submission is claimed.
 No Spec Kit extension hooks or feature checklists were present; the shared active
 feature metadata was not changed.

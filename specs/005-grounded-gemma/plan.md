@@ -4,8 +4,9 @@
 
 **Feature branch**: `feat/gemma-generation`
 
-**Status**: Implemented locally on 2026-10-20; 127 tests pass and offline evaluation
-reproduces 10/12. Live Gemma quality and embedding integration remain pending.
+**Status**: Live-verified on 2026-10-20; 134 tests pass. The separate lexical
+comparison improves 10/12 to 11/12, fixing E11 without PASS-to-FAIL regressions.
+E05 and embedding integration remain pending.
 
 The design below was written before implementation. Actual execution evidence and
 remaining checks are recorded in [the implementation report](../../docs/gemma-report.md).

@@ -5,9 +5,11 @@ Datum: 19. oktobar 2026. Status: dogovoren redosled dodatnih eksperimenata.
 ## Najnoviji dogovor: plan za Gemma API, bez implementacije
 
 **Ažuriranje 20. oktobra 2026:** korisnik je odobrio implementaciju na
-`feat/gemma-generation`. Opcioni Gemma adapter je implementiran; 127 testova prolazi,
-a isključeni režim reprodukuje 10/12 i identične eval redove. Nema lokalnog ključa:
-live proba i merenje kvaliteta ostaju otvoreni. Vedranov embeddings rad ostaje
+`feat/gemma-generation`. Opcioni Gemma adapter je implementiran; 134 testa prolaze.
+Isključeni režim reprodukuje 10/12. Korisnik je dodao ključ lokalno: live proba
+prolazi, a odvojeno leksičko poređenje daje **10/12 → 11/12**, popravlja E11 bez
+PASS-to-FAIL regresija i podiže mean citation precision 0.65 → 1.00. E05 ostaje
+retrieval promašaj; embeddings i M2 nisu menjani. Vedranov embeddings rad ostaje
 odvojen. Detalji i dokazi: [Gemma izveštaj](gemma-report.md).
 
 Sledeći pasusi čuvaju istoriju dogovora o prvobitnom planiranju.

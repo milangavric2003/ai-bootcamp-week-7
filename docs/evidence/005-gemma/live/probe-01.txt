@@ -1,0 +1,3 @@
+{"question": "When does the library close on Fridays?", "answer": "On Fridays, the library closes at 17:00.", "citations": ["probe-library-chunk-0"], "refused": false, "expected_refusal": false}
+{"question": "Does the library offer weekend childcare?", "answer": "I do not have enough grounded evidence in the provided corpus to answer that question.", "citations": [], "refused": true, "expected_refusal": true}
+Probe behavior checks passed; manually verify the 17:00 fact and citations.

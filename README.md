@@ -41,8 +41,9 @@ possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
 M5 is complete and M2 is measured but disabled. Human review remains for the user;
 Vedran owns the separate embedding experiment targeting E05. Grounded LLM answering
-is implemented on `feat/gemma-generation`; live capability and quality evaluation
-await the local API key. No 12/12 result is promised.
+is implemented on `feat/gemma-generation`; the separately measured live lexical
+comparison improves 10/12 to 11/12, fixing E11 without PASS-to-FAIL regressions.
+E05 remains a retrieval miss. No 12/12 result is promised.
 The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
 experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
@@ -89,8 +90,9 @@ Once the key is ready, run the synthetic live capability probe before evaluation
 
 The probe makes at most two generation requests, over a fictional library passage
 outside the fixed eval set. Inspect the answer's 17:00 fact and citations manually.
-No live request has been verified yet; access, quota, settings and model behavior
-remain to be checked with your key. There is no retry or automatic model fallback.
+The saved live probe and complete fixed evaluation passed with the configured
+key and model; see the report for that run's evidence. Future access and quota
+still depend on the project. There is no retry or automatic model fallback.
 
 For measured runs, set `GEMMA_TRACE_PATH` to a **fresh `.jsonl` filename**. It saves
 same-run answer text, decisions, retrieval IDs/scores, latency and returned token
@@ -100,9 +102,11 @@ the existing evaluation config snapshot.
 
 The unchanged fixed metrics inspect facts in cited chunks, not generated prose.
 Review all 12 answers manually. See [setup and comparison commands](specs/005-grounded-gemma/quickstart.md).
-The current offline implementation passes **127 tests** and reproduces **10/12**
-with all baseline evaluation rows identical; that is compatibility evidence, not
-a measured Gemma quality improvement. Unit tests block all unmocked Google calls.
+The implementation passes **134 tests**. Offline mode reproduces **10/12** with
+identical baseline rows; the separate live Gemma run scores **11/12**, with mean
+citation precision **0.65 → 1.00** and no PASS-to-FAIL regressions. All 12 saved
+answers were inspected against their sources. E05 still fails because the required
+equipment evidence is not retrieved. Unit tests block all unmocked Google calls.
 
 ## Commands
 

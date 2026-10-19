@@ -2,7 +2,7 @@
 
 **Created**: 2026-10-19
 
-**Status**: Implemented locally on 2026-10-20; live quality and embedding integration pending
+**Status**: Live-verified on 2026-10-20: 11/12, E11 fixed; E05 and embedding integration pending
 
 **Feature branch**: `feat/gemma-generation`
 
@@ -147,9 +147,10 @@ Prompting and valid citation IDs alone do not establish factual support.
 
 - The user requested a separate branch and publication of this plan, then authorized
   implementation on 2026-10-20. Local implementation and offline verification are
-  recorded in `docs/gemma-report.md`; live quality evidence still needs credentials.
-- Google AI Studio free-tier access was confirmed by the user. Key, project quota
-  and live model access remain to be checked when credentials become available.
+  recorded in `docs/gemma-report.md`; the user then supplied a local key and live
+  lexical verification completed at 11/12 without PASS-to-FAIL regressions.
+- Google AI Studio access was confirmed with the user's local key during the live
+  probe and fixed evaluation. Future project quota/access is not guaranteed.
 - Vedran implements embeddings separately. Generation can be built using mocked
   retrieved evidence before that work is ready, then integrated through the same
   retrieved-result contract.

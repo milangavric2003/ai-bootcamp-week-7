@@ -45,6 +45,26 @@ def test_request_uses_private_header_and_exact_google_endpoint(monkeypatch):
     assert result.usage == {"totalTokenCount": 20}
 
 
+@pytest.mark.parametrize("key", ["AIza-synthetic_opaque-key", "AQ.synthetic_opaque.auth-key"])
+def test_standard_and_authorization_keys_are_opaque_header_values(monkeypatch, key):
+    monkeypatch.setenv("GEMINI_API_KEY", key)
+    captured = []
+    def opened(request, timeout):
+        captured.append(request.get_header("X-goog-api-key"))
+        return io.BytesIO(json.dumps(response()).encode())
+    monkeypatch.setattr(gemma_client, "_open", opened)
+    GemmaClient().generate({})
+    assert captured == [key]
+
+
+@pytest.mark.parametrize("key", ["", "key with spaces", "key\r\nInjected: value", "key\x01", "key\u00e9"])
+def test_invalid_header_characters_are_rejected_before_network(monkeypatch, key):
+    monkeypatch.setenv("GEMINI_API_KEY", key)
+    monkeypatch.setattr(gemma_client, "_open", lambda *a, **k: pytest.fail("network"))
+    with pytest.raises(ConfigurationError):
+        GemmaClient().generate({})
+
+
 @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 429, 500, 503])
 def test_http_errors_are_sanitized_without_retries(monkeypatch, code):
     calls = []

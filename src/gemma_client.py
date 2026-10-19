@@ -47,7 +47,9 @@ class GemmaClient:
         if config.GEMMA_THINKING_LEVEL not in ("minimal", "high"):
             raise ConfigurationError("GEMMA_THINKING_LEVEL must be minimal or high.")
         key = os.environ.get("GEMINI_API_KEY", "")
-        if not key or not re.fullmatch(r"[A-Za-z0-9_-]+", key):
+        # Google issues both standard keys and newer dotted authorization keys.
+        # Treat the credential as opaque while excluding unsafe header characters.
+        if not key or not re.fullmatch(r"[!-~]+", key):
             raise ConfigurationError("Set a valid GEMINI_API_KEY locally before selecting Gemma.")
 
     def generate(self, payload: dict) -> ProviderResponse:

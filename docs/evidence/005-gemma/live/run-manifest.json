@@ -1,0 +1,42 @@
+{
+  "implementation_commit": "0335610",
+  "branch": "feat/gemma-generation",
+  "local_changes": "Opaque printable-ASCII API-key validation plus regression tests; prompt/retrieval unchanged",
+  "python": "3.13.7",
+  "public_config": {
+    "GEMMA_PROMPT_SHA256": "99d8947f8ab6cda75a7a487a9c706cbd6dc62dd6033f3ea408b5e367486002c2",
+    "CHUNK_STRATEGY": "sentences",
+    "CHUNK_SIZE": 140,
+    "CHUNK_OVERLAP": 30,
+    "TOP_K": 2,
+    "RETRIEVAL_MIN_SCORE": 0.01,
+    "STOPWORDS_ENABLED": false,
+    "CURRENT_ONLY": true,
+    "REFUSAL_THRESHOLD": 0.1,
+    "CITATION_MIN_SCORE": null,
+    "ANSWER_BACKEND": "gemma",
+    "GEMMA_PROVIDER": "google",
+    "GEMMA_MODEL": "gemma-4-26b-a4b-it",
+    "GEMMA_TEMPERATURE": 0.0,
+    "GEMMA_MAX_OUTPUT_TOKENS": 1024,
+    "GEMMA_THINKING_LEVEL": "minimal",
+    "GEMMA_TIMEOUT_SECONDS": 30.0,
+    "GEMMA_MAX_INPUT_BYTES": 65536
+  },
+  "sha256": {
+    "src/__init__.py": "da347dee6bd3bb948c5515e7b3f387671889840e5b0778549f7b757ec41eba21",
+    "src/chunking.py": "03a8aa6bb74e567349cb0e15cdb21aaae42b7afb00563dad2f91e4e7dd3c6c27",
+    "src/cli.py": "4f7a962e454b787f1eb138ee34d15c93d9f1b65e559b1766ad01046c9d2ca1e3",
+    "src/config.py": "976b8626ec7482a195acf8bfb002f3d33c294e11aa32d6b04669a406735ffc83",
+    "src/corpus.py": "52cceca071e43682705234713d12a4b94bbf3617e9e7c44cfcba1f6f94a6ef78",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/gemma_client.py": "3f72d4e305ce257dfef1027c38eb220059a94186c6cfe1ca5df2b76083dec185",
+    "src/generation.py": "7d186ac464b8b6efff15fdd2ec5aa127ac4bf5000a7310a332fead5fef402d2a",
+    "src/generation_errors.py": "678097615f0bb9a9143a48e458bfce18828cb992909c6b0ca1e315f8c23cf966",
+    "src/generation_prompt.py": "dabbf96ff12a5bbc3ae1b957d4fd71b607c015046051fc15b395e47a513344c0",
+    "src/rag.py": "439294e0d16beca105580cafd32b067b92855469a360a43ce75cc37421e3b4e3",
+    "src/retrieval.py": "168ae027e6263c59f1a32b78e3d603f188a6cf8374af1e7ff74be8561b4abe80",
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064"
+  }
+}

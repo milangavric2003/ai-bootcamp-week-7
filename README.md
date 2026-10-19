@@ -22,6 +22,16 @@ The current code includes both improvements. E05 and E11 still fail; E06 passes
 the metric but still cites conflicting current and superseded policies.
 Preserve all four saved JSON files. Use a fresh output filename for new runs.
 
+For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
+M5 next, M2 optional, then a small local embedding comparison. Each experiment
+is measured separately; completing every menu option or reaching 12/12 is not
+required. The [M5 specification](specs/003-current-version-filter/spec.md) and
+[implementation plan](specs/003-current-version-filter/plan.md) are prepared;
+M5 is not implemented yet.
+All further optional work this week depends on available time. LLM answer
+generation is a separate possible experiment only if time remains. Keep this
+plan on `main` and create a separate branch when starting M5 implementation.
+
 ## Setup
 
 Python 3.12.

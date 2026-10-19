@@ -23,7 +23,7 @@ CURRENT_ONLY = True
 
 # Answering
 REFUSAL_THRESHOLD = 0.10  # Lexical score; preserve the M3 calibration.
-EMBEDDING_REFUSAL_THRESHOLD = 0.50  # Cosine; see docs/embedding-threshold-report.md.
+EMBEDDING_REFUSAL_THRESHOLD = 0.51  # Eval-informed follow-up; see docs/threshold-051-report.md.
 CITATION_MIN_SCORE = None  # None or a float score
 
 

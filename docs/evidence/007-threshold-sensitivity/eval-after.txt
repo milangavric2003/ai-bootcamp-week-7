@@ -1,0 +1,22 @@
+ID   Category                 Expected Got     Hit  Fact  CitPrec Pass
+----------------------------------------------------------------------
+E01  supported                answer   answer  yes  yes   1.00    PASS
+E02  supported                answer   answer  yes  yes   1.00    PASS
+E03  supported                answer   answer  yes  yes   1.00    PASS
+E04  chunk-boundary           answer   answer  yes  yes   1.00    PASS
+E05  paraphrase               answer   answer  yes  yes   1.00    PASS
+E06  versioned                answer   answer  yes  yes   1.00    PASS
+E07  supported                answer   answer  yes  yes   0.50    PASS
+E08  supported                answer   answer  yes  yes   1.00    PASS
+E09  chunk-boundary           answer   answer  yes  yes   1.00    PASS
+E10  unsupported              refuse   refuse  -    -     -       PASS
+E11  unsupported-near-domain  refuse   refuse  -    -     -       PASS
+E12  unsupported              refuse   refuse  -    -     -       PASS
+
+Passed: 12/12
+Behaviour accuracy: 1.00
+Retrieval hit rate (supported): 1.00
+Mean citation precision (answered): 0.94
+eval_set_sha256: afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064
+
+Wrote docs\evidence\007-threshold-sensitivity\after.json

@@ -1,5 +1,12 @@
 # Lokalni embeddings — status implementacije
 
+Aktuelno: embeddings prag 0.51 daje 12/12, lexical prag 0.10 daje 10/12,
+86 testova prolazi. [Izveštaj 0.51](threshold-051-report.md) označava da je
+prag podešen nakon pregleda E11; istorijske faze ispod ostaju zasebna evidencija.
+Vedran je 20. oktobra potvrdio završene nezavisne provere i ručni pregled:
+[dokazi](evidence/vedran-threshold-051-20261019-234713/verification.md) potvrđuju
+86 testova, 12/12 embeddings, 10/12 lexical i poklapanje oba poređenja.
+
 Naknadni status: Vedran je izvršio punu evaluaciju pri pragu 0.10 (10/12,
 E05 popravljen, E10 regresija). Zatim je uvedena zasebna
 [kalibracija praga](embedding-threshold-report.md): embeddings 0.50 daje 11/12,

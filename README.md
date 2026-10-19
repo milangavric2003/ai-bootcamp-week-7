@@ -30,10 +30,19 @@ suite now passes **86/86** tests. The lexical results still match the retained 1
 baseline. The first embeddings run at threshold 0.10 gave 10/12 (E05 fixed,
 E10 regressed). A separate development-set calibration selected cosine refusal
 threshold **0.50**, yielding **11/12** with E10 fixed and no new regressions.
-E11 remains a failure. Lexical refusal stays at **0.10**. See the
+An explicit follow-up selected **0.51 after inspecting E11**, yielding **12/12**
+without regressions. This is tuning on the known eval set, not held-out validation.
+Lexical refusal stays at **0.10**. See the [0.51 report](docs/threshold-051-report.md),
 [threshold report](docs/embedding-threshold-report.md),
 [implementation notes](docs/embeddings-status.md) and
 [quickstart](specs/005-local-embeddings/quickstart.md).
+
+Vedran confirmed completion of independent testing and manual CLI review on
+20 October 2026. His saved runs reproduce **86 passing tests**, **12/12 embeddings**
+at 0.51 and **10/12 lexical** at 0.10, with matching evaluation hashes and
+no reproduction differences. See the [verification evidence](docs/evidence/vedran-threshold-051-20261019-234713/verification.md),
+[his lexical JSON](results/lexical-verification-20261019-234713.json) and
+[his embeddings JSON](results/embeddings-051-verification-20261019-234713.json).
 
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
@@ -80,7 +89,8 @@ local pinned model cache in `.cache/embeddings`, on CPU. Embeddings map texts
 to 384-dimensional vectors and rank the same eligible chunks by cosine
 similarity in memory. The M5 filter runs before encoding. TOP_K, citation rules
 and the retrieval minimum keep their existing values. Refusal uses 0.10 for
-lexical scores and the separately calibrated 0.50 for embeddings cosine scores.
+lexical scores and 0.51 for embeddings cosine scores (an eval-informed follow-up
+to the separate development calibration at 0.50).
 See the quickstart above before running full evaluation.
 
 ## Commands

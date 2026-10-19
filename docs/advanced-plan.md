@@ -132,6 +132,16 @@ Ne prilagođavati kod pojedinačnim ID-jevima ili formulacijama.
 
 ## Status plana
 
+20. oktobar: Vedran je potvrdio završeno samostalno testiranje i ručni pregled
+embeddings režima pri 0.51. [Njegovi dokazi](evidence/vedran-threshold-051-20261019-234713/verification.md)
+potvrđuju 86/86 testova, 12/12 embeddings i 10/12 lexical, bez razlika u
+reprodukciji. Ovo ažurira status provere završnog embeddings eksperimenta.
+
+Najnovije: na Vedranov zahtev isproban je prag 0.51 nakon uvida u E11;
+[rezultat](threshold-051-report.md) je 12/12 bez regresija, 86/86 testova.
+To je naknadno podešavanje na poznatom eval skupu; razvojni izbor 0.50 i dalje
+je zasebno dokumentovan. Lexical ostaje 0.10 i 10/12.
+
 M5 je implementiran i izmeren. M2 je implementiran, izmeren i isključen po
 korisnikovoj odluci zbog regresije E09; [izveštaj](m2-report.md) čuva sve rezultate.
 Zadržano leksičko stanje daje 10/12. Na Vedranov zahtev implementirani su koraci
@@ -143,7 +153,8 @@ Vedran je potom izvršio punu embeddings evaluaciju pri 0.10: 10/12, E05
 popravljen i E10 regresija. Na njegov zahtev urađena je zasebna
 [kalibracija](embedding-threshold-report.md): embeddings prag 0.50 daje 11/12,
 bez novih padova; lexical prag ostaje 0.10 i rezultat 10/12. Prolazi 86 testova.
-Vedranov review nove kalibracije još nije potvrđen. Grounded LLM ostaje zaseban kasniji eksperiment.
+Vedranov review završnog praga 0.51 sada je potvrđen i dokumentovan iznad.
+Grounded LLM ostaje zaseban kasniji eksperiment.
 Ovaj dokument ne zamenjuje specifikaciju svakog kasnijeg eksperimenta.
 Plan je pripremljen uz Codex i read-only istraživački pregled. Brojevi polaze
 od sačuvanih merenja; budući efekti su hipoteze.

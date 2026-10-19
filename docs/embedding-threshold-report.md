@@ -1,5 +1,9 @@
 # Embeddings — zaseban prag odbijanja
 
+Istorijski izveštaj za razvojni izbor 0.50. Aktuelni prag je 0.51 iz zasebnog
+[naknadnog eksperimenta](threshold-051-report.md), sa 12/12 na poznatom eval skupu.
+Rezultati i metod kalibracije ispod ostaju sačuvani kao faza 006.
+
 Datum: 19. oktobar 2026. Grana: embeddings. Rezultat: **11/12**, E10 popravljen,
 bez novih padova; **86/86 testova**. Lexical ostaje **10/12** sa pragom 0.10.
 

@@ -16,7 +16,7 @@ Leksički režim zahteva samo originalni `requirements.txt`.
 
 Za standardni eval runner, bez menjanja koda/metrika, backend birati procesnom
 promenljivom okruženja. Sledeći blok ponavlja poređenje trenutne konfiguracije
-sa zasebnim pragovima: lexical 0.10 i embeddings 0.50.
+sa zasebnim pragovima: lexical 0.10 i embeddings 0.51.
 
 ```powershell
 $previousBackend = $env:RAG_RETRIEVAL_BACKEND
@@ -41,9 +41,11 @@ Istorijski baseline ostaje referenca za jednakost leksičkih rezultata.
 
 Prvo istorijsko embeddings merenje koristilo je zajednički prag 0.10.
 Sada `REFUSAL_THRESHOLD=0.10` važi samo za lexical, a
-`EMBEDDING_REFUSAL_THRESHOLD=0.50` za embeddings. Retrieval minimum ostaje 0.01.
+`EMBEDDING_REFUSAL_THRESHOLD=0.51` za embeddings. Retrieval minimum ostaje 0.01.
 Zasebna [kalibracija](../../docs/embedding-threshold-report.md) daje 11/12;
-E11 ostaje problem. Semantički sličan odlomak ne garantuje podršku odgovoru.
+E11 je tada ostao problem. [Naknadni izbor 0.51](../../docs/threshold-051-report.md)
+uz uvid u E11 daje 12/12; to nije nezavisna procena na neviđenim pitanjima.
+Semantički sličan odlomak ne garantuje podršku odgovoru.
 
 Testovi ne preuzimaju model i ne zahtevaju opcione biblioteke:
 

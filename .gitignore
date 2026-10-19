@@ -12,3 +12,7 @@ results/*.json
 !results/after-m5.json
 !results/before-embedding-threshold.json
 !results/after-embedding-threshold.json
+!results/before-embedding-threshold-051.json
+!results/after-embedding-threshold-051.json
+!results/lexical-verification-20261019-234713.json
+!results/embeddings-051-verification-20261019-234713.json

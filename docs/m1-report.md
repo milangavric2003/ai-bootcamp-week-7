@@ -166,6 +166,9 @@ Evidencija doprinosa prema potvrdama Milana i Vedrana i sačuvanim dokazima:
 
 - Član 1 — **Milan**: planiranje, implementacija i ljudski review, uz AI pomoć
   opisanu iznad.
+  Dana 19. oktobra potvrdio je i interni pregled Vedranovog M3 rada pre
+  spajanja grane; obim, zaključak i Codex provere navedeni su u
+  [M3 izveštaju](m3-report.md#milanov-interni-pregled-pre-spajanja-grane).
 - Član 2 — **Vedran**: nezavisna provera M1 na grani `baseline-finish` —
   pokretanje 35 testova, ponovno merenje svih 12 eval pitanja, oba poređenja,
   ručna provera odgovora i citata E04/E09 i potvrda ograničenja E06. Sačuvao je

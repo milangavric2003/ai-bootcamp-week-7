@@ -107,6 +107,32 @@ $evalFile = "results/m3-verification-$(Get-Date -Format 'yyyyMMdd-HHmmss').json"
 Pytest koristi nov privremeni direktorijum i isključen cache zbog ranije
 potvrđenih Windows dozvola. Ne prepisivati originalne M1 rezultate niti ove dokaze.
 
+## Milanov interni pregled pre spajanja grane
+
+Milan je 19. oktobra 2026. potvrdio interni pregled Vedranovog M3 rada na
+grani `baseline-finish`, zaključno sa commitom `7a41320`, na osnovu pregleda
+izmena i rezultata provera uz pomoć Codexa. Zaključak pregleda: grana je
+tehnički spremna za spajanje u `main`, uz očuvanje M1 kao obaveznog i M3 kao
+zasebno izmerenog dodatnog eksperimenta.
+
+- Izmena odgovara specifikaciji: samo `REFUSAL_THRESHOLD` prelazi sa 0.02 na
+  0.10; eval pitanja i kod za računanje metrika nisu menjani.
+- Sačuvano [poređenje](evidence/002-m3/compare.txt) podržava zaključak:
+  9/12 → 10/12, popravljen E10, bez PASS → FAIL regresija, isti eval SHA-256.
+- Ograničenja su navedena: E05 i E11 ostaju FAIL; E06 prolazi metriku, ali
+  i dalje citira važeću i zastarelu politiku. Rezultat nije dokaz opšte tačnosti.
+
+Tokom ovog pregleda Codex je ponovo izvršio svih 35 testova, punu evaluaciju
+i poređenja, proverio reprodukciju početnih rezultata i CLI izlaze E10/E04.
+Testovi prolaze, novi eval odgovara sačuvanom M3 rezultatu, E10 odbija bez
+citata, a E04 zadržava odgovor sa rokom i citatom važećeg dokumenta.
+Ova izvršavanja pripisuju se Codexu; Milanov doprinos je ljudski pregled
+nalaza i potvrda internog review-a. Samo spajanje grane nije deo ovog zapisa.
+
+Ovo je pregled unutar para. Obavezni komentar drugog para i izbor osobe koja
+vodi demonstraciju ostaju otvoreni. Ostaje zabeleženo i odstupanje od redosleda
+zadatka: M3 je urađen pre potvrđene predaje minimuma.
+
 ## Ograničenja i doprinosi
 
 - E05: parafraza `notebook computer` i dalje pronalazi pogrešan dokument.

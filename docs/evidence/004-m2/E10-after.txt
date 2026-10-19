@@ -1,0 +1,11 @@
+﻿Question:
+What is the current company stock price?
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:

@@ -1,0 +1,16 @@
+﻿Question:
+What are the IT support hours?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-10-chunk-0] IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+[hb-10-chunk-1] For a laptop that does not start, bring it to IT desk on floor two. Outside support hours, urgent security incidents go to on-call line.
+
+Refused: False
+Citations:
+  hb-10-chunk-0: IT support (version 2026, current)
+  hb-10-chunk-1: IT support (version 2026, current)
+
+Retrieved:
+  0.2308  hb-10-chunk-0: IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+  0.1250  hb-10-chunk-1: For a laptop that does not start, bring it to IT desk on floor two. Outside support hours, urgent security incidents go to on-call line.

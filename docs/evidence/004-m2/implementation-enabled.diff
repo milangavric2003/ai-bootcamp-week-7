@@ -1,0 +1,119 @@
+﻿diff --git a/src/config.py b/src/config.py
+index 49fa6c7..51f4d3e 100644
+--- a/src/config.py
++++ b/src/config.py
+@@ -11,7 +11,7 @@ CHUNK_OVERLAP = 30
+ # Retrieval
+ TOP_K = 2
+ RETRIEVAL_MIN_SCORE = 0.01
+-STOPWORDS_ENABLED = False
++STOPWORDS_ENABLED = True
+ CURRENT_ONLY = True
+ 
+ # Answering
+diff --git a/src/retrieval.py b/src/retrieval.py
+index 8119d78..26b2e97 100644
+--- a/src/retrieval.py
++++ b/src/retrieval.py
+@@ -6,12 +6,19 @@ from .chunking import Chunk
+ 
+ 
+ TOKEN_RE = re.compile(r"[a-zA-Z0-9]+")
++# Frozen M2 vocabulary; see specs/004-stopword-filter/plan.md.
++STOPWORDS = frozenset({
++    "a", "an", "and", "are", "as", "at", "be", "been", "but", "by",
++    "can", "do", "does", "for", "from", "had", "has", "have", "how", "i",
++    "in", "is", "it", "of", "on", "or", "that", "the", "their", "there",
++    "these", "they", "this", "to", "was", "were", "what", "when", "where", "with",
++})
+ 
+ 
+ def tokenize(text: str) -> list[str]:
+     tokens = [token.lower() for token in TOKEN_RE.findall(text)]
+     if config.STOPWORDS_ENABLED:
+-        raise NotImplementedError("STOPWORDS_ENABLED = True is not implemented yet.")
++        return [token for token in tokens if token not in STOPWORDS]
+     return tokens
+ 
+ 
+diff --git a/tests/test_rag.py b/tests/test_rag.py
+index 27722a8..45b3593 100644
+--- a/tests/test_rag.py
++++ b/tests/test_rag.py
+@@ -51,3 +51,14 @@ def test_only_superseded_evidence_is_refused_when_filtered(monkeypatch) -> None:
+     assert result.retrieved == []
+     assert result.citations == []
+     assert result.answer == REFUSAL_MESSAGE
++
++
++def test_all_stopword_question_is_refused_without_citations(monkeypatch) -> None:
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
++
++    result = build_grounded_answer("What is it?", build_chunks(load_corpus()))
++
++    assert result.refused is True
++    assert result.retrieved == []
++    assert result.citations == []
++    assert result.answer == REFUSAL_MESSAGE
+diff --git a/tests/test_retrieval.py b/tests/test_retrieval.py
+index def636c..018be61 100644
+--- a/tests/test_retrieval.py
++++ b/tests/test_retrieval.py
+@@ -2,7 +2,7 @@ import pytest
+ 
+ from src import config
+ from src.chunking import Chunk
+-from src.retrieval import retrieve_top_k, searchable_chunks
++from src.retrieval import lexical_score, retrieve_top_k, searchable_chunks, tokenize
+ 
+ 
+ def make_chunk(chunk_id: str, text: str, status: str = "current") -> Chunk:
+@@ -78,3 +78,48 @@ def test_no_eligible_chunks_returns_empty_results(monkeypatch, statuses) -> None
+ 
+     assert searchable_chunks(chunks) == []
+     assert retrieve_top_k("remote work", chunks, k=2) == []
++
++
++def test_disabled_stopwords_preserve_original_token_stream(monkeypatch) -> None:
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", False)
++
++    assert tokenize("The IT policy is in HR portal, 2026.") == [
++        "the", "it", "policy", "is", "in", "hr", "portal", "2026",
++    ]
++
++
++def test_enabled_stopwords_preserve_content_order_repetition_and_qualifiers(monkeypatch) -> None:
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
++
++    assert tokenize("THE Policy policy is NOT valid until 31 March; no, never without a badge.") == [
++        "policy", "policy", "not", "valid", "until", "31", "march", "no", "never", "without", "badge",
++    ]
++
++
++def test_stopwords_score_uses_filtered_content_on_both_sides(monkeypatch) -> None:
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
++
++    assert lexical_score("What is the equipment policy?", "The equipment policy is clear.") == pytest.approx(2 / 3)
++
++
++@pytest.mark.parametrize("query,text", [
++    ("", "equipment"),
++    ("the and", "equipment"),
++    ("equipment", "the and"),
++    ("???", "equipment"),
++    ("equipment", "..."),
++])
++def test_empty_filtered_inputs_score_zero_and_retrieve_nothing(monkeypatch, query, text) -> None:
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
++
++    assert lexical_score(query, text) == 0.0
++    assert retrieve_top_k(query, [make_chunk("a", text)]) == []
++
++
++def test_stopword_only_overlap_cannot_retrieve_unrelated_content(monkeypatch) -> None:
++    chunks = [make_chunk("a", "The weather is cold.")]
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", False)
++    assert retrieve_top_k("What is the equipment?", chunks)
++
++    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
++    assert retrieve_top_k("What is the equipment?", chunks) == []

@@ -2,7 +2,7 @@ import pytest
 
 from src import config
 from src.chunking import Chunk
-from src.retrieval import retrieve_top_k, searchable_chunks
+from src.retrieval import lexical_score, retrieve_top_k, searchable_chunks, tokenize
 
 
 def make_chunk(chunk_id: str, text: str, status: str = "current") -> Chunk:
@@ -78,3 +78,48 @@ def test_no_eligible_chunks_returns_empty_results(monkeypatch, statuses) -> None
 
     assert searchable_chunks(chunks) == []
     assert retrieve_top_k("remote work", chunks, k=2) == []
+
+
+def test_disabled_stopwords_preserve_original_token_stream(monkeypatch) -> None:
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", False)
+
+    assert tokenize("The IT policy is in HR portal, 2026.") == [
+        "the", "it", "policy", "is", "in", "hr", "portal", "2026",
+    ]
+
+
+def test_enabled_stopwords_preserve_content_order_repetition_and_qualifiers(monkeypatch) -> None:
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
+
+    assert tokenize("THE Policy policy is NOT valid until 31 March; no, never without a badge.") == [
+        "policy", "policy", "not", "valid", "until", "31", "march", "no", "never", "without", "badge",
+    ]
+
+
+def test_stopwords_score_uses_filtered_content_on_both_sides(monkeypatch) -> None:
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
+
+    assert lexical_score("What is the equipment policy?", "The equipment policy is clear.") == pytest.approx(2 / 3)
+
+
+@pytest.mark.parametrize("query,text", [
+    ("", "equipment"),
+    ("the and", "equipment"),
+    ("equipment", "the and"),
+    ("???", "equipment"),
+    ("equipment", "..."),
+])
+def test_empty_filtered_inputs_score_zero_and_retrieve_nothing(monkeypatch, query, text) -> None:
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
+
+    assert lexical_score(query, text) == 0.0
+    assert retrieve_top_k(query, [make_chunk("a", text)]) == []
+
+
+def test_stopword_only_overlap_cannot_retrieve_unrelated_content(monkeypatch) -> None:
+    chunks = [make_chunk("a", "The weather is cold.")]
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", False)
+    assert retrieve_top_k("What is the equipment?", chunks)
+
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
+    assert retrieve_top_k("What is the equipment?", chunks) == []

@@ -1,0 +1,16 @@
+﻿Question:
+By when must travel receipts be submitted?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-04-chunk-0] Business travel must be approved before booking. Travel receipts must be submitted within 30 days of your return, through finance app.
+[hb-05-chunk-0] Passwords must be changed every 90 days and must contain at least 12 characters.
+
+Refused: False
+Citations:
+  hb-04-chunk-0: Travel expenses (version 2026, current)
+  hb-05-chunk-0: Passwords and access (version 2026, current)
+
+Retrieved:
+  0.3333  hb-04-chunk-0: Business travel must be approved before booking. Travel receipts must be submitted within 30 days of your return, through finance app.
+  0.1818  hb-05-chunk-0: Passwords must be changed every 90 days and must contain at least 12 characters.

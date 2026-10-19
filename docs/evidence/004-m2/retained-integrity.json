@@ -1,0 +1,14 @@
+{
+  "branch": "main",
+  "changed_tracked_experiment_files": [
+    "src/config.py",
+    "src/retrieval.py",
+    "tests/test_rag.py",
+    "tests/test_retrieval.py"
+  ],
+  "other_manifest_files_unchanged": true,
+  "baseline_json_unchanged": true,
+  "disabled_filter_reproduces_baseline_except_timestamp": true,
+  "changed_settings": [],
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064"
+}

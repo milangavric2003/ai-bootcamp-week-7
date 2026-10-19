@@ -1,19 +1,20 @@
-# Plan naprednog rada: posle M1 i M3
+# Plan naprednog rada: M2, embeddings i grounded LLM
 
-Datum: 19. oktobar 2026. Status: plan, bez novih izmena RAG pipeline-a.
+Datum: 19. oktobar 2026. Status: dogovoren redosled dodatnih eksperimenata.
 
 Preporuka: birati eksperimente prema propustu, ne prolaziti M1–M6 kao obaveznu
-listu. M5 je sada implementiran i izmeren; ako ostane vremena, slede opcioni M2
-i malo poređenje lokalnog embedding retrieval-a sa zadržanim leksičkim stanjem.
+listu. M5 je implementiran i izmeren. Korisnik je odobrio M2 na `main`,
+zatim sopstveni human review i implementaciju embeddings kao sledeći korak.
 Ne čekati 12/12 da bi se probali embeddings i ne obećavati da će ih oni dati.
 
-Sav dalji dodatni rad ove nedelje zavisi od raspoloživog vremena: M5, M2,
-embeddings i kasnija poboljšanja mogu se odložiti ili preskočiti. Prednost imaju
-završetak obavezne predaje i priprema demonstracije. LLM generisanje odgovora
-razmatra se samo ako posle toga ostane vremena, kao zaseban specificiran i
-izmeren eksperiment; nije deo planiranog M5 ili embedding poređenja.
-Plan se čuva na `main`. Korisnik je potom izričito zatražio M5 implementaciju
-na istoj grani, bez nove grane; taj korak je završen.
+M2 se radi sada čak i ako ne popravi nijedan PASS/FAIL ishod. Njegov cilj je
+izmeriti uticaj uklanjanja stopwords na šum, citate i odbijanje. Ne pretpostavljati
+rezultat pre merenja. Posle M2 Codex predaje dokaze korisniku za human review;
+ne započinje embeddings ili LLM implementaciju u ovom koraku.
+Korisnik potom radi embeddings. Grounded LLM sa procenom dovoljnog dokaza i
+odbijanjem ostaje poseban kasniji eksperiment, ako bude vremena.
+Obavezna predaja i demonstracija imaju prednost. Plan i M2 ostaju na `main`,
+bez nove grane, na izričit zahtev korisnika.
 
 ## Šta je već završeno
 
@@ -21,9 +22,13 @@ na istoj grani, bez nove grane; taj korak je završen.
 - Dodatni M3: 9/12 → 10/12, zaseban [izveštaj](m3-report.md).
 - Dodatni M5: 10/12 → 10/12 bez regresija, 43 testa; E06 precision 0.50 → 1.00,
   mean citation precision 0.60 → 0.65. [Izveštaj](m5-report.md).
+- Dodatni M2: implementiran i izmeren na `main`, 53 testa u oba režima.
+  Uključen: 10/12 → 9/12, regresija E09, mean citation precision 0.65 → 0.70.
+  Korisnik je izabrao da M2 ostane implementiran ali isključen: zadržano stanje
+  ponovo daje 10/12 i reprodukuje baseline. [Izveštaj](m2-report.md).
 - M3 već predstavlja drugu, posebno izmerenu promenu kakvu dopušta napredni cilj.
   Nisu obavezni svi M koraci niti embedding tehnika.
-- Zadatak napredni deo predviđa posle predaje minimuma. M3 i M5 su urađeni na
+- Zadatak napredni deo predviđa posle predaje minimuma. M3, M5 i M2 su urađeni na
   izričit zahtev pre potvrđene predaje; odstupanje ostaje dokumentovano. Komentar
   drugog para, demo lead i predaja minimuma ostaju za ljudsku potvrdu.
 
@@ -47,17 +52,20 @@ odbio bi i E04 pri sadašnjem ocenjivanju.
 
 | Korak | Jedna namera | Cilj i rizik | Odluka |
 | --- | --- | --- | --- |
-| 0 | Sačuvati trenutno M1+M3 stanje | Potvrditi 10/12; sačuvati testove, eval, konfiguraciju, commit i CLI E05/E11/E06 | Ne prepisivati prethodne dokaze |
+| 0 | Sačuvati trenutno M1+M3+M5 stanje za M2 | Potvrditi 10/12; sačuvati testove, eval, konfiguraciju, commit i CLI E05/E11 | Ne prepisivati prethodne dokaze |
 | 1: M5, završeno | Isključiti superseded izvore pre rangiranja | E06 bez zastarele politike; istorijska pitanja gube stare izvore | Zadržan: CLI potvrđuje poboljšanje, nema regresija |
-| 2: M2, opciono | Ukloniti unapred zadate česte engleske reči iz oba toka tokena | Manje šuma; novi skorovi mogu izazvati pogrešna odbijanja | Jedan fiksni opšti spisak; bez usputne promene praga |
-| 3: embeddings | Uporediti jedan lokalni retrieval model sa zadržanim leksičkim stanjem | E05 je semantički cilj; E11 može dobiti sličan, nepodržan kontekst | Prijaviti dobitke, regresije, vreme, zavisnosti i cenu |
-| 4, samo po nalazu | Posebno poboljšanje procene dovoljnog dokaza ili praga odbijanja | Razlikovati temu od podrške tvrdnji za E11 | Nova specifikacija i merenje; bez hardkodovanja E11 |
+| 2: M2, završen i isključen | Ukloniti unapred zadate česte engleske reči iz oba toka tokena | Bolji E02 citati, ali E09 gubi rok; 10/12 → 9/12 | Po izboru korisnika implementacija ostaje, STOPWORDS_ENABLED=False; zadržano 10/12 |
+| 2a: human review | Pregledati M2 diff, specifikaciju i rezultate | Potvrditi šta se stvarno promenilo i koje stanje se zadržava | Korisnik radi review pre svog embedding koraka; Codex ga ne označava završenim |
+| 3: embeddings | Uporediti jedan lokalni retrieval model sa zadržanim leksičkim stanjem | E05 je semantički cilj; E11 može dobiti sličan, nepodržan kontekst | Korisnik implementira posle M2 i review-a; zasebno merenje, vreme, zavisnosti i cena |
+| 4: grounded LLM, kasnije | Proceniti da li retrieved dokaz podržava konkretan odgovor; odgovoriti ili odbiti | E11: razlikovati annual od parental leave; moguć je i pogrešan odgovor ili odbijanje | Posebna specifikacija i merenje; bez tvrdnje da LLM garantuje PASS |
 
 Završeni M5 korak:
 [specifikacija](../specs/003-current-version-filter/spec.md),
 [plan implementacije](../specs/003-current-version-filter/plan.md).
-M2 nije preduslov za embeddings. Ako je glavni cilj učenje semantičke pretrage,
-može se preskočiti posle M5. Ne ponavljati pokušaje samo radi rezultata 12/12.
+M2 tehnički nije preduslov za embeddings. Dogovoreni M2 eksperiment je završen
+bez podešavanja spiska ili pragova posle rezultata. Human review još nije urađen;
+korisnikov izbor isključenog režima ne predstavlja završen pregled koda i dokaza.
+Sledeći embedding baseline je zadržano M1+M3+M5 stanje sa M2=False.
 
 ## Zašto ne sve M opcije redom
 
@@ -92,10 +100,21 @@ Zabeležiti vreme učitavanja i ponovljenog upita, veličinu modela/cache-a,
 zavisnosti i stvarne troškove. Lokalno izvršavanje nema naplatu API poziva,
 ali troši računar i zahteva početno preuzimanje modela.
 
+## Kasniji grounded LLM eksperiment
+
+LLM dobija pitanje i retrieved chunk-ove, uz zahtev da odgovara samo iz dokaza,
+citira podršku i odbije kada konkretan odgovor nije podržan. Hipoteza za E11:
+razlikovaće annual leave od parental leave. Ne tvrditi unapred da će to uspeti.
+Zaključak je da retrieved kontekst nije dovoljan, ne da odgovora nema u celom
+korpusu. Odbijanje mora biti zabeleženo kao `refused=True`, bez citata.
+Promena je odvojena od embeddings; zapisati model/prompt/reviziju i trošak.
+Postojeći eval proverava činjenice u citatima, pa ručno pregledati i generisani
+odgovor; ne menjati fiksne metrike da bi eksperiment izgledao bolje.
+
 ## Isti protokol za svaki korak
 
 1. Zasebna specifikacija pre promene, sa hipotezom i rizikom regresije. Grana
-   prema dogovoru; M5 je na izričit zahtev korisnika urađen na main.
+   prema dogovoru; M5 i M2 su na izričit zahtev korisnika na `main`.
 2. Testovi i kompletan eval pre promene, sačuvani u novom direktorijumu dokaza.
 3. Jedna promena; testovi i kompletan isti eval posle nje.
 4. `src.eval_compare` nad tim parom; isti eval SHA-256, promenjena podešavanja
@@ -112,8 +131,11 @@ Ne prilagođavati kod pojedinačnim ID-jevima ili formulacijama.
 
 ## Status plana
 
-M5 je implementiran i izmeren; svih deset zadataka je završeno. M2 i embeddings
-nisu implementirani, a LLM generisanje ostaje opciono ako ostane vremena.
+M5 je implementiran i izmeren. M2 je implementiran, izmeren i isključen po
+korisnikovoj odluci zbog regresije E09; [izveštaj](m2-report.md) čuva sve rezultate.
+Zadržano stanje daje 10/12; 53 testa prolaze. Human review je sledeći korisnikov
+korak; embeddings zatim implementira korisnik. Grounded LLM ostaje zaseban kasniji
+eksperiment. Ništa od ta tri buduća koraka nije završeno ovom promenom.
 Ovaj dokument ne zamenjuje specifikaciju svakog kasnijeg eksperimenta.
 Plan je pripremljen uz Codex i read-only istraživački pregled. Brojevi polaze
 od sačuvanih merenja; budući efekti su hipoteze.

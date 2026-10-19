@@ -4,7 +4,7 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current state: M1 + optional M3 and M5
+## Current state: M1 + M3 + M5; M2 implemented but disabled
 
 The required M1 experiment improved evaluation from **6/12 to 9/12**.
 The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
@@ -16,26 +16,32 @@ the distinction between his confirmation and Codex-generated execution logs.
 The optional M5 experiment now excludes superseded sources before ranking.
 Evaluation remains **10/12 without regressions**, while E06 citation precision
 improves **0.50 → 1.00** and mean citation precision **0.60 → 0.65**.
-The current suite passes **43/43** tests; see the [M5 report](docs/m5-report.md).
+The M5 suite passed **43/43** tests; see the [M5 report](docs/m5-report.md).
+
+M2 stopword filtering is now implemented and separately measured on `main`.
+Enabled, it improves mean citation precision **0.65 → 0.70** but regresses E09,
+reducing evaluation **10/12 → 9/12**. At the user's request it remains
+**disabled** (`STOPWORDS_ENABLED=False`). The retained pipeline reproduces
+**10/12**, and **53/53 tests pass** in both modes. See the [M2 report](docs/m2-report.md).
 
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
 | Optional M3: refusal threshold | [before-m3.json](results/before-m3.json), 9/12 | [after-m3.json](results/after-m3.json), 10/12 | [M3 report](docs/m3-report.md) |
 | Optional M5: current versions | [before-m5.json](results/before-m5.json), 10/12 | [after-m5.json](results/after-m5.json), 10/12 | [M5 report](docs/m5-report.md) |
+| Optional M2: stopwords (disabled after measurement) | [before.json](docs/evidence/004-m2/before.json), 10/12 | [after.json](docs/evidence/004-m2/after.json), 9/12; [retained.json](docs/evidence/004-m2/retained.json), 10/12 | [M2 report](docs/m2-report.md) |
 
 The current code includes all three improvements. E05 and E11 still fail;
 E06 now cites only the current policy. Irrelevant padding citations remain
 possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
-M5 is complete; M2 and a small local embedding comparison are future options. Each experiment
-is measured separately; completing every menu option or reaching 12/12 is not
-required. The [M5 specification](specs/003-current-version-filter/spec.md) and
-[implementation plan](specs/003-current-version-filter/plan.md) link to the completed work.
-All further optional work this week depends on available time. LLM answer
-generation is a separate possible experiment only if time remains. Keep this
-plan on `main`; M5 was also implemented on `main` at the user's request.
+M5 is complete and M2 is measured but disabled. The user's human review is next,
+followed by their embedding experiment targeting E05. Grounded LLM answering
+and refusal for E11 remain a separate later experiment. No 12/12 result is
+promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
+[implementation plan](specs/004-stopword-filter/plan.md) document the completed
+experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
 
 ## Setup
 
@@ -60,6 +66,8 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
 | `python -m src.eval_compare results/before-m5.json results/after-m5.json` | M5: no changed pass/fail outcomes, improved citation precision, only CURRENT_ONLY changed |
+| `python -m src.eval_compare docs/evidence/004-m2/before.json docs/evidence/004-m2/after.json` | Enabled M2: E09 regresses, no fixes, mean citation precision increases |
+| `python -m src.eval_compare docs/evidence/004-m2/before.json docs/evidence/004-m2/retained.json` | Final state: M2 disabled; full baseline reproduced |
 
 ## Project layout
 
@@ -89,6 +97,8 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 The six experiment JSON files above have exceptions in `.gitignore` and can be
 tracked. Other `results/*.json` files are ignored unless explicitly added.
 Include the JSON results and comparison output in the submission.
+The M2 source runs and comparisons are under `docs/evidence/004-m2/`, where
+they are not covered by the `results/*.json` ignore rule.
 
 ## Spec Kit
 

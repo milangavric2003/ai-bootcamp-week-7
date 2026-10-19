@@ -6,12 +6,19 @@ from .chunking import Chunk
 
 
 TOKEN_RE = re.compile(r"[a-zA-Z0-9]+")
+# Frozen M2 vocabulary; see specs/004-stopword-filter/plan.md.
+STOPWORDS = frozenset({
+    "a", "an", "and", "are", "as", "at", "be", "been", "but", "by",
+    "can", "do", "does", "for", "from", "had", "has", "have", "how", "i",
+    "in", "is", "it", "of", "on", "or", "that", "the", "their", "there",
+    "these", "they", "this", "to", "was", "were", "what", "when", "where", "with",
+})
 
 
 def tokenize(text: str) -> list[str]:
     tokens = [token.lower() for token in TOKEN_RE.findall(text)]
     if config.STOPWORDS_ENABLED:
-        raise NotImplementedError("STOPWORDS_ENABLED = True is not implemented yet.")
+        return [token for token in tokens if token not in STOPWORDS]
     return tokens
 
 

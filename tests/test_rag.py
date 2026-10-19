@@ -51,3 +51,14 @@ def test_only_superseded_evidence_is_refused_when_filtered(monkeypatch) -> None:
     assert result.retrieved == []
     assert result.citations == []
     assert result.answer == REFUSAL_MESSAGE
+
+
+def test_all_stopword_question_is_refused_without_citations(monkeypatch) -> None:
+    monkeypatch.setattr(config, "STOPWORDS_ENABLED", True)
+
+    result = build_grounded_answer("What is it?", build_chunks(load_corpus()))
+
+    assert result.refused is True
+    assert result.retrieved == []
+    assert result.citations == []
+    assert result.answer == REFUSAL_MESSAGE

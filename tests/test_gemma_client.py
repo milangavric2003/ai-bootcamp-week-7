@@ -66,7 +66,7 @@ def test_invalid_header_characters_are_rejected_before_network(monkeypatch, key)
 
 
 @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 429, 500, 503])
-def test_http_errors_are_sanitized_without_retries(monkeypatch, code):
+def test_http_errors_are_sanitized_with_bounded_retries(monkeypatch, code):
     calls = []
     def fail(*a, **k):
         calls.append(1)
@@ -79,7 +79,7 @@ def test_http_errors_are_sanitized_without_retries(monkeypatch, code):
     assert "test-key-never-log" not in str(error.value)
     assert "private provider body" not in str(error.value)
     assert error.value.__suppress_context__
-    assert len(calls) == 1
+    assert len(calls) == (4 if code in (429, 500, 503) else 1)
 
 
 @pytest.mark.parametrize("failure", [TimeoutError("test-key-never-log"),

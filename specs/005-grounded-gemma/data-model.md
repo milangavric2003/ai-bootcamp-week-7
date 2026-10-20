@@ -9,7 +9,7 @@ Generation consumes the ordered results already returned by retrieval.
 | --- | --- | --- |
 | `Chunk` | `chunk_id`, `doc_id`, `title`, `version`, `status`, `text` | IDs and source text are preserved |
 | `RetrievalResult` | `chunk`, `score` | Returned order and scores are preserved; no reranking |
-| `RagAnswer` | `answer`, `citations`, `refused`, `retrieved` | Existing CLI and evaluator contract retained |
+| `RagAnswer` | `answer`, `citations`, `refused`, `retrieved`; optional `model`, `attempts` | Existing four-field callers remain valid through metadata defaults |
 
 ## Generation decision
 
@@ -33,7 +33,8 @@ The latter is part of manual answer review.
 ## Configuration and trace
 
 - Public experiment settings: answering backend, provider/model identity,
-  temperature, output limit, thinking level, timeout and prompt SHA-256.
+  temperature, output limit, thinking level, timeout and prompt SHA-256; the later
+  reliability amendment adds fallback model, attempt limits and backoff.
 - Private runtime input: `GEMINI_API_KEY`, fetched locally for the request; never
   stored as an uppercase value in `src.config`, whose snapshot captures such values.
 - Optional trace destination: `GEMMA_TRACE_PATH`, an evidence-file path rather than
@@ -42,6 +43,10 @@ The latter is part of manual answer review.
   backend/model, prompt fingerprint, request status, duration and returned token
   usage if available. No credential, authorization header or raw HTTP error body.
   Every evaluated question has a final record, including local gate refusals.
+- Later retry traces distinguish `requested_model` from actual `model`, add ordered
+  sanitized `attempts` and `fallback_used`. Local refusals have no actual model or
+  attempts. API-complete attempt status does not bypass final decision validation;
+  invalid citations still produce a final error. Failed-request usage may be unknown.
 
 ## State transitions
 
@@ -50,7 +55,8 @@ The latter is part of manual answer review.
 2. Retrieve using the existing pipeline. Empty results or the unchanged score gate
    produce a local evidence refusal and no remote request.
 3. Extractive mode follows current answering. Gemma mode serializes all returned
-   evidence and performs at most one request.
+   evidence. The user-requested retry amendment allows at most two Gemma attempts,
+   then two configured Gemini fallback attempts, stopping on success or permanent error.
 4. A successful, complete text response is parsed and validated, then mapped to
    `RagAnswer` and traced.
 5. Configuration, network, provider or output-validation failure raises a typed

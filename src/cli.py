@@ -26,6 +26,8 @@ def main() -> None:
 
     print("Question:")
     print(args.question)
+    if result.model:
+        print("\nModel:", result.model)
     print("\nAnswer:")
     print(result.answer)
     print("\nRefused:", result.refused)

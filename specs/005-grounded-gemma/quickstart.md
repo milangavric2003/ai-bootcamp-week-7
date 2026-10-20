@@ -1,11 +1,15 @@
 # Setup and validation guide
 
-The Gemma backend is implemented and live-verified. The suite passes 134 tests;
+The Gemma backend is implemented and live-verified. The suite passes 163 tests;
 offline mode reproduces 10/12, and the controlled live lexical run improves to
 11/12 without PASS-to-FAIL regressions. See `docs/gemma-report.md` for actual
 evidence. Run from the repository root using
 the existing virtual environment. Use fresh evidence names/directories: the
 original-before, retained and `live/` runs are already saved and must not be overwritten.
+The later [retry amendment](retry-spec.md) enables two Gemma attempts followed by
+two Gemini attempts with the same timeout; see `docs/evidence/005-gemma/retries/report.md`
+for its separate operational verification. The 11/12 result above is Gemma-only
+historical evidence, not a full mixed-model quality measurement.
 
 ## 1. Separate work and preserve the baseline
 

@@ -90,23 +90,37 @@ Once the key is ready, run the synthetic live capability probe before evaluation
 
 The probe makes at most two generation requests, over a fictional library passage
 outside the fixed eval set. Inspect the answer's 17:00 fact and citations manually.
-The saved live probe and complete fixed evaluation passed with the configured
+The saved Gemma-only live probe and fixed evaluation passed with the configured
 key and model; see the report for that run's evidence. Future access and quota
-still depend on the project. There is no retry or automatic model fallback.
+still depend on the project.
+
+The later reliability update uses **two Gemma attempts, then two Gemini 3.5
+Flash-Lite attempts**, stopping on success. Timeouts/temporary connection errors
+and HTTP 408/429/500/502/503/504 trigger bounded retries; authentication, certificate
+and invalid-answer errors stop immediately. Each attempt retains the configured
+30-second timeout. Backoff is 0.25/0.5/1 second, so four timeouts may take roughly
+two minutes plus overhead. A valid refusal is a successful result and is not retried.
+Set `GEMMA_FALLBACK_MODEL=` to disable fallback; otherwise its default is
+`gemini-3.5-flash-lite`, with no existing `.env` edit needed. CLI output names the
+model that actually answered. See the [retry verification](docs/evidence/005-gemma/retries/report.md).
 
 For measured runs, set `GEMMA_TRACE_PATH` to a **fresh `.jsonl` filename**. It saves
 same-run answer text, decisions, retrieval IDs/scores, latency and returned token
-usage. A new process refuses to reuse an existing trace. API keys and raw provider
+usage, actual model, fallback use and ordered attempt outcomes. Failed-request
+token usage may be unknown. A new process refuses to reuse an existing trace. API keys and raw provider
 errors are excluded. Public settings and the prompt fingerprint are recorded in
 the existing evaluation config snapshot.
 
 The unchanged fixed metrics inspect facts in cited chunks, not generated prose.
 Review all 12 answers manually. See [setup and comparison commands](specs/005-grounded-gemma/quickstart.md).
-The implementation passes **134 tests**. Offline mode reproduces **10/12** with
-identical baseline rows; the separate live Gemma run scores **11/12**, with mean
+The implementation passes **163 tests**. Offline mode reproduces **10/12** with
+identical baseline rows; the saved Gemma-only live run scores **11/12**, with mean
 citation precision **0.65 → 1.00** and no PASS-to-FAIL regressions. All 12 saved
 answers were inspected against their sources. E05 still fails because the required
 equipment evidence is not retrieved. Unit tests block all unmocked Google calls.
+The retry/fallback update is verified separately with fault-injection tests and
+live primary/fallback probes; its mixed-model quality has not been remeasured
+over all 12 questions.
 
 ## Commands
 

@@ -1,6 +1,6 @@
 """Grounded decisions and same-run evidence, independent of retrieval backend."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import json
 import os
@@ -9,7 +9,7 @@ import re
 
 from . import config
 from .gemma_client import GemmaClient
-from .generation_errors import ConfigurationError, InvalidResponseError, TraceError
+from .generation_errors import ConfigurationError, GenerationError, InvalidResponseError, TraceError
 from .generation_prompt import SYSTEM_PROMPT
 from .retrieval import RetrievalResult
 
@@ -20,6 +20,8 @@ class GenerationDecision:
     citations: list[str]
     refused: bool
     usage: dict | None = None
+    model: str | None = None
+    attempts: list[dict] = field(default_factory=list)
 
 
 def validate_backend() -> None:
@@ -84,8 +86,14 @@ def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecis
 
 def generate_answer(question: str, results: list[RetrievalResult]) -> GenerationDecision:
     response = GemmaClient().generate(build_request(question, results))
-    decision = parse_decision(response.text, results)
-    return GenerationDecision(decision.answer, decision.citations, decision.refused, response.usage)
+    model = response.model or config.GEMMA_MODEL
+    try:
+        decision = parse_decision(response.text, results)
+    except GenerationError as error:
+        error.model, error.attempts = model, response.attempts
+        raise error from None
+    return GenerationDecision(decision.answer, decision.citations, decision.refused,
+                              response.usage, model, response.attempts)
 
 
 _trace_paths: set[Path] = set()
@@ -98,11 +106,15 @@ def record_trace(question, results, result, status, elapsed_ms, usage=None, erro
     path = Path(destination).resolve()
     if path.suffix.lower() != ".jsonl":
         raise TraceError("GEMMA_TRACE_PATH must name a fresh .jsonl evidence file.")
+    model = result.model if result else error.model if error else None
+    attempts = result.attempts if result else error.attempts if error else []
     record = {
         "created_at": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
         "question": question, "backend": config.ANSWER_BACKEND,
         "provider": config.GEMMA_PROVIDER if config.ANSWER_BACKEND == "gemma" else None,
-        "model": config.GEMMA_MODEL if config.ANSWER_BACKEND == "gemma" else None,
+        "requested_model": config.GEMMA_MODEL if config.ANSWER_BACKEND == "gemma" else None,
+        "model": model, "attempts": attempts,
+        "fallback_used": any(attempt["model"] != config.GEMMA_MODEL for attempt in attempts),
         "prompt_sha256": config.GEMMA_PROMPT_SHA256 if config.ANSWER_BACKEND == "gemma" else None,
         "status": status, "elapsed_ms": round(elapsed_ms, 3), "usage": usage or {},
         "retrieved": [{"chunk_id": r.chunk.chunk_id, "score": r.score} for r in results],

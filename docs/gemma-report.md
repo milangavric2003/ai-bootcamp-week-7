@@ -2,6 +2,13 @@
 
 Date: 2026-10-20. Branch: `feat/gemma-generation`.
 
+**Later reliability update:** the user requested two Gemma attempts followed by
+two Gemini 3.5 Flash-Lite attempts, with the same per-attempt timeout. The suite
+now passes 163 tests, and both live primary/fallback probes pass. See the
+[separate retry report](evidence/005-gemma/retries/report.md). The fixed-set live
+results below describe the earlier Gemma-only policy at commit `aa17fc0`; they are
+not a remeasurement of mixed-model quality. Historical evidence is preserved.
+
 The optional answerer is implemented and live-verified: the controlled lexical
 comparison improves **10/12 → 11/12**, fixing **E11**, with **no PASS-to-FAIL
 regressions**. Mean citation precision improves **0.65 → 1.00**. All 12 saved
@@ -29,8 +36,9 @@ by the answerer. E11's pre-existing hypothesis was confirmed in this saved live 
 - Root `.env.example` contains a blank key and offline default. Root `.env` loading
   respects process values and disables interpolation; local secret files are ignored.
 - The Google REST client targets configurable `gemma-4-26b-a4b-it`, authenticates
-  through a private header, rejects redirects, makes one request without retries,
-  and sanitizes transport/provider errors.
+  through a private header, rejects redirects and sanitizes transport/provider
+  errors. The original measurement used one request without retries; the later
+  user-requested retry/fallback policy is documented separately above.
 - Initial settings: temperature 0, output cap 1024, minimal thinking, 30-second
   socket timeout; application input budget is 65,536 UTF-8 bytes including prompt
   and request structure. No context is silently dropped. The output-token control
@@ -110,7 +118,7 @@ was not audited; no billing configuration or model substitution was performed.
 
 | Check | Before | After implementation |
 | --- | --- | --- |
-| Full pytest suite | 53/53 | 134/134 |
+| Full pytest suite | 53/53 | 163/163, including the later retry update |
 | Offline fixed eval | 10/12 | 10/12 |
 | PASS-to-FAIL regressions | — | None |
 | Per-question rows, including retrieval/scores | Preserved | Exactly equal across all 12 |

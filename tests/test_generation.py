@@ -162,3 +162,99 @@ def test_existing_trace_file_is_not_silently_mixed(monkeypatch, tmp_path):
     with pytest.raises(GenerationError):
         rag.build_grounded_answer("missing", [])
     assert path.read_text() == "previous evidence\n"
+
+
+def test_fallback_provenance_reaches_answer_trace_and_cli(monkeypatch, evidence, tmp_path, capsys):
+    from src import cli
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    path = tmp_path / "fallback.jsonl"
+    monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+    attempts = [{"model": config.GEMMA_MODEL, "attempt": 1, "status": "retryable_error"},
+                {"model": config.GEMMA_MODEL, "attempt": 2, "status": "retryable_error"},
+                {"model": "gemini-3.5-flash-lite", "attempt": 3, "status": "success"}]
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+    monkeypatch.setattr(generation.GemmaClient, "generate", lambda *a: ProviderResponse(
+        decision(), {"totalTokenCount": 8}, "gemini-3.5-flash-lite", attempts))
+    result = rag.build_grounded_answer("equipment", [])
+    assert result.model == "gemini-3.5-flash-lite" and result.attempts == attempts
+    trace = json.loads(path.read_text())
+    assert trace["model"] == result.model
+    assert trace["requested_model"] == config.GEMMA_MODEL
+    assert trace["fallback_used"] is True and trace["attempts"] == attempts
+    monkeypatch.setattr(cli, "build_grounded_answer", lambda *a: result)
+    monkeypatch.setattr(cli, "build_chunks", lambda *_: [r.chunk for r in evidence])
+    monkeypatch.setattr("sys.argv", ["cli", "--questi", "equipment"])
+    cli.main()
+    assert "Model: gemini-3.5-flash-lite" in capsys.readouterr().out
+
+
+def test_exhausted_attempts_are_traced_and_never_become_refusals(monkeypatch, evidence, tmp_path):
+    from src import gemma_client
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "private-key")
+    path = tmp_path / "failed.jsonl"
+    monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+    monkeypatch.setattr(gemma_client, "sleep", lambda *_: None, raising=False)
+    def fail(*a, **k):
+        raise TimeoutError("private-key")
+    monkeypatch.setattr(gemma_client, "_open", fail)
+    with pytest.raises(ProviderError):
+        rag.build_grounded_answer("equipment", [])
+    trace = json.loads(path.read_text())
+    assert trace["status"] == "error" and trace["refused"] is None
+    assert len(trace["attempts"]) == 4 and trace["fallback_used"] is True
+    assert trace["model"] == "gemini-3.5-flash-lite"
+    assert "private-key" not in path.read_text()
+
+
+def test_valid_refusal_stops_after_first_request(monkeypatch, evidence):
+    import io
+    from src import gemma_client
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+    calls = []
+    def opened(*a, **k):
+        calls.append(1)
+        return io.BytesIO(json.dumps({"candidates": [{"finishReason": "STOP", "content": {
+            "parts": [{"text": decision(answer="", citations=[], refused=True)}]}}]}).encode())
+    monkeypatch.setattr(gemma_client, "_open", opened)
+    assert rag.build_grounded_answer("unsupported", []).refused
+    assert len(calls) == 1
+
+
+def test_invalid_fallback_citations_fail_without_more_attempts(monkeypatch, evidence, tmp_path):
+    import io
+    from src import gemma_client
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setenv("GEMMA_TRACE_PATH", str(tmp_path / "invalid-fallback.jsonl"))
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+    calls = []
+    def opened(request, timeout):
+        calls.append(request.full_url)
+        if len(calls) <= 2:
+            raise TimeoutError()
+        return io.BytesIO(json.dumps({"candidates": [{"finishReason": "STOP", "content": {
+            "parts": [{"text": decision(citations=["invented"])}]}}]}).encode())
+    monkeypatch.setattr(gemma_client, "_open", opened)
+    with pytest.raises(InvalidResponseError) as error:
+        rag.build_grounded_answer("equipment", [])
+    assert len(calls) == 3
+    assert error.value.model == "gemini-3.5-flash-lite"
+    assert len(error.value.attempts) == 3
+
+
+def test_local_refusal_trace_has_no_actual_model_or_attempts(monkeypatch, tmp_path):
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    path = tmp_path / "local-refusal.jsonl"
+    monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: [])
+    rag.build_grounded_answer("missing evidence", [])
+    trace = json.loads(path.read_text())
+    assert trace["model"] is None and trace["attempts"] == []
+    assert trace["requested_model"] == config.GEMMA_MODEL
+    assert trace["fallback_used"] is False

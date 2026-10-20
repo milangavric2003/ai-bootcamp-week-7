@@ -53,6 +53,22 @@ before retrieval, and an operational error stops the unchanged evaluator.
 
 ## Dependencies and execution order
 
+### Reliability update requested after live verification
+
+The user authorizes the [retry specification](retry-spec.md), superseding the
+original no-retry/no-fallback operational contract. These tasks are independent of
+Vedran's pending T019 and do not rewrite earlier measurement evidence.
+
+- [X] T020 Save unchanged tests, offline eval, source/history hashes and failures in docs/evidence/005-gemma/retries/ before runtime changes.
+- [X] T021 [US3] Add failing retry-order, fail-fast, fallback-payload and provenance tests in tests/test_gemma_client.py and tests/test_generation.py.
+- [X] T022 [US3] Implement bounded retries, transient-error classification and Gemini fallback in src/gemma_client.py; add public retry settings in src/config.py.
+- [X] T023 [US3] Preserve actual model/attempt provenance in src/generation_errors.py, src/generation.py and src/rag.py; identify the model in src/cli.py.
+- [X] T024 Run the full suite and unchanged disabled-mode eval/comparison, and verify live CLI recovery/fallback in docs/evidence/005-gemma/retries/.
+- [X] T025 Update README.md, docs/gemma-report.md, .env.example and feature contracts; retain historical Gemma-only claims and provide a commit message without committing or pushing.
+
+T020 → T021 → T022/T023 → T024 → T025. Tests target operational failures,
+successful refusals and actual-model disclosure, not tuning retrieval or answers.
+
 T001 precedes all runtime edits. T002-T004 provide the shared foundation.
 US1 and US2 share parsing/transport files, so execute their implementation edits
 sequentially. US3 integration depends on those components. T014-T016 validate the
@@ -93,3 +109,11 @@ See `docs/gemma-report.md` and `docs/evidence/005-gemma/live/verification.json`.
 No independent peer review or submission is claimed.
 No Spec Kit extension hooks or feature checklists were present; the shared active
 feature metadata was not changed.
+
+The later user-requested reliability amendment completes T020-T025: 163 tests pass,
+all 12 disabled-mode evaluation rows remain identical, and 37 protected baseline
+files retain their hashes. Live primary and fallback probes passed; the fallback
+probe injected two local timeouts before a real Gemini request. Historical
+Gemma-only 11/12 results remain separate. See
+`docs/evidence/005-gemma/retries/report.md` and `verification.json` in that directory.
+T019 remains pending. No commit or push was performed for this amendment.

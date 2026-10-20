@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from time import perf_counter
 
 from . import config
@@ -18,6 +18,8 @@ class RagAnswer:
     citations: list[str]
     refused: bool
     retrieved: list[RetrievalResult]
+    model: str | None = None
+    attempts: list[dict] = field(default_factory=list)
 
 
 def select_citations(results: list[RetrievalResult]) -> list[RetrievalResult]:
@@ -50,6 +52,7 @@ def _answer_from_results(question: str, results: list[RetrievalResult]) -> tuple
         return RagAnswer(
             answer=REFUSAL_MESSAGE if decision.refused else decision.answer,
             citations=decision.citations, refused=decision.refused, retrieved=results,
+            model=decision.model, attempts=decision.attempts,
         ), "complete", decision.usage or {}
 
     cited = select_citations(results)

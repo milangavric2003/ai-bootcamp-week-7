@@ -4,6 +4,11 @@
 class GenerationError(RuntimeError):
     """Generation could not complete; no quality result should be recorded."""
 
+    def __init__(self, message: str, *, model: str | None = None, attempts: list[dict] | None = None):
+        super().__init__(message)
+        self.model = model
+        self.attempts = list(attempts or [])
+
 
 class ConfigurationError(GenerationError):
     """Missing or invalid local settings."""

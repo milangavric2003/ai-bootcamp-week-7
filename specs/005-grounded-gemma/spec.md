@@ -6,6 +6,11 @@
 
 **Feature branch**: `feat/gemma-generation`
 
+**Later reliability amendment**: The user subsequently authorized two Gemma attempts
+followed by two Gemini 3.5 Flash-Lite attempts, with the same per-attempt timeout.
+[Retry specification](retry-spec.md) records that operational change separately;
+the earlier Gemma-only quality measurements retain their historical meaning.
+
 **Input**: Keep M2 disabled. Vedran owns embedding retrieval. Plan a separate
 Google AI Studio / Gemini API integration for Gemma 4 26B; provide an environment
 template now, with the real key supplied later.

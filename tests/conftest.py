@@ -9,6 +9,11 @@ from src import config, gemma_client
 def offline_generation_defaults(monkeypatch):
     monkeypatch.setattr(config, "ANSWER_BACKEND", "extractive")
     monkeypatch.setattr(config, "GEMMA_MODEL", "gemma-4-26b-a4b-it")
+    monkeypatch.setattr(config, "GEMMA_FALLBACK_MODEL", "gemini-3.5-flash-lite")
+    monkeypatch.setattr(config, "GEMMA_PRIMARY_ATTEMPTS", 2)
+    monkeypatch.setattr(config, "GEMMA_FALLBACK_ATTEMPTS", 2)
+    monkeypatch.setattr(config, "GEMMA_RETRY_BACKOFF_SECONDS", 0.25)
+    monkeypatch.setattr(gemma_client, "sleep", lambda *_: None)
     monkeypatch.setattr(config, "GEMMA_TIMEOUT_SECONDS", 30.0)
     monkeypatch.setattr(config, "GEMMA_TEMPERATURE", 0.0)
     monkeypatch.setattr(config, "GEMMA_MAX_OUTPUT_TOKENS", 1024)

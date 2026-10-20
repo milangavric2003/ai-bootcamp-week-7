@@ -1,5 +1,9 @@
 # Generation contract
 
+The [retry amendment](../retry-spec.md), explicitly requested after the original
+measurement, supersedes the original single-request/no-fallback operational policy.
+Historical Gemma-only results retain their original meaning.
+
 ## Boundary with Vedran's retrieval work
 
 Planned callable: `generate_answer(question, results)`, where `results` is the
@@ -26,6 +30,9 @@ The request includes:
   returned top-k chunk's ID, source metadata and text, in retrieval order.
 - `generationConfig`: temperature 0, candidate count 1, `maxOutputTokens=1024`,
   and `thinkingConfig.thinkingLevel="minimal"` as initial fixed design settings.
+
+On the Gemini fallback route the client omits `candidateCount`, preserving the
+single-candidate default, same context and prompt, and other settings.
 
 No embedding vectors, whole corpus, conversation history, search tools, function
 tools, native JSON-schema settings or automatic retrieval calls are included.
@@ -63,16 +70,22 @@ Capture usage metadata when supplied, without making its presence mandatory.
 | Empty/low-score retrieval | Existing evidence refusal, zero API requests |
 | Valid model evidence refusal | Existing evidence refusal, empty citations |
 | Missing key or invalid setting | Configuration error before evaluation |
-| Authentication, quota, timeout, network, provider failure | Sanitized operational error; stop measured run |
+| Timeout, temporary connection error, HTTP 408/429/500/502/503/504 | Up to two Gemma then two Gemini attempts; exhaustion stops the run |
+| Authentication, permission, configuration, TLS certificate or other HTTP failure | Sanitized operational error; stop immediately |
 | Invalid JSON, unknown citations, inconsistent fields, incomplete output | Output-validation error; stop measured run |
 | Input exceeds known supported budget | Explicit error; never silently drop context |
 
-There is no automatic retry, model substitution, extractive fallback or conversion
-of a failed request into `refused=True`. Credentials are never included in errors.
+Retries use the unchanged per-attempt timeout and short 0.25/0.5/1-second backoff.
+A successful response or valid evidence refusal stops further attempts. The
+configured fallback is `gemini-3.5-flash-lite` by default; an empty fallback model
+disables it. Actual model/attempts are returned and traced. There is no extractive
+fallback or conversion of failed requests into `refused=True`. Credentials are
+never included in errors. Failed-request usage may be unknown.
 
 ## Environment contract
 
-`contracts/.env.example` is the proposed template for a future root `.env.example`.
+The root `.env.example` is the active setup template; `contracts/.env.example`
+retains the design example.
 During implementation, add `.env` / `.env.*` ignore rules with an exception for
 `.env.example` before copying it to `.env`. Load the root file explicitly with
 `python-dotenv`, with existing process environment taking precedence.
@@ -80,3 +93,6 @@ During implementation, add `.env` / `.env.*` ignore rules with an exception for
 `ANSWER_BACKEND=extractive` is the default; `gemma` explicitly opts in. Unknown
 backends fail rather than silently choosing one. `GEMMA_TRACE_PATH` is empty for
 ordinary use and set to a fresh JSONL evidence filename for measured runs.
+`GEMMA_FALLBACK_MODEL` defaults to `gemini-3.5-flash-lite`, so the existing private
+`.env` can stay as it is. Public configuration includes both attempt limits and
+backoff for reproducibility.

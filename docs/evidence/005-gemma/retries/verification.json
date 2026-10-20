@@ -1,0 +1,20 @@
+{
+  "protected_files_unchanged": 37,
+  "eval_rows_identical": 12,
+  "summary_identical": true,
+  "original_config_identical": true,
+  "timeout_seconds": 30,
+  "stopwords_enabled": false,
+  "new_retry_settings": {
+    "GEMMA_FALLBACK_MODEL": "gemini-3.5-flash-lite",
+    "GEMMA_PRIMARY_ATTEMPTS": 2,
+    "GEMMA_FALLBACK_ATTEMPTS": 2,
+    "GEMMA_RETRY_BACKOFF_SECONDS": 0.25
+  },
+  "live_primary_attempts": 1,
+  "live_fallback_attempts": 3,
+  "injected_primary_failures": 2,
+  "python_files_parsed": 24,
+  "credential_scan_files": 292,
+  "credential_matches": 0
+}

@@ -4,6 +4,11 @@
 
 **Feature branch**: `feat/gemma-generation`
 
+**Reliability amendment (2026-10-20)**: The user subsequently requested bounded
+Gemma retries and Gemini 3.5 Flash-Lite fallback. [Retry specification](retry-spec.md)
+and T020-T025 supersede the original no-retry contract for this later update.
+Earlier Gemma-only evaluation evidence remains historical and unchanged.
+
 **Status**: Live-verified on 2026-10-20; 134 tests pass. The separate lexical
 comparison improves 10/12 to 11/12, fixing E11 without PASS-to-FAIL regressions.
 E05 and embedding integration remain pending.

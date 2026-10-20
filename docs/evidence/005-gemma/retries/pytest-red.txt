@@ -1,0 +1,888 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 57 items / 32 deselected / 25 selected
+
+tests\test_gemma_retries.py FFFFFFFFFFFFFFFFFFFFFF                       [ 88%]
+tests\test_generation.py FF.                                             [100%]
+
+================================== FAILURES ===================================
+______ test_success_stops_at_the_right_attempt_with_unchanged_timeout[1] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71429E0>
+successful_attempt = 1
+
+    @pytest.mark.parametrize("successful_attempt", [1, 2, 3, 4])
+    def test_success_stops_at_the_right_attempt_with_unchanged_timeout(monkeypatch, successful_attempt):
+        outcomes = [TimeoutError("private-test-key")] * (successful_attempt - 1) + [good_response()]
+        calls, delays = sequence(monkeypatch, outcomes)
+        result = GemmaClient().generate({"contents": []})
+        expected = [PRIMARY, PRIMARY, FALLBACK, FALLBACK][:successful_attempt]
+        assert [call["model"] for call in calls] == expected
+        assert all(call["timeout"] == 30 for call in calls)
+>       assert result.model == expected[-1]
+E       AttributeError: 'ProviderResponse' object has no attribute 'model'
+
+tests\test_gemma_retries.py:56: AttributeError
+______ test_success_stops_at_the_right_attempt_with_unchanged_timeout[2] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7142C40>
+successful_attempt = 2
+
+    @pytest.mark.parametrize("successful_attempt", [1, 2, 3, 4])
+    def test_success_stops_at_the_right_attempt_with_unchanged_timeout(monkeypatch, successful_attempt):
+        outcomes = [TimeoutError("private-test-key")] * (successful_attempt - 1) + [good_response()]
+        calls, delays = sequence(monkeypatch, outcomes)
+>       result = GemmaClient().generate({"contents": []})
+
+tests\test_gemma_retries.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7146210>
+payload = {'contents': []}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+______ test_success_stops_at_the_right_attempt_with_unchanged_timeout[3] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7187890>
+successful_attempt = 3
+
+    @pytest.mark.parametrize("successful_attempt", [1, 2, 3, 4])
+    def test_success_stops_at_the_right_attempt_with_unchanged_timeout(monkeypatch, successful_attempt):
+        outcomes = [TimeoutError("private-test-key")] * (successful_attempt - 1) + [good_response()]
+        calls, delays = sequence(monkeypatch, outcomes)
+>       result = GemmaClient().generate({"contents": []})
+
+tests\test_gemma_retries.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7146350>
+payload = {'contents': []}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+______ test_success_stops_at_the_right_attempt_with_unchanged_timeout[4] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E72096A0>
+successful_attempt = 4
+
+    @pytest.mark.parametrize("successful_attempt", [1, 2, 3, 4])
+    def test_success_stops_at_the_right_attempt_with_unchanged_timeout(monkeypatch, successful_attempt):
+        outcomes = [TimeoutError("private-test-key")] * (successful_attempt - 1) + [good_response()]
+        calls, delays = sequence(monkeypatch, outcomes)
+>       result = GemmaClient().generate({"contents": []})
+
+tests\test_gemma_retries.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E71408A0>
+payload = {'contents': []}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[408] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E70E7CE0>
+code = 408
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E71410F0>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 408: request failed; no automatic retry.
+
+src\gemma_client.py:77: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[429] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7240F50>
+code = 429
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7245250>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 429: quota or rate limit exhausted.
+
+src\gemma_client.py:77: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[500] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7241550>
+code = 500
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7208050>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 500: request failed; no automatic retry.
+
+src\gemma_client.py:77: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[502] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71C6C60>
+code = 502
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E720A580>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 502: request failed; no automatic retry.
+
+src\gemma_client.py:77: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[503] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71C73E0>
+code = 503
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7241B50>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 503: request failed; no automatic retry.
+
+src\gemma_client.py:77: ProviderError
+_________ test_transient_http_failure_can_recover_on_same_model[504] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E72B4670>
+code = 504
+
+    @pytest.mark.parametrize("code", [408, 429, 500, 502, 503, 504])
+    def test_transient_http_failure_can_recover_on_same_model(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, _ = sequence(monkeypatch, [failure, good_response()])
+>       result = GemmaClient().generate({})
+
+tests\test_gemma_retries.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7242350>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+>           raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+E           src.generation_errors.ProviderError: Gemma HTTP 504: request failed; no automatic retry.
+
+src\gemma_client.py:77: ProviderError
+__________ test_permanent_http_error_does_not_retry_or_fallback[301] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E72B4C90>
+code = 301
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+__________ test_permanent_http_error_does_not_retry_or_fallback[400] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71BB860>
+code = 400
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+__________ test_permanent_http_error_does_not_retry_or_fallback[401] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7266D50>
+code = 401
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+__________ test_permanent_http_error_does_not_retry_or_fallback[403] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7266A50>
+code = 403
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+__________ test_permanent_http_error_does_not_retry_or_fallback[404] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E712EDB0>
+code = 404
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+__________ test_permanent_http_error_does_not_retry_or_fallback[422] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71D6A40>
+code = 422
+
+    @pytest.mark.parametrize("code", [301, 400, 401, 403, 404, 422])
+    def test_permanent_http_error_does_not_retry_or_fallback(monkeypatch, code):
+        failure = HTTPError("https://example.invalid/?key=private-test-key", code,
+                            "private-test-key", {}, io.BytesIO(b"private body"))
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+        assert len(calls) == 1 and delays == []
+>       assert error.value.model == PRIMARY
+E       AttributeError: 'ProviderError' object has no attribute 'model'
+
+tests\test_gemma_retries.py:94: AttributeError
+_____ test_fallback_authentication_failure_stops_without_second_fallback ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7318EB0>
+
+    def test_fallback_authentication_failure_stops_without_second_fallback(monkeypatch):
+        failure = HTTPError("https://example.invalid/", 403, "forbidden", {}, io.BytesIO())
+        calls, delays = sequence(monkeypatch, [TimeoutError(), TimeoutError(), failure])
+        with pytest.raises(ProviderError) as error:
+            GemmaClient().generate({})
+>       assert [c["model"] for c in calls] == [PRIMARY, PRIMARY, FALLBACK]
+E       AssertionError: assert ['gemma-4-26b-a4b-it'] == ['gemma-4-26b...5-flash-lite']
+E         
+E         Right contains 2 more items, first extra item: 'gemma-4-26b-a4b-it'
+E         Use -v to get more diff
+
+tests\test_gemma_retries.py:104: AssertionError
+__________ test_certificate_failure_is_clear_and_not_retried[False] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E731B610>
+wrapped = False
+
+    @pytest.mark.parametrize("wrapped", [False, True])
+    def test_certificate_failure_is_clear_and_not_retried(monkeypatch, wrapped):
+        certificate_error = ssl.SSLCertVerificationError("private-test-key")
+        failure = URLError(certificate_error) if wrapped else certificate_error
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError, match="certificate") as error:
+>           GemmaClient().generate({})
+
+tests\test_gemma_retries.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E71D5FF0>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E731B610>
+wrapped = False
+
+    @pytest.mark.parametrize("wrapped", [False, True])
+    def test_certificate_failure_is_clear_and_not_retried(monkeypatch, wrapped):
+        certificate_error = ssl.SSLCertVerificationError("private-test-key")
+        failure = URLError(certificate_error) if wrapped else certificate_error
+        calls, delays = sequence(monkeypatch, [failure])
+>       with pytest.raises(ProviderError, match="certificate") as error:
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'certificate'
+E        Input: 'Gemma network request failed or timed out; no automatic retry.'
+
+tests\test_gemma_retries.py:114: AssertionError
+___________ test_certificate_failure_is_clear_and_not_retried[True] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7239AC0>
+wrapped = True
+
+    @pytest.mark.parametrize("wrapped", [False, True])
+    def test_certificate_failure_is_clear_and_not_retried(monkeypatch, wrapped):
+        certificate_error = ssl.SSLCertVerificationError("private-test-key")
+        failure = URLError(certificate_error) if wrapped else certificate_error
+        calls, delays = sequence(monkeypatch, [failure])
+        with pytest.raises(ProviderError, match="certificate") as error:
+>           GemmaClient().generate({})
+
+tests\test_gemma_retries.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E71D47E0>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E7239AC0>
+wrapped = True
+
+    @pytest.mark.parametrize("wrapped", [False, True])
+    def test_certificate_failure_is_clear_and_not_retried(monkeypatch, wrapped):
+        certificate_error = ssl.SSLCertVerificationError("private-test-key")
+        failure = URLError(certificate_error) if wrapped else certificate_error
+        calls, delays = sequence(monkeypatch, [failure])
+>       with pytest.raises(ProviderError, match="certificate") as error:
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'certificate'
+E        Input: 'Gemma network request failed or timed out; no automatic retry.'
+
+tests\test_gemma_retries.py:114: AssertionError
+__________ test_fallback_preserves_context_prompt_and_caller_payload __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71DFD50>
+
+    def test_fallback_preserves_context_prompt_and_caller_payload(monkeypatch):
+        payload = {"contents": [{"parts": [{"text": "all chunks and the original question"}]}],
+                   "systemInstruction": {"parts": [{"text": "fixed policy"}]},
+                   "generationConfig": {"candidateCount": 1, "temperature": 0,
+                                        "thinkingConfig": {"thinkingLevel": "minimal"}}}
+        original = copy.deepcopy(payload)
+        calls, _ = sequence(monkeypatch, [TimeoutError(), TimeoutError(), good_response()])
+>       GemmaClient().generate(payload)
+
+tests\test_gemma_retries.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E731A0D0>
+payload = {'contents': [{'parts': [{'text': 'all chunks and the original question'}]}], 'generationConfig': {'candidateCount': 1...ature': 0, 'thinkingConfig': {'thinkingLevel': 'minimal'}}, 'systemInstruction': {'parts': [{'text': 'fixed policy'}]}}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+_________________ test_empty_fallback_model_disables_fallback _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71DF350>
+
+    def test_empty_fallback_model_disables_fallback(monkeypatch):
+        monkeypatch.setattr(config, "GEMMA_FALLBACK_MODEL", "")
+        calls, _ = sequence(monkeypatch, [TimeoutError(), TimeoutError()])
+        with pytest.raises(ProviderError, match="2 attempts"):
+>           GemmaClient().generate({})
+
+tests\test_gemma_retries.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.gemma_client.GemmaClient object at 0x00000295E7319950>, payload = {}
+
+    def generate(self, payload: dict) -> ProviderResponse:
+        self.validate()
+        try:
+            data = json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
+        except (ValueError, TypeError, UnicodeError):
+            raise ConfigurationError("Gemma input could not be serialized.") from None
+        if len(data) > config.GEMMA_MAX_INPUT_BYTES:
+            raise ConfigurationError("Gemma input exceeds the configured byte budget; no chunks were dropped.")
+        request = Request(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{config.GEMMA_MODEL}:generateContent",
+            data=data, method="POST",
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        )
+        try:
+            with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+                raw = response.read(2 * 1024 * 1024 + 1)
+        except HTTPError as error:
+            code = error.code
+            error.close()
+            hints = {401: "check the API key", 403: "check key permissions and model access",
+                     404: "check model availability", 429: "quota or rate limit exhausted"}
+            hint = hints.get(code, "request failed; no automatic retry")
+            raise ProviderError(f"Gemma HTTP {code}: {hint}.") from None
+        except (URLError, OSError, HTTPException):
+            # Provider errors can include URLs, headers or request data. Never echo them.
+>           raise ProviderError("Gemma network request failed or timed out; no automatic retry.") from None
+E           src.generation_errors.ProviderError: Gemma network request failed or timed out; no automatic retry.
+
+src\gemma_client.py:80: ProviderError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71DF350>
+
+    def test_empty_fallback_model_disables_fallback(monkeypatch):
+        monkeypatch.setattr(config, "GEMMA_FALLBACK_MODEL", "")
+        calls, _ = sequence(monkeypatch, [TimeoutError(), TimeoutError()])
+>       with pytest.raises(ProviderError, match="2 attempts"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: '2 attempts'
+E        Input: 'Gemma network request failed or timed out; no automatic retry.'
+
+tests\test_gemma_retries.py:146: AssertionError
+__________ test_invalid_fallback_model_fails_before_primary_request ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E71A4DE0>
+
+    def test_invalid_fallback_model_fails_before_primary_request(monkeypatch):
+        monkeypatch.setattr(config, "GEMMA_FALLBACK_MODEL", "https://invalid/?key=private-test-key")
+        monkeypatch.setattr(gemma_client, "_open", lambda *a, **k: pytest.fail("network"))
+        with pytest.raises(ConfigurationError) as error:
+>           GemmaClient().generate({})
+
+tests\test_gemma_retries.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\gemma_client.py:69: in generate
+    with _open(request, timeout=config.GEMMA_TIMEOUT_SECONDS) as response:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (<urllib.request.Request object at 0x00000295E71D7800>,)
+k = {'timeout': 30.0}
+
+>   monkeypatch.setattr(gemma_client, "_open", lambda *a, **k: pytest.fail("network"))
+E   Failed: network
+
+tests\test_gemma_retries.py:153: Failed
+____________ test_fallback_provenance_reaches_answer_trace_and_cli ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E728C210>
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+tmp_path = WindowsPath('C:/Users/gm220391d/AppData/Local/Temp/pytest-of-gm220391d/pytest-34/test_fallback_provenance_reach0')
+capsys = <_pytest.capture.CaptureFixture object at 0x00000295E70EEE40>
+
+    def test_fallback_provenance_reaches_answer_trace_and_cli(monkeypatch, evidence, tmp_path, capsys):
+        from src import cli
+        monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+        monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+        path = tmp_path / "fallback.jsonl"
+        monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+        attempts = [{"model": config.GEMMA_MODEL, "attempt": 1, "status": "retryable_error"},
+                    {"model": config.GEMMA_MODEL, "attempt": 2, "status": "retryable_error"},
+                    {"model": "gemini-3.5-flash-lite", "attempt": 3, "status": "success"}]
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+        monkeypatch.setattr(generation.GemmaClient, "generate", lambda *a: ProviderResponse(
+            decision(), {"totalTokenCount": 8}, "gemini-3.5-flash-lite", attempts))
+>       result = rag.build_grounded_answer("equipment", [])
+
+tests\test_generation.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\rag.py:36: in build_grounded_answer
+    result, status, usage = _answer_from_results(question, results)
+src\rag.py:49: in _answer_from_results
+    decision = generate_answer(question, results)
+src\generation.py:86: in generate_answer
+    response = GemmaClient().generate(build_request(question, results))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (<src.gemma_client.GemmaClient object at 0x00000295E72A8650>, {'contents': [{'parts': [{'text': '{"question": "equipme...answer, one or more supporting citations,\nrefused=false. For a refusal: answer="", citations=[], refused=true.\n'}]}})
+
+>   monkeypatch.setattr(generation.GemmaClient, "generate", lambda *a: ProviderResponse(
+        decision(), {"totalTokenCount": 8}, "gemini-3.5-flash-lite", attempts))
+E   TypeError: ProviderResponse.__init__() takes 3 positional arguments but 5 were given
+
+tests\test_generation.py:177: TypeError
+________ test_exhausted_attempts_are_traced_and_never_become_refusals _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000295E728F540>
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+tmp_path = WindowsPath('C:/Users/gm220391d/AppData/Local/Temp/pytest-of-gm220391d/pytest-34/test_exhausted_attempts_are_tr0')
+
+    def test_exhausted_attempts_are_traced_and_never_become_refusals(monkeypatch, evidence, tmp_path):
+        from src import gemma_client
+        monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+        monkeypatch.setenv("GEMINI_API_KEY", "private-key")
+        path = tmp_path / "failed.jsonl"
+        monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+        monkeypatch.setattr(gemma_client, "sleep", lambda *_: None, raising=False)
+        def fail(*a, **k):
+            raise TimeoutError("private-key")
+        monkeypatch.setattr(gemma_client, "_open", fail)
+        with pytest.raises(ProviderError):
+            rag.build_grounded_answer("equipment", [])
+        trace = json.loads(path.read_text())
+        assert trace["status"] == "error" and trace["refused"] is None
+>       assert len(trace["attempts"]) == 4 and trace["fallback_used"] is True
+E       KeyError: 'attempts'
+
+tests\test_generation.py:207: KeyError
+=========================== short test summary info ===========================
+FAILED tests/test_gemma_retries.py::test_success_stops_at_the_right_attempt_with_unchanged_timeout[1]
+FAILED tests/test_gemma_retries.py::test_success_stops_at_the_right_attempt_with_unchanged_timeout[2]
+FAILED tests/test_gemma_retries.py::test_success_stops_at_the_right_attempt_with_unchanged_timeout[3]
+FAILED tests/test_gemma_retries.py::test_success_stops_at_the_right_attempt_with_unchanged_timeout[4]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[408]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[429]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[500]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[502]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[503]
+FAILED tests/test_gemma_retries.py::test_transient_http_failure_can_recover_on_same_model[504]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[301]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[400]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[401]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[403]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[404]
+FAILED tests/test_gemma_retries.py::test_permanent_http_error_does_not_retry_or_fallback[422]
+FAILED tests/test_gemma_retries.py::test_fallback_authentication_failure_stops_without_second_fallback
+FAILED tests/test_gemma_retries.py::test_certificate_failure_is_clear_and_not_retried[False]
+FAILED tests/test_gemma_retries.py::test_certificate_failure_is_clear_and_not_retried[True]
+FAILED tests/test_gemma_retries.py::test_fallback_preserves_context_prompt_and_caller_payload
+FAILED tests/test_gemma_retries.py::test_empty_fallback_model_disables_fallback
+FAILED tests/test_gemma_retries.py::test_invalid_fallback_model_fails_before_primary_request
+FAILED tests/test_generation.py::test_fallback_provenance_reaches_answer_trace_and_cli
+FAILED tests/test_generation.py::test_exhausted_attempts_are_traced_and_never_become_refusals
+================= 24 failed, 1 passed, 32 deselected in 0.31s =================

@@ -5,7 +5,10 @@ Datum: 19. oktobar 2026. Status: dogovoren redosled dodatnih eksperimenata.
 ## Najnoviji dogovor: plan za Gemma API, bez implementacije
 
 **Ažuriranje 20. oktobra 2026:** korisnik je odobrio implementaciju na
-`feat/gemma-generation`. Opcioni Gemma adapter je implementiran; 134 testa prolaze.
+`feat/gemma-generation`. Opcioni adapter sada prolazi 163 testa. Naknadno je, na
+zahtev korisnika, dodat retry/fallback: dva Gemma pokusaja pa dva Gemini 3.5
+Flash-Lite pokusaja, sa istim timeout-om po pokusaju. Live primary/fallback provere
+prolaze; [zaseban izvestaj](evidence/005-gemma/retries/report.md) cuva granice tog testa.
 Isključeni režim reprodukuje 10/12. Korisnik je dodao ključ lokalno: live proba
 prolazi, a odvojeno leksičko poređenje daje **10/12 → 11/12**, popravlja E11 bez
 PASS-to-FAIL regresija i podiže mean citation precision 0.65 → 1.00. E05 ostaje

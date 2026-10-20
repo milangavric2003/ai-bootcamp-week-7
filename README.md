@@ -4,7 +4,7 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current state: M1 + M3 + M5; optional embeddings; M2 disabled
+## Current state: M1 + M3 + M5; optional embeddings and hybrid; M2 disabled
 
 The required M1 experiment improved evaluation from **6/12 to 9/12**.
 The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
@@ -25,8 +25,8 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
 **10/12**, and **53/53 tests pass** in both modes. See the [M2 report](docs/m2-report.md).
 
 An optional local embeddings backend is now implemented for a separate advanced
-experiment. The default remains lexical retrieval; the expanded offline unit
-suite now passes **86/86** tests. The lexical results still match the retained 10/12
+experiment. The default remains lexical retrieval; its saved offline unit
+suite passed **86/86** tests. The lexical results still match the retained 10/12
 baseline. The first embeddings run at threshold 0.10 gave 10/12 (E05 fixed,
 E10 regressed). A separate development-set calibration selected cosine refusal
 threshold **0.50**, yielding **11/12** with E10 fixed and no new regressions.
@@ -52,6 +52,16 @@ on 20 October 2026, accepting the documented limitations of this optional
 experiment. The embeddings work is now merged into `main` as `f2c808d`
 (`Embeddings (#2)`). **Milan leads the Week 7 demonstration** on 21 October.
 The assignment's separate review by another pair is still pending.
+
+The separate optional hybrid experiment on `008-hybrid-ranking` restores E09's
+`IT portal / Hardware` location while retaining the deadline. It keeps the best
+semantic match and fills the remaining slot using equal-weight reciprocal rank
+fusion (constant 60). Full evaluation remains **12/12**, and **113/113 tests pass**.
+This has a measured tradeoff: E01 and E05 gain unrelated secondary citations,
+reducing mean citation precision **0.9444 to 0.8333** relative to embeddings.
+Hybrid stays opt-in; the default and both earlier backends reproduce their
+baselines. See the [hybrid report](docs/hybrid-report.md) for all regressions,
+the planning diagnostic, and evidence of E09 completeness beyond its fixed PASS.
 
 The 20 October submission check on merged `main` reproduced **86/86 tests**,
 **10/12 lexical** and **12/12 optional embeddings**, with the same eval hash.
@@ -120,6 +130,23 @@ lexical scores and 0.51 for embeddings cosine scores (an eval-informed follow-up
 to the separate development calibration at 0.50).
 See the quickstart above before running full evaluation.
 
+### Optional hybrid retrieval
+
+Use the same prepared model and dependencies as embeddings:
+
+```powershell
+.\.venv\Scripts\python.exe -m src.cli --retrieval-backend hybrid --question "Where do I request a replacement laptop and how long does it take?" --show-retrieved
+```
+
+For evaluation, set `RAG_RETRIEVAL_BACKEND=hybrid` in the environment and use the
+existing runner. Hybrid selects the strongest semantic match first, then fills
+remaining slots by fusing the complete eligible lexical and semantic rankings.
+The refusal threshold remains 0.51 on selected raw cosine evidence; RRF scores
+are only used for ranking. `--show-retrieved` labels both score types. E09 should
+include `IT portal`, `Hardware`, and `5 business days`. See the
+[validation guide](specs/008-hybrid-ranking/quickstart.md) and
+[measured tradeoffs](docs/hybrid-report.md) before choosing this optional backend.
+
 ## Commands
 
 | Command | What it does |
@@ -127,6 +154,7 @@ See the quickstart above before running full evaluation.
 | `python -m src.cli --question "How often do passwords need to be changed?"` | Answer or refusal with citations (title, version, status) |
 | `python -m src.cli --question "..." --show-retrieved` | Also prints retrieved chunks with their scores |
 | `python -m src.cli --retrieval-backend embeddings --question "..." --show-retrieved` | Offline local semantic retrieval after explicit model setup |
+| `python -m src.cli --retrieval-backend hybrid --question "..." --show-retrieved` | Keep the best semantic evidence, then select complementary evidence by rank fusion |
 | `python -m src.eval_runner --out results/current-verification.json` | Runs the current M1+M3+M5 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |

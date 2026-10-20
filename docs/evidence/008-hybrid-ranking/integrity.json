@@ -1,0 +1,26 @@
+{
+  "changed_pipeline_files": [
+    "src/cli.py",
+    "src/config.py",
+    "src/rag.py",
+    "src/retrieval.py"
+  ],
+  "protected_paths_unchanged": true,
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "sha256": {
+    "src/__init__.py": "da347dee6bd3bb948c5515e7b3f387671889840e5b0778549f7b757ec41eba21",
+    "src/chunking.py": "03a8aa6bb74e567349cb0e15cdb21aaae42b7afb00563dad2f91e4e7dd3c6c27",
+    "src/cli.py": "6676ef52b61c901d6c0ca5f01bdc744669d28c790815bdf81714228f3d07e7db",
+    "src/config.py": "65d409c7a47ed6313e6205d3c5d56891f2ce1912c4d8f9cc5d3b9ecec62aeaed",
+    "src/corpus.py": "52cceca071e43682705234713d12a4b94bbf3617e9e7c44cfcba1f6f94a6ef78",
+    "src/embeddings.py": "9f3c5bc2ba881fb7c41043a126efe3f386f0121abf4ab765948107966e30385e",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/prepare_embeddings.py": "054763a5930225c7080b5e7423fc4778ad316848830ad4cd6f034ba8fe2969d8",
+    "src/rag.py": "733767271b73b0a13369b963fd4dab36ccfa18dea1f75c2c121304608e53e9bf",
+    "src/retrieval.py": "48b40d7819eede95699f9b381a57a1e65027822b8a75940bcf35119410842dd2",
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "requirements.txt": "d3ca3c118423d8e5f7c9b9852567d44ebd4567206f97bed0c0910c8c0f3a2ac3",
+    "requirements-embeddings.txt": "abe89fb549bd47826bafe846451603468d6ca60971565acdfb8c7cca5af81543"
+  }
+}

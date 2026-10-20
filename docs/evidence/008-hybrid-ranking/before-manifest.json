@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-10-20T15:04:13.552304+00:00",
+  "git_head": "ed0f858831c713ad3fb653e807b4c3b070baa213",
+  "branch": "008-hybrid-ranking",
+  "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "sha256": {
+    "src/__init__.py": "da347dee6bd3bb948c5515e7b3f387671889840e5b0778549f7b757ec41eba21",
+    "src/chunking.py": "03a8aa6bb74e567349cb0e15cdb21aaae42b7afb00563dad2f91e4e7dd3c6c27",
+    "src/cli.py": "f049215ef66174a89bbf965cd1507ac27f2e6a4d2a553b455f6b46fac6a74bd0",
+    "src/config.py": "c7f715840770b834933ccafd95113a29fe022b2595544fdf92e5b3191026a2a4",
+    "src/corpus.py": "52cceca071e43682705234713d12a4b94bbf3617e9e7c44cfcba1f6f94a6ef78",
+    "src/embeddings.py": "9f3c5bc2ba881fb7c41043a126efe3f386f0121abf4ab765948107966e30385e",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/prepare_embeddings.py": "054763a5930225c7080b5e7423fc4778ad316848830ad4cd6f034ba8fe2969d8",
+    "src/rag.py": "c5d238fbd4657715fca39b57082d555523280d143bbdeaf3419cb10518aa1c63",
+    "src/retrieval.py": "0f2484e9d89fbf8cbc6a47e6e1d0a2e51e3feb0597ffa2bfaf9b1caf8a89243a",
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "requirements.txt": "d3ca3c118423d8e5f7c9b9852567d44ebd4567206f97bed0c0910c8c0f3a2ac3",
+    "requirements-embeddings.txt": "abe89fb549bd47826bafe846451603468d6ca60971565acdfb8c7cca5af81543"
+  }
+}

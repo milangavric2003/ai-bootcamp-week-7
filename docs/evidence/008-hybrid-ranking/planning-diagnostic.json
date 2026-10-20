@@ -1,0 +1,275 @@
+{
+  "purpose": "Preimplementation planning diagnostic; not a pipeline measurement.",
+  "rrf_constant": 60,
+  "rankings": "complete independently min-score-filtered rankings",
+  "summaries": {
+    "plain_rrf": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 0.875
+    },
+    "semantic_anchor_rrf": {
+      "passed": 12,
+      "total": 12,
+      "behaviour_accuracy": 1.0,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 0.8333
+    }
+  },
+  "questions": [
+    {
+      "id": "E01",
+      "plain_rrf": {
+        "selected": [
+          "hb-07-chunk-0",
+          "hb-03-chunk-0"
+        ],
+        "confidence": 0.8109420414312462,
+        "pass": true,
+        "citation_precision": 0.5
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-07-chunk-0",
+          "hb-03-chunk-0"
+        ],
+        "confidence": 0.8109420414312462,
+        "pass": true,
+        "citation_precision": 0.5
+      }
+    },
+    {
+      "id": "E02",
+      "plain_rrf": {
+        "selected": [
+          "hb-05-chunk-0",
+          "hb-05-chunk-2"
+        ],
+        "confidence": 0.739621887175911,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-05-chunk-0",
+          "hb-05-chunk-2"
+        ],
+        "confidence": 0.739621887175911,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E03",
+      "plain_rrf": {
+        "selected": [
+          "hb-08-chunk-0",
+          "hb-08-chunk-1"
+        ],
+        "confidence": 0.7940280840475706,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-08-chunk-0",
+          "hb-08-chunk-1"
+        ],
+        "confidence": 0.7940280840475706,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E04",
+      "plain_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-01-chunk-0"
+        ],
+        "confidence": 0.7388446425145531,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-01-chunk-0"
+        ],
+        "confidence": 0.7388446425145531,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E05",
+      "plain_rrf": {
+        "selected": [
+          "hb-06-chunk-0",
+          "hb-01-chunk-2"
+        ],
+        "confidence": 0.43569169275944936,
+        "pass": false,
+        "citation_precision": null
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-06-chunk-0"
+        ],
+        "confidence": 0.632195791483886,
+        "pass": true,
+        "citation_precision": 0.5
+      }
+    },
+    {
+      "id": "E06",
+      "plain_rrf": {
+        "selected": [
+          "hb-03-chunk-0",
+          "hb-03-chunk-2"
+        ],
+        "confidence": 0.8534131748973931,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-03-chunk-0",
+          "hb-03-chunk-2"
+        ],
+        "confidence": 0.8534131748973931,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E07",
+      "plain_rrf": {
+        "selected": [
+          "hb-10-chunk-0",
+          "hb-03-chunk-3"
+        ],
+        "confidence": 0.7701678364738013,
+        "pass": true,
+        "citation_precision": 0.5
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-10-chunk-0",
+          "hb-03-chunk-3"
+        ],
+        "confidence": 0.7701678364738013,
+        "pass": true,
+        "citation_precision": 0.5
+      }
+    },
+    {
+      "id": "E08",
+      "plain_rrf": {
+        "selected": [
+          "hb-04-chunk-0",
+          "hb-04-chunk-1"
+        ],
+        "confidence": 0.7497067194159397,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-04-chunk-0",
+          "hb-04-chunk-1"
+        ],
+        "confidence": 0.7497067194159397,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E09",
+      "plain_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-01-chunk-2"
+        ],
+        "confidence": 0.6765571633901564,
+        "pass": true,
+        "citation_precision": 1.0
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-01-chunk-2"
+        ],
+        "confidence": 0.6765571633901564,
+        "pass": true,
+        "citation_precision": 1.0
+      }
+    },
+    {
+      "id": "E10",
+      "plain_rrf": {
+        "selected": [
+          "hb-01-chunk-1",
+          "hb-05-chunk-1"
+        ],
+        "confidence": 0.030674804299131518,
+        "pass": true,
+        "citation_precision": null
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-08-chunk-0",
+          "hb-01-chunk-1"
+        ],
+        "confidence": 0.1751216588919885,
+        "pass": true,
+        "citation_precision": null
+      }
+    },
+    {
+      "id": "E11",
+      "plain_rrf": {
+        "selected": [
+          "hb-07-chunk-1",
+          "hb-07-chunk-0"
+        ],
+        "confidence": 0.504503071265686,
+        "pass": true,
+        "citation_precision": null
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-07-chunk-1",
+          "hb-07-chunk-0"
+        ],
+        "confidence": 0.504503071265686,
+        "pass": true,
+        "citation_precision": null
+      }
+    },
+    {
+      "id": "E12",
+      "plain_rrf": {
+        "selected": [
+          "hb-05-chunk-2",
+          "hb-01-chunk-0"
+        ],
+        "confidence": 0.078146932542188,
+        "pass": true,
+        "citation_precision": null
+      },
+      "semantic_anchor_rrf": {
+        "selected": [
+          "hb-05-chunk-2",
+          "hb-01-chunk-0"
+        ],
+        "confidence": 0.078146932542188,
+        "pass": true,
+        "citation_precision": null
+      }
+    }
+  ]
+}

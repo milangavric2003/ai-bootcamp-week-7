@@ -10,7 +10,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Week 7 RAG checkpoint")
     parser.add_argument("--question", required=True, help="Question to ask over the handbook")
     parser.add_argument("--show-retrieved", action="store_true", help="Also print retrieved chunks and scores")
-    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings"],
+    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings", "hybrid"],
                         default=config.RETRIEVAL_BACKEND, help="Retrieval method (default: lexical or RAG_RETRIEVAL_BACKEND)")
     return parser.parse_args()
 
@@ -37,7 +37,11 @@ def main() -> None:
     if args.show_retrieved:
         print("\nRetrieved:")
         for item in result.retrieved:
-            print(f"  {item.score:.4f}  {item.chunk.chunk_id}: {item.chunk.text}")
+            if item.semantic_score is not None:
+                print(f"  RRF={item.score:.4f} cosine={item.semantic_score:.4f}  "
+                      f"{item.chunk.chunk_id}: {item.chunk.text}")
+            else:
+                print(f"  {item.score:.4f}  {item.chunk.chunk_id}: {item.chunk.text}")
 
 
 if __name__ == "__main__":

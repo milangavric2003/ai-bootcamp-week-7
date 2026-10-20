@@ -26,8 +26,13 @@ def select_citations(results: list[RetrievalResult]) -> list[RetrievalResult]:
 def build_grounded_answer(question: str, chunks: list[Chunk]) -> RagAnswer:
     results = retrieve_top_k(question, chunks)
     threshold = (config.EMBEDDING_REFUSAL_THRESHOLD
-                 if config.RETRIEVAL_BACKEND == "embeddings" else config.REFUSAL_THRESHOLD)
-    if not results or results[0].score < threshold:
+                 if config.RETRIEVAL_BACKEND in {"embeddings", "hybrid"} else config.REFUSAL_THRESHOLD)
+    confidence = results[0].score if results else 0.0
+    if config.RETRIEVAL_BACKEND == "hybrid":
+        # Relative fused rank cannot establish support; use selected raw cosines.
+        confidence = max((item.semantic_score for item in results
+                          if item.semantic_score is not None), default=float("-inf"))
+    if not results or confidence < threshold:
         return RagAnswer(answer=REFUSAL_MESSAGE, citations=[], refused=True, retrieved=results)
 
     cited = select_citations(results)

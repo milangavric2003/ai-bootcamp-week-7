@@ -1,0 +1,526 @@
+FFFFFFFFFFFFFFFF                                                         [100%]
+================================== FAILURES ===================================
+__________ test_e09_selected_evidence_contains_location_and_deadline __________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725620C0>
+
+    def test_e09_selected_evidence_contains_location_and_deadline(hybrid_scores):
+        hybrid_scores({"hb-01-chunk-1": 0.6766, "hb-01-chunk-0": 0.6628,
+                       "hb-01-chunk-2": 0.6434})
+>       results = retrieve_top_k(
+            "Where do I request a replacement laptop and how long does it take?",
+            build_chunks(load_corpus()),
+        )
+
+tests\test_hybrid.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'Where do I request a replacement laptop and how long does it take?'
+chunks = [Chunk(chunk_id='hb-01-chunk-0', doc_id='hb-01', title='Equipment replacement', version='2026', status='current', text...Remote work policy', version='2024', status='superseded', text='Remote work days can be moved within same week.'), ...]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+____ test_e05_preserves_semantic_deadline_despite_misleading_word_overlap _____
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872562840>
+
+    def test_e05_preserves_semantic_deadline_despite_misleading_word_overlap(hybrid_scores):
+        hybrid_scores({"hb-01-chunk-1": 0.6322, "hb-01-chunk-0": 0.4767,
+                       "hb-01-chunk-2": 0.4357, "hb-06-chunk-0": 0.42})
+>       results = retrieve_top_k("How long until I get a new notebook computer?",
+                                 build_chunks(load_corpus()))
+
+tests\test_hybrid.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'How long until I get a new notebook computer?'
+chunks = [Chunk(chunk_id='hb-01-chunk-0', doc_id='hb-01', title='Equipment replacement', version='2026', status='current', text...Remote work policy', version='2024', status='superseded', text='Remote work days can be moved within same week.'), ...]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+__ test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[1] __
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872561E40>
+k = 1
+
+    @pytest.mark.parametrize("k", [1, 2, 10])
+    def test_semantic_anchor_survives_higher_rrf_candidate_without_duplication(hybrid_scores, k):
+        hybrid_scores({"anchor": 0.9, "other": 0.8})
+>       results = retrieve_top_k("request", [chunk("anchor", "deadline"),
+                                             chunk("other", "request")], k=k)
+
+tests\test_hybrid.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='anchor', doc_id='doc', title='Title', version='2026', status='current', text='deadline'), Chunk(chunk_id='other', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 1
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+__ test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[2] __
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872562160>
+k = 2
+
+    @pytest.mark.parametrize("k", [1, 2, 10])
+    def test_semantic_anchor_survives_higher_rrf_candidate_without_duplication(hybrid_scores, k):
+        hybrid_scores({"anchor": 0.9, "other": 0.8})
+>       results = retrieve_top_k("request", [chunk("anchor", "deadline"),
+                                             chunk("other", "request")], k=k)
+
+tests\test_hybrid.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='anchor', doc_id='doc', title='Title', version='2026', status='current', text='deadline'), Chunk(chunk_id='other', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+_ test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[10] __
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725625C0>
+k = 10
+
+    @pytest.mark.parametrize("k", [1, 2, 10])
+    def test_semantic_anchor_survives_higher_rrf_candidate_without_duplication(hybrid_scores, k):
+        hybrid_scores({"anchor": 0.9, "other": 0.8})
+>       results = retrieve_top_k("request", [chunk("anchor", "deadline"),
+                                             chunk("other", "request")], k=k)
+
+tests\test_hybrid.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='anchor', doc_id='doc', title='Title', version='2026', status='current', text='deadline'), Chunk(chunk_id='other', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 10
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+________ test_component_only_membership_keeps_raw_semantic_confidence _________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872562520>
+
+    def test_component_only_membership_keeps_raw_semantic_confidence(hybrid_scores):
+        hybrid_scores({"z-anchor": 0.8, "a-request": 0.005})
+>       results = retrieve_top_k("request", [chunk("z-anchor", "deadline"),
+                                             chunk("a-request", "request")])
+
+tests\test_hybrid.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='z-anchor', doc_id='doc', title='Title', version='2026', status='current', text='deadline'), Chunk(chunk_id='a-request', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+______________ test_raw_minimum_is_not_reapplied_to_fused_score _______________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872562F20>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A87250EF50>
+
+    def test_raw_minimum_is_not_reapplied_to_fused_score(hybrid_scores, monkeypatch):
+        hybrid_scores({"proof": 0.8})
+        monkeypatch.setattr(config, "RETRIEVAL_MIN_SCORE", 0.5)
+>       results = retrieve_top_k("request", [chunk("proof", "request")])
+
+tests\test_hybrid.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+____________ test_without_word_matches_semantic_order_is_preserved ____________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563100>
+
+    def test_without_word_matches_semantic_order_is_preserved(hybrid_scores):
+        hybrid_scores({"a": 0.6, "b": 0.8})
+>       results = retrieve_top_k("notebook", [chunk("a", "laptop"), chunk("b", "computer")])
+
+tests\test_hybrid.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'notebook'
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='laptop'), Chunk(chunk_id='b', doc_id='doc', title='Title', version='2026', status='current', text='computer')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+_________________ test_component_and_fused_ties_use_chunk_id __________________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725637E0>
+
+    def test_component_and_fused_ties_use_chunk_id(hybrid_scores):
+        hybrid_scores({"a": 0.7, "z": 0.7})
+        chunks = [chunk("z", "request"), chunk("a", "request")]
+>       assert [r.chunk.chunk_id for r in retrieve_top_k("request", chunks)] == ["a", "z"]
+
+tests\test_hybrid.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='z', doc_id='doc', title='Title', version='2026', status='current', text='request'), Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+________ test_superseded_sources_are_filtered_before_semantic_scoring _________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725639C0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8726034D0>
+
+    def test_superseded_sources_are_filtered_before_semantic_scoring(hybrid_scores, monkeypatch):
+        seen = []
+    
+        def score(query, chunks):
+            seen.extend(c.chunk_id for c in chunks)
+            return [0.8] * len(chunks)
+    
+        monkeypatch.setattr(embeddings, "score_chunks", score)
+>       results = retrieve_top_k("request", [chunk("old", "request", "superseded"),
+                                             chunk("current", "request")])
+
+tests\test_hybrid.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='old', doc_id='doc', title='Title', version='2026', status='superseded', text='request'), Chunk(chunk_id='current', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+___________ test_empty_hybrid_inputs_do_not_score[request-chunks0] ____________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563D80>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A872603BD0>
+query = 'request', chunks = []
+
+    @pytest.mark.parametrize("query,chunks", [
+        ("request", []),
+        (" ", [chunk("a", "request")]),
+        ("request", [chunk("old", "request", "superseded")]),
+    ])
+    def test_empty_hybrid_inputs_do_not_score(hybrid_scores, monkeypatch, query, chunks):
+        def forbidden(*args):
+            raise AssertionError("Empty input loaded the model")
+    
+        monkeypatch.setattr(embeddings, "score_chunks", forbidden)
+>       assert retrieve_top_k(query, chunks) == []
+
+tests\test_hybrid.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request', chunks = [], k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+______________ test_empty_hybrid_inputs_do_not_score[ -chunks1] _______________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563E20>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8725672B0>
+query = ' '
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+
+    @pytest.mark.parametrize("query,chunks", [
+        ("request", []),
+        (" ", [chunk("a", "request")]),
+        ("request", [chunk("old", "request", "superseded")]),
+    ])
+    def test_empty_hybrid_inputs_do_not_score(hybrid_scores, monkeypatch, query, chunks):
+        def forbidden(*args):
+            raise AssertionError("Empty input loaded the model")
+    
+        monkeypatch.setattr(embeddings, "score_chunks", forbidden)
+>       assert retrieve_top_k(query, chunks) == []
+
+tests\test_hybrid.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = ' '
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+___________ test_empty_hybrid_inputs_do_not_score[request-chunks2] ____________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725800E0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724BB7D0>
+query = 'request'
+chunks = [Chunk(chunk_id='old', doc_id='doc', title='Title', version='2026', status='superseded', text='request')]
+
+    @pytest.mark.parametrize("query,chunks", [
+        ("request", []),
+        (" ", [chunk("a", "request")]),
+        ("request", [chunk("old", "request", "superseded")]),
+    ])
+    def test_empty_hybrid_inputs_do_not_score(hybrid_scores, monkeypatch, query, chunks):
+        def forbidden(*args):
+            raise AssertionError("Empty input loaded the model")
+    
+        monkeypatch.setattr(embeddings, "score_chunks", forbidden)
+>       assert retrieve_top_k(query, chunks) == []
+
+tests\test_hybrid.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='old', doc_id='doc', title='Title', version='2026', status='superseded', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+______________ test_hybrid_model_errors_do_not_silently_fallback ______________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A8725804A0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724BBA10>
+
+    def test_hybrid_model_errors_do_not_silently_fallback(hybrid_scores, monkeypatch):
+        def unavailable(*args):
+            raise RuntimeError("Run python -m src.prepare_embeddings first")
+    
+        monkeypatch.setattr(embeddings, "score_chunks", unavailable)
+        with pytest.raises(RuntimeError, match="prepare_embeddings"):
+>           retrieve_top_k("request", [chunk("a", "request")])
+
+tests\test_hybrid.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+________________ test_nonpositive_rrf_constant_is_rejected[0] _________________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563EC0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724B7A10>
+constant = 0
+
+    @pytest.mark.parametrize("constant", [0, -1])
+    def test_nonpositive_rrf_constant_is_rejected(hybrid_scores, monkeypatch, constant):
+        hybrid_scores({"a": 0.8})
+        monkeypatch.setattr(config, "HYBRID_RRF_CONSTANT", constant)
+        with pytest.raises(ValueError, match="HYBRID_RRF_CONSTANT"):
+>           retrieve_top_k("request", [chunk("a", "request")])
+
+tests\test_hybrid.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+
+During handling of the above exception, another exception occurred:
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563EC0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724B7A10>
+constant = 0
+
+    @pytest.mark.parametrize("constant", [0, -1])
+    def test_nonpositive_rrf_constant_is_rejected(hybrid_scores, monkeypatch, constant):
+        hybrid_scores({"a": 0.8})
+        monkeypatch.setattr(config, "HYBRID_RRF_CONSTANT", constant)
+>       with pytest.raises(ValueError, match="HYBRID_RRF_CONSTANT"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'HYBRID_RRF_CONSTANT'
+E        Input: 'Unknown RETRIEVAL_BACKEND: hybrid'
+
+tests\test_hybrid.py:135: AssertionError
+________________ test_nonpositive_rrf_constant_is_rejected[-1] ________________
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563880>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724B7280>
+constant = -1
+
+    @pytest.mark.parametrize("constant", [0, -1])
+    def test_nonpositive_rrf_constant_is_rejected(hybrid_scores, monkeypatch, constant):
+        hybrid_scores({"a": 0.8})
+        monkeypatch.setattr(config, "HYBRID_RRF_CONSTANT", constant)
+        with pytest.raises(ValueError, match="HYBRID_RRF_CONSTANT"):
+>           retrieve_top_k("request", [chunk("a", "request")])
+
+tests\test_hybrid.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+query = 'request'
+chunks = [Chunk(chunk_id='a', doc_id='doc', title='Title', version='2026', status='current', text='request')]
+k = 2
+
+    def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+        k = config.TOP_K if k is None else k
+        if k <= 0:
+            raise ValueError("k must be > 0")
+    
+        if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+>           raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+E           ValueError: Unknown RETRIEVAL_BACKEND: hybrid
+
+src\retrieval.py:54: ValueError
+
+During handling of the above exception, another exception occurred:
+
+hybrid_scores = <function hybrid_scores.<locals>.set_scores at 0x000001A872563880>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A8724B7280>
+constant = -1
+
+    @pytest.mark.parametrize("constant", [0, -1])
+    def test_nonpositive_rrf_constant_is_rejected(hybrid_scores, monkeypatch, constant):
+        hybrid_scores({"a": 0.8})
+        monkeypatch.setattr(config, "HYBRID_RRF_CONSTANT", constant)
+>       with pytest.raises(ValueError, match="HYBRID_RRF_CONSTANT"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'HYBRID_RRF_CONSTANT'
+E        Input: 'Unknown RETRIEVAL_BACKEND: hybrid'
+
+tests\test_hybrid.py:135: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_hybrid.py::test_e09_selected_evidence_contains_location_and_deadline
+FAILED tests/test_hybrid.py::test_e05_preserves_semantic_deadline_despite_misleading_word_overlap
+FAILED tests/test_hybrid.py::test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[1]
+FAILED tests/test_hybrid.py::test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[2]
+FAILED tests/test_hybrid.py::test_semantic_anchor_survives_higher_rrf_candidate_without_duplication[10]
+FAILED tests/test_hybrid.py::test_component_only_membership_keeps_raw_semantic_confidence
+FAILED tests/test_hybrid.py::test_raw_minimum_is_not_reapplied_to_fused_score
+FAILED tests/test_hybrid.py::test_without_word_matches_semantic_order_is_preserved
+FAILED tests/test_hybrid.py::test_component_and_fused_ties_use_chunk_id - Val...
+FAILED tests/test_hybrid.py::test_superseded_sources_are_filtered_before_semantic_scoring
+FAILED tests/test_hybrid.py::test_empty_hybrid_inputs_do_not_score[request-chunks0]
+FAILED tests/test_hybrid.py::test_empty_hybrid_inputs_do_not_score[ -chunks1]
+FAILED tests/test_hybrid.py::test_empty_hybrid_inputs_do_not_score[request-chunks2]
+FAILED tests/test_hybrid.py::test_hybrid_model_errors_do_not_silently_fallback
+FAILED tests/test_hybrid.py::test_nonpositive_rrf_constant_is_rejected[0] - A...
+FAILED tests/test_hybrid.py::test_nonpositive_rrf_constant_is_rejected[-1] - ...
+16 failed in 0.18s

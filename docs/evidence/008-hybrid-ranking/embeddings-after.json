@@ -1,0 +1,322 @@
+{
+  "created_at": "2026-10-20T15:15:12+00:00",
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "config": {
+    "CHUNK_STRATEGY": "sentences",
+    "CHUNK_SIZE": 140,
+    "CHUNK_OVERLAP": 30,
+    "RETRIEVAL_BACKEND": "embeddings",
+    "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+    "EMBEDDING_REVISION": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "EMBEDDING_DEVICE": "cpu",
+    "EMBEDDING_CACHE_DIR": ".cache/embeddings",
+    "TOP_K": 2,
+    "RETRIEVAL_MIN_SCORE": 0.01,
+    "HYBRID_RRF_CONSTANT": 60,
+    "STOPWORDS_ENABLED": false,
+    "CURRENT_ONLY": true,
+    "REFUSAL_THRESHOLD": 0.1,
+    "EMBEDDING_REFUSAL_THRESHOLD": 0.51,
+    "CITATION_MIN_SCORE": null
+  },
+  "summary": {
+    "passed": 12,
+    "total": 12,
+    "behaviour_accuracy": 1.0,
+    "retrieval_hit_rate": 1.0,
+    "mean_citation_precision": 0.9444
+  },
+  "results": [
+    {
+      "id": "E01",
+      "category": "supported",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-07-chunk-0",
+        "hb-07-chunk-1"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-07-chunk-0",
+          "score": 0.810942
+        },
+        {
+          "chunk_id": "hb-07-chunk-1",
+          "score": 0.549988
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E02",
+      "category": "supported",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-05-chunk-0",
+        "hb-05-chunk-2"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-05-chunk-0",
+          "score": 0.739622
+        },
+        {
+          "chunk_id": "hb-05-chunk-2",
+          "score": 0.457195
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E03",
+      "category": "supported",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-08-chunk-0",
+        "hb-08-chunk-1"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-08-chunk-0",
+          "score": 0.794028
+        },
+        {
+          "chunk_id": "hb-08-chunk-1",
+          "score": 0.554997
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E04",
+      "category": "chunk-boundary",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-0"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-01-chunk-1",
+          "score": 0.738845
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "score": 0.594371
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E05",
+      "category": "paraphrase",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-0"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-01-chunk-1",
+          "score": 0.632196
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "score": 0.476713
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E06",
+      "category": "versioned",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-03-chunk-0",
+        "hb-03-chunk-2"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-03-chunk-0",
+          "score": 0.853413
+        },
+        {
+          "chunk_id": "hb-03-chunk-2",
+          "score": 0.716668
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E07",
+      "category": "supported",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 0.5,
+      "cited_chunk_ids": [
+        "hb-10-chunk-0",
+        "hb-03-chunk-3"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-10-chunk-0",
+          "score": 0.770168
+        },
+        {
+          "chunk_id": "hb-03-chunk-3",
+          "score": 0.58645
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E08",
+      "category": "supported",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-04-chunk-0",
+        "hb-04-chunk-1"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-04-chunk-0",
+          "score": 0.749707
+        },
+        {
+          "chunk_id": "hb-04-chunk-1",
+          "score": 0.593102
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E09",
+      "category": "chunk-boundary",
+      "expected": "answer",
+      "got": "answer",
+      "behaviour_correct": true,
+      "retrieval_hit": true,
+      "fact_in_citations": true,
+      "citation_precision": 1.0,
+      "cited_chunk_ids": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-0"
+      ],
+      "top_k": [
+        {
+          "chunk_id": "hb-01-chunk-1",
+          "score": 0.676557
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "score": 0.662757
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E10",
+      "category": "unsupported",
+      "expected": "refuse",
+      "got": "refuse",
+      "behaviour_correct": true,
+      "retrieval_hit": null,
+      "fact_in_citations": null,
+      "citation_precision": null,
+      "cited_chunk_ids": [],
+      "top_k": [
+        {
+          "chunk_id": "hb-08-chunk-0",
+          "score": 0.175122
+        },
+        {
+          "chunk_id": "hb-06-chunk-0",
+          "score": 0.095382
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E11",
+      "category": "unsupported-near-domain",
+      "expected": "refuse",
+      "got": "refuse",
+      "behaviour_correct": true,
+      "retrieval_hit": null,
+      "fact_in_citations": null,
+      "citation_precision": null,
+      "cited_chunk_ids": [],
+      "top_k": [
+        {
+          "chunk_id": "hb-07-chunk-1",
+          "score": 0.504503
+        },
+        {
+          "chunk_id": "hb-07-chunk-0",
+          "score": 0.483232
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "E12",
+      "category": "unsupported",
+      "expected": "refuse",
+      "got": "refuse",
+      "behaviour_correct": true,
+      "retrieval_hit": null,
+      "fact_in_citations": null,
+      "citation_precision": null,
+      "cited_chunk_ids": [],
+      "top_k": [
+        {
+          "chunk_id": "hb-05-chunk-2",
+          "score": 0.078147
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "score": 0.07008
+        }
+      ],
+      "pass": true
+    }
+  ]
+}

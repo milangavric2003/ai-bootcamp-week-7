@@ -175,11 +175,6 @@ Evidencija doprinosa prema potvrdama Milana i Vedrana i sačuvanim dokazima:
   logove provera i potvrdio rezultate, uz AI pomoć opisanu iznad.
   U zasebnom dodatnom M3 eksperimentu izabrao je promenu praga i potvrdio
   završenu ručnu evaluaciju; detalji i poreklo dokaza su u [M3 izveštaju](m3-report.md).
-  U naprednom embeddings eksperimentu izabrao je tehniku, kroz evaluaciju i CLI
-  identifikovao E10 regresiju, zatražio zasebne pragove i odobrio empirijsko
-  pomeranje na 0.51. Završio je nezavisnu proveru: 86 testova, 12/12 embeddings,
-  10/12 lexical, poređenja i ručni pregled odgovora; potvrda 20. oktobra i
-  [dokazi](evidence/vedran-threshold-051-20261019-234713/verification.md).
 - Osoba koja vodi demonstraciju Week 7: **još nije određena**.
 - Drugi par i njihov komentar (jedna promena; podrška zaključku rezultatima;
   izostavljene regresije/ograničenja): **peer review još nije pribavljen**.

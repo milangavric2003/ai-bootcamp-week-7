@@ -1,0 +1,120 @@
+=== E04: How many business days does a laptop replacement take? ===
+Question:
+How many business days does a laptop replacement take?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+Refused: False
+Citations:
+  hb-01-chunk-1: Equipment replacement (version 2026, current)
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.7388  hb-01-chunk-1: After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+  0.5944  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+=== E05: How long until I get a new notebook computer? ===
+Question:
+How long until I get a new notebook computer?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+Refused: False
+Citations:
+  hb-01-chunk-1: Equipment replacement (version 2026, current)
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.6322  hb-01-chunk-1: After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+  0.4767  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+=== E06: How many days per week can I work remotely? ===
+Question:
+How many days per week can I work remotely?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-03-chunk-0] Remote work: employees can work remotely up to 3 days per week.
+[hb-03-chunk-2] Remote work days can be moved within same week.
+
+Refused: False
+Citations:
+  hb-03-chunk-0: Remote work policy (version 2026, current)
+  hb-03-chunk-2: Remote work policy (version 2026, current)
+
+Retrieved:
+  0.8534  hb-03-chunk-0: Remote work: employees can work remotely up to 3 days per week.
+  0.7167  hb-03-chunk-2: Remote work days can be moved within same week.
+
+=== E07: What are the IT support hours? ===
+Question:
+What are the IT support hours?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-10-chunk-0] IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+[hb-03-chunk-3] Core hours from 10:00 to 15:00 apply on remote days, and you must be reachable by chat and phone during core hours.
+
+Refused: False
+Citations:
+  hb-10-chunk-0: IT support (version 2026, current)
+  hb-03-chunk-3: Remote work policy (version 2026, current)
+
+Retrieved:
+  0.7702  hb-10-chunk-0: IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+  0.5865  hb-03-chunk-3: Core hours from 10:00 to 15:00 apply on remote days, and you must be reachable by chat and phone during core hours.
+
+=== E09: Where do I request a replacement laptop and how long does it take? ===
+Question:
+Where do I request a replacement laptop and how long does it take?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+Refused: False
+Citations:
+  hb-01-chunk-1: Equipment replacement (version 2026, current)
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.6766  hb-01-chunk-1: After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+  0.6628  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+=== E10: What is the current company stock price? ===
+Question:
+What is the current company stock price?
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:
+  0.1751  hb-08-chunk-0: Each employee has a training budget of 800 EUR per year for courses, conferences and certifications.
+  0.0954  hb-06-chunk-0: New colleagues follow a two-week onboarding plan.
+
+=== E11: What is the parental leave policy? ===
+Question:
+What is the parental leave policy?
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:
+  0.5045  hb-07-chunk-1: Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+  0.4832  hb-07-chunk-0: Annual leave policy: employees get 22 days of annual leave per calendar year. Leave requests must be made two weeks in advance in HR portal.
+

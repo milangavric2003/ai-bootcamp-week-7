@@ -1,0 +1,109 @@
+{
+  "review_date": "2026-10-20",
+  "requested_by": "Milan",
+  "branch_contributor": "Vedran",
+  "checks_executed_by": "Codex",
+  "human_pr_approval": "approved by Milan in conversation on 2026-10-20, acknowledging the documented limitations",
+  "approval_source": "Milan explicitly stated that he approves the PR after discussion of E09, E07 and the known-eval tuning limitation",
+  "github_pr_actions": "Milan will approve and merge manually after committing and pushing the documentation updates; these GitHub actions are not recorded as completed",
+  "branch": "embeddings",
+  "reviewed_head": "c290ffd9dbddb5b989409334b4c487c0d62f3d22",
+  "comparison_base": "0615f72b0a3966ced38d55a76b573aac68dc6535",
+  "remote_status": "git ls-remote confirmed on 2026-10-20 that live origin/main and origin/embeddings match comparison_base and reviewed_head. PR comments, approvals and CI checks were not inspected.",
+  "python": "3.13.7",
+  "packages": {
+    "sentence-transformers": "6.1.0",
+    "transformers": "5.20.2",
+    "torch": "2.14.1",
+    "numpy": "2.5.4",
+    "pytest": "8.3.3"
+  },
+  "pytest": {
+    "passed": 86,
+    "failed": 0,
+    "seconds": 0.21,
+    "command": "python -m pytest -p no:cacheprovider --basetemp <fresh .venv/pytest-milan-review-GUID directory>",
+    "note": "Captured command output in pytest.txt; checks executed by Codex."
+  },
+  "reproduction": {
+    "lexical": {
+      "reference": "docs/evidence/004-m2/retained.json",
+      "equal_results": true,
+      "equal_summary": true,
+      "equal_eval_hash": true,
+      "config_differences": {
+        "EMBEDDING_CACHE_DIR": [
+          null,
+          ".cache/embeddings"
+        ],
+        "EMBEDDING_DEVICE": [
+          null,
+          "cpu"
+        ],
+        "EMBEDDING_MODEL": [
+          null,
+          "sentence-transformers/all-MiniLM-L6-v2"
+        ],
+        "EMBEDDING_REFUSAL_THRESHOLD": [
+          null,
+          0.51
+        ],
+        "EMBEDDING_REVISION": [
+          null,
+          "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+        ],
+        "RETRIEVAL_BACKEND": [
+          null,
+          "lexical"
+        ]
+      }
+    },
+    "embeddings": {
+      "reference": "results/after-embedding-threshold-051.json",
+      "equal_results": true,
+      "equal_summary": true,
+      "equal_eval_hash": true,
+      "config_differences": {}
+    }
+  },
+  "unchanged_from_main": [
+    "eval/eval_set.json",
+    "src/eval_runner.py",
+    "src/eval_compare.py",
+    "src/chunking.py",
+    "src/corpus.py",
+    "results/before.json",
+    "results/after.json"
+  ],
+  "offline_cli": {
+    "backend": "embeddings",
+    "questions": [
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E09",
+      "E10",
+      "E11"
+    ],
+    "HF_HUB_OFFLINE": "1",
+    "socket_connect_and_connect_ex_blocked": true
+  },
+  "cached_model_dimensions": 384,
+  "sha256": {
+    "eval/eval_set.json": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+    "src/eval_runner.py": "cc00aad5d3a997772aab06c95bb57299c87c51b82be080b12608ff17a99bd704",
+    "src/eval_compare.py": "c84b246ff3006aa285af2eb2e04addd4fce5264897e0e346ef38f8013b51009c",
+    "docs/evidence/milan-embeddings-review-20261020/lexical.json": "3c00f0990d57c4dde389d512acc4f16d66a1370d394644ba77ce4422d1e1ea53",
+    "docs/evidence/milan-embeddings-review-20261020/embeddings.json": "283e7e1a2a1f9a8f0770dd6b1c79eeebd185a35558f4d951cb074e9d1c4196ab"
+  },
+  "remote_heads": {
+    "main": "0615f72b0a3966ced38d55a76b573aac68dc6535",
+    "embeddings": "c290ffd9dbddb5b989409334b4c487c0d62f3d22"
+  },
+  "manual_findings": {
+    "E09": "Lexical cites hb-01-chunk-2 and hb-01-chunk-1 (request route plus deadline); embeddings cites hb-01-chunk-1 and hb-01-chunk-0 (deadline plus replacement description), omitting IT portal / Hardware. Both pass because the metric requires only the deadline.",
+    "E07": "Citation precision falls from 1.0 lexical to 0.5 embeddings; an unrelated remote core-hours citation remains alongside correct IT support hours."
+  },
+  "internal_reviewer": "Milan"
+}

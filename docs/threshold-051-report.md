@@ -33,6 +33,17 @@ Njihovi skorovi i rangiranje se ne menjaju. Prosečna preciznost citata raste
 jer E11 više nije među odgovorenim pitanjima. E07 i dalje ima sporedni citat
 iz drugog dokumenta i preciznost 0.50: 12/12 ne znači savršen sadržaj svih odgovora.
 
+Naknadni [interni PR pregled za Milana](embeddings-pr-review.md), 20. oktobra,
+potvrdio je reprodukciju i dodatno dokumentovao ograničenje E09: embeddings
+navodi rok, ali izostavlja mesto zahteva `IT portal / Hardware`, koje lexical
+odgovor sadrži. Oba prolaze jer fiksna metrika proverava samo rok. Ovo je
+regresija sadržaja u odnosu na lexical, nastala promenom retrieval backend-a,
+a ne pomeranjem praga 0.50 na 0.51. E07 precision u odnosu na lexical pada
+sa 1.00 na 0.50. Nema PASS-to-FAIL regresija, ali ovi gubici ostaju navedeni.
+Milan je 20. oktobra u razgovoru potvrdio odobrenje spajanja ovog opcionog
+eksperimenta uz navedena ograničenja; GitHub PR korake izvršiće samostalno
+nakon commit-a i push-a dopunjene dokumentacije.
+
 Oba merenja imaju isti eval SHA-256:
 `afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064`.
 Poređenje prijavljuje samo `EMBEDDING_REFUSAL_THRESHOLD: 0.5 -> 0.51`.

@@ -4,7 +4,7 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current state: M1 + M3 + M5; M2 implemented but disabled
+## Current state: M1 + M3 + M5; optional embeddings; M2 disabled
 
 The required M1 experiment improved evaluation from **6/12 to 9/12**.
 The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
@@ -31,7 +31,7 @@ baseline. The first embeddings run at threshold 0.10 gave 10/12 (E05 fixed,
 E10 regressed). A separate development-set calibration selected cosine refusal
 threshold **0.50**, yielding **11/12** with E10 fixed and no new regressions.
 An explicit follow-up selected **0.51 after inspecting E11**, yielding **12/12**
-without regressions. This is tuning on the known eval set, not held-out validation.
+without PASS-to-FAIL regressions. This is tuning on the known eval set, not held-out validation.
 Lexical refusal stays at **0.10**. See the [0.51 report](docs/threshold-051-report.md),
 [threshold report](docs/embedding-threshold-report.md),
 [implementation notes](docs/embeddings-status.md) and
@@ -44,6 +44,15 @@ no reproduction differences. See the [verification evidence](docs/evidence/vedra
 [his lexical JSON](results/lexical-verification-20261019-234713.json) and
 [his embeddings JSON](results/embeddings-051-verification-20261019-234713.json).
 
+The [internal PR review for Milan](docs/embeddings-pr-review.md) records fresh
+86/86 tests, matching lexical and embeddings runs, and Vedran's contribution.
+Manual review found that embeddings omits E09's request location despite its PASS;
+E07 citation precision also falls from 1.00 to 0.50. Milan confirmed his approval
+on 20 October 2026, accepting the documented limitations of this optional
+experiment. He will perform the GitHub PR approval and merge manually after
+committing and pushing these documentation updates. The assignment's separate
+review by another pair is still pending.
+
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
@@ -51,15 +60,18 @@ no reproduction differences. See the [verification evidence](docs/evidence/vedra
 | Optional M5: current versions | [before-m5.json](results/before-m5.json), 10/12 | [after-m5.json](results/after-m5.json), 10/12 | [M5 report](docs/m5-report.md) |
 | Optional M2: stopwords (disabled after measurement) | [before.json](docs/evidence/004-m2/before.json), 10/12 | [after.json](docs/evidence/004-m2/after.json), 9/12; [retained.json](docs/evidence/004-m2/retained.json), 10/12 | [M2 report](docs/m2-report.md) |
 
-The current code includes all three improvements. E05 and E11 still fail;
-E06 now cites only the current policy. Irrelevant padding citations remain
-possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
+The default lexical pipeline includes M1, M3 and M5. E05 and E11 still fail in
+that mode; optional embeddings at 0.51 passes all 12 known eval questions with
+the limitations above. E06 cites only the current policy. Irrelevant padding
+citations remain possible elsewhere. Preserve every saved experiment JSON;
+use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
 M5 is complete and M2 is measured but disabled. The local embeddings component
-targeting E05 is implemented and measured, including separate threshold calibration. Grounded LLM answering
-and refusal for E11 remain a separate later experiment. No 12/12 result is
-promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
+targeting E05 is implemented and measured, including separate threshold calibration.
+Grounded LLM answering remains a possible later experiment. Embeddings currently
+refuses E11 through threshold tuning; its 12/12 result applies to the known eval
+set. The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
 experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
 

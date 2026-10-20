@@ -6,8 +6,9 @@ the code and executed the checks below. On 20 October 2026, Milan confirmed his
 approval in the conversation after discussing the E09 omission, E07 citation
 precision and limits of tuning on the known eval set. He approved merging this
 branch as an optional experiment with those limitations documented.
-Milan will perform the GitHub PR approval and merge manually after committing
-and pushing the documentation updates.
+Subsequent repository check on 20 October: the work is merged into `main`
+as `f2c808d` (`Embeddings (#2)`). This confirms the merge from local Git history;
+GitHub approval and CI status were not inspected in this submission check.
 
 Reviewed head: `c290ffd9dbddb5b989409334b4c487c0d62f3d22`.
 Base: `0615f72b0a3966ced38d55a76b573aac68dc6535` (`main`). A live
@@ -87,6 +88,7 @@ in the [0.51 report](threshold-051-report.md). Milan is the internal reviewer fo
 this PR; the new executions and documentation in this review were performed by
 Codex at his request. They are not claimed as Milan's independent manual runs.
 
-The assignment's review by another pair and the demonstration lead are still
-unrecorded in the M1 report. This internal PR review does not complete those
-submission requirements. No PR approval or merge was performed by Codex.
+Milan confirmed on 20 October that he leads the Week 7 demonstration, and the
+M1 report now records this. The assignment's review by another pair is still
+pending. This internal PR review does not satisfy that submission requirement.
+No PR approval or merge was performed by Codex.

@@ -41,8 +41,8 @@ regresija sadržaja u odnosu na lexical, nastala promenom retrieval backend-a,
 a ne pomeranjem praga 0.50 na 0.51. E07 precision u odnosu na lexical pada
 sa 1.00 na 0.50. Nema PASS-to-FAIL regresija, ali ovi gubici ostaju navedeni.
 Milan je 20. oktobra u razgovoru potvrdio odobrenje spajanja ovog opcionog
-eksperimenta uz navedena ograničenja; GitHub PR korake izvršiće samostalno
-nakon commit-a i push-a dopunjene dokumentacije.
+eksperimenta uz navedena ograničenja. Naknadna provera Git istorije potvrđuje
+da je rad spojen u `main` kroz `f2c808d` (`Embeddings (#2)`).
 
 Oba merenja imaju isti eval SHA-256:
 `afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064`.

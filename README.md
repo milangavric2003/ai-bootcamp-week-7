@@ -49,9 +49,24 @@ The [internal PR review for Milan](docs/embeddings-pr-review.md) records fresh
 Manual review found that embeddings omits E09's request location despite its PASS;
 E07 citation precision also falls from 1.00 to 0.50. Milan confirmed his approval
 on 20 October 2026, accepting the documented limitations of this optional
-experiment. He will perform the GitHub PR approval and merge manually after
-committing and pushing these documentation updates. The assignment's separate
-review by another pair is still pending.
+experiment. The embeddings work is now merged into `main` as `f2c808d`
+(`Embeddings (#2)`). **Milan leads the Week 7 demonstration** on 21 October.
+The assignment's separate review by another pair is still pending.
+
+The 20 October submission check on merged `main` reproduced **86/86 tests**,
+**10/12 lexical** and **12/12 optional embeddings**, with the same eval hash.
+The saved [test output](docs/evidence/submission-check-20261020/pytest.txt),
+[lexical result](docs/evidence/submission-check-20261020/lexical.json) and
+[embeddings result](docs/evidence/submission-check-20261020/embeddings.json)
+are Codex executions at Milan's request. The required M1 comparison remains
+**6/12 → 9/12**; the current default includes additional optional experiments.
+Tests used `-p no:cacheprovider` and a fresh `--basetemp` under `.cache/` to
+avoid existing Windows temporary-directory and pytest-cache permission errors.
+Before sending, add the other pair's review to the M1 report, complete each
+learner's individual weekly report using the course template, and include the
+shared M1 report, both original JSON files, comparison output and implementation
+diff (or commit link). The assignment's email deadline is **20 October 2026,
+12:00 Belgrade time**.
 
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
@@ -199,8 +214,8 @@ the metric but still cites both current and superseded remote-work policies.
 Vedran's independent M1 verification and contributions are recorded. The optional
 [M3 specification](specs/002-refusal-threshold/spec.md) and
 [M3 report](docs/m3-report.md) document the subsequent threshold change and his
-confirmation of manual M3 evaluation. The other pair's review and demonstration
-lead remain to be finalized. M2-M6 are alternatives, not additional required
+confirmation of manual M3 evaluation. Milan is the demonstration lead; the
+other pair's review remains pending. M2-M6 are alternatives, not additional required
 improvements; M3 is recorded separately as optional work.
 
 The subsequent [M5 report](docs/m5-report.md) records current-version filtering,

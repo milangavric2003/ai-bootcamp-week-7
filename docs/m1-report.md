@@ -1,9 +1,9 @@
 # Week 7 — M1: rezultat pre/posle
 
-Datum implementacije: 18. oktobar 2026. Dopunjeno 19. oktobra 2026. posle
-Vedranove nezavisne provere. Implementacija, merenje i doprinosi oba člana su
-evidentirani. Osoba koja vodi demonstraciju i peer review drugog para čekaju
-dopunu pre predaje.
+Datum implementacije: 18. oktobar 2026. Dopunjeno 20. oktobra 2026. posle
+Vedranove nezavisne provere i Milanove potvrde da vodi demonstraciju.
+Implementacija, merenje i doprinosi oba člana su evidentirani. Demonstraciju
+vodi **Milan**; **Vedranov pregled M1 je završen** i dokumentovan ispod.
 
 ## Propust, hipoteza i jedna promena
 
@@ -175,13 +175,17 @@ Evidencija doprinosa prema potvrdama Milana i Vedrana i sačuvanim dokazima:
   logove provera i potvrdio rezultate, uz AI pomoć opisanu iznad.
   U zasebnom dodatnom M3 eksperimentu izabrao je promenu praga i potvrdio
   završenu ručnu evaluaciju; detalji i poreklo dokaza su u [M3 izveštaju](m3-report.md).
-- Osoba koja vodi demonstraciju Week 7: **još nije određena**.
-- Drugi par i njihov komentar (jedna promena; podrška zaključku rezultatima;
-  izostavljene regresije/ograničenja): **peer review još nije pribavljen**.
+- Osoba koja vodi demonstraciju Week 7: **Milan**, prema njegovoj potvrdi
+  20. oktobra 2026. Demonstracija je na Sesiji 2, 21. oktobra 2026.
+- Pregled M1 — **Vedran: završen** na grani `baseline-finish`, evidentiran
+  u commitu `bb9737e`, koji je uključen u `main`. Sačuvana poređenja potvrđuju
+  jednu promenu (`CHUNK_STRATEGY`), rezultat 6/12 → 9/12 i odsustvo regresija;
+  ručna provera beleži preostalo ograničenje E06. Dokazi su u odeljku
+  [Vedranova nezavisna provera](#vedranova-nezavisna-provera).
 
-Implementacija je završena; ovaj dokument nije konačna predaja dok se navedene
-preostale stavke ne popune. Milanov ljudski review je evidentiran odvojeno od
-zahtevanog pregleda drugog para, koji još nije pribavljen.
+Implementacija i Vedranova nezavisna provera M1 su završene. Ovaj zapis
+evidentira pregled unutar para Milan–Vedran, sa sačuvanim rezultatima i
+ograničenjima; ne pripisuje komentar nekom drugom paru.
 
 ## Dogovor o dodatnom eksperimentu
 

@@ -1,0 +1,48 @@
+{
+  "review_date": "2026-10-20",
+  "reviewer": "Codex",
+  "execution_by": "Vedran",
+  "manual_cli_review_source": "User confirmation on 2026-10-20; no separate CLI logs in this evidence directory",
+  "checks": [
+    {
+      "source": "results/lexical-verification-20261019-234713.json",
+      "copy": "docs/evidence/vedran-threshold-051-20261019-234713/lexical.json",
+      "sha256": "c94961994e82f2cd0c1295eccc0a261dda0338189cfde5eca96466813999a581",
+      "reference": "docs/evidence/007-threshold-sensitivity/lexical.json",
+      "equal_fields": {
+        "config": true,
+        "results": true,
+        "summary": true,
+        "eval_set_sha256": true
+      },
+      "created_at": "2026-10-19T21:54:05+00:00",
+      "summary": {
+        "passed": 10,
+        "total": 12,
+        "behaviour_accuracy": 0.9167,
+        "retrieval_hit_rate": 0.8889,
+        "mean_citation_precision": 0.65
+      }
+    },
+    {
+      "source": "results/embeddings-051-verification-20261019-234713.json",
+      "copy": "docs/evidence/vedran-threshold-051-20261019-234713/embeddings.json",
+      "sha256": "ec57e64d108a051fa2c2cb954a662abf28d0517d28bb4c101531785adcc059f1",
+      "reference": "results/after-embedding-threshold-051.json",
+      "equal_fields": {
+        "config": true,
+        "results": true,
+        "summary": true,
+        "eval_set_sha256": true
+      },
+      "created_at": "2026-10-19T21:56:29+00:00",
+      "summary": {
+        "passed": 12,
+        "total": 12,
+        "behaviour_accuracy": 1.0,
+        "retrieval_hit_rate": 1.0,
+        "mean_citation_precision": 0.9444
+      }
+    }
+  ]
+}

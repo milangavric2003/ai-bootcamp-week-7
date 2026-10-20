@@ -25,7 +25,9 @@ def select_citations(results: list[RetrievalResult]) -> list[RetrievalResult]:
 
 def build_grounded_answer(question: str, chunks: list[Chunk]) -> RagAnswer:
     results = retrieve_top_k(question, chunks)
-    if not results or results[0].score < config.REFUSAL_THRESHOLD:
+    threshold = (config.EMBEDDING_REFUSAL_THRESHOLD
+                 if config.RETRIEVAL_BACKEND == "embeddings" else config.REFUSAL_THRESHOLD)
+    if not results or results[0].score < threshold:
         return RagAnswer(answer=REFUSAL_MESSAGE, citations=[], refused=True, retrieved=results)
 
     cited = select_citations(results)

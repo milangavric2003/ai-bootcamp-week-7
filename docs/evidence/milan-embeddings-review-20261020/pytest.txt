@@ -1,0 +1,21 @@
+Captured from the Codex review command output on 20 October 2026.
+Command: .\.venv\Scripts\python.exe -m pytest -p no:cacheprovider --basetemp <fresh .venv/pytest-milan-review-GUID directory>
+
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collected 86 items
+
+tests\test_chunking.py ....................                              [ 23%]
+tests\test_embeddings.py .................                               [ 43%]
+tests\test_eval_compare.py ....                                          [ 47%]
+tests\test_eval_metrics.py ....                                          [ 52%]
+tests\test_eval_set.py ..                                                [ 54%]
+tests\test_rag.py ......                                                 [ 61%]
+tests\test_refusal_thresholds.py ................                        [ 80%]
+tests\test_retrieval.py .................                                [100%]
+
+============================= 86 passed in 0.21s ==============================

@@ -1,0 +1,18 @@
+{
+  "results_identical": true,
+  "summary": {
+    "passed": 10,
+    "total": 12,
+    "behaviour_accuracy": 0.9167,
+    "retrieval_hit_rate": 0.8889,
+    "mean_citation_precision": 0.65
+  },
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "added_config": {
+    "RETRIEVAL_BACKEND": "lexical",
+    "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+    "EMBEDDING_REVISION": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "EMBEDDING_DEVICE": "cpu",
+    "EMBEDDING_CACHE_DIR": ".cache/embeddings"
+  }
+}

@@ -11,7 +11,8 @@ M2 se radi sada čak i ako ne popravi nijedan PASS/FAIL ishod. Njegov cilj je
 izmeriti uticaj uklanjanja stopwords na šum, citate i odbijanje. Ne pretpostavljati
 rezultat pre merenja. Posle M2 Codex predaje dokaze korisniku za human review;
 ne započinje embeddings ili LLM implementaciju u ovom koraku.
-Korisnik potom radi embeddings. Grounded LLM sa procenom dovoljnog dokaza i
+Korisnik je potom odobrio lokalnu embeddings komponentu; implementacija modela
+i pretrage u memoriji je završena, puna uporedna evaluacija sledi. Grounded LLM sa procenom dovoljnog dokaza i
 odbijanjem ostaje poseban kasniji eksperiment, ako bude vremena.
 Obavezna predaja i demonstracija imaju prednost. Plan i M2 ostaju na `main`,
 bez nove grane, na izričit zahtev korisnika.
@@ -56,7 +57,7 @@ odbio bi i E04 pri sadašnjem ocenjivanju.
 | 1: M5, završeno | Isključiti superseded izvore pre rangiranja | E06 bez zastarele politike; istorijska pitanja gube stare izvore | Zadržan: CLI potvrđuje poboljšanje, nema regresija |
 | 2: M2, završen i isključen | Ukloniti unapred zadate česte engleske reči iz oba toka tokena | Bolji E02 citati, ali E09 gubi rok; 10/12 → 9/12 | Po izboru korisnika implementacija ostaje, STOPWORDS_ENABLED=False; zadržano 10/12 |
 | 2a: human review | Pregledati M2 diff, specifikaciju i rezultate | Potvrditi šta se stvarno promenilo i koje stanje se zadržava | Korisnik radi review pre svog embedding koraka; Codex ga ne označava završenim |
-| 3: embeddings | Uporediti jedan lokalni retrieval model sa zadržanim leksičkim stanjem | E05 je semantički cilj; E11 može dobiti sličan, nepodržan kontekst | Korisnik implementira posle M2 i review-a; zasebno merenje, vreme, zavisnosti i cena |
+| 3: embeddings | Uporediti jedan lokalni retrieval model sa zadržanim leksičkim stanjem | E05 je semantički cilj; E11 može dobiti sličan, nepodržan kontekst | Koraci 2/3 implementirani na Vedranov zahtev; testovi i offline smoke prolaze, puna evaluacija i review slede |
 | 4: grounded LLM, kasnije | Proceniti da li retrieved dokaz podržava konkretan odgovor; odgovoriti ili odbiti | E11: razlikovati annual od parental leave; moguć je i pogrešan odgovor ili odbijanje | Posebna specifikacija i merenje; bez tvrdnje da LLM garantuje PASS |
 
 Završeni M5 korak:
@@ -131,11 +132,29 @@ Ne prilagođavati kod pojedinačnim ID-jevima ili formulacijama.
 
 ## Status plana
 
+20. oktobar: Vedran je potvrdio završeno samostalno testiranje i ručni pregled
+embeddings režima pri 0.51. [Njegovi dokazi](evidence/vedran-threshold-051-20261019-234713/verification.md)
+potvrđuju 86/86 testova, 12/12 embeddings i 10/12 lexical, bez razlika u
+reprodukciji. Ovo ažurira status provere završnog embeddings eksperimenta.
+
+Najnovije: na Vedranov zahtev isproban je prag 0.51 nakon uvida u E11;
+[rezultat](threshold-051-report.md) je 12/12 bez regresija, 86/86 testova.
+To je naknadno podešavanje na poznatom eval skupu; razvojni izbor 0.50 i dalje
+je zasebno dokumentovan. Lexical ostaje 0.10 i 10/12.
+
 M5 je implementiran i izmeren. M2 je implementiran, izmeren i isključen po
 korisnikovoj odluci zbog regresije E09; [izveštaj](m2-report.md) čuva sve rezultate.
-Zadržano stanje daje 10/12; 53 testa prolaze. Human review je sledeći korisnikov
-korak; embeddings zatim implementira korisnik. Grounded LLM ostaje zaseban kasniji
-eksperiment. Ništa od ta tri buduća koraka nije završeno ovom promenom.
+Zadržano leksičko stanje daje 10/12. Na Vedranov zahtev implementirani su koraci
+2/3 embeddings plana: lokalni model i tačna pretraga u memoriji uz postojeći
+M5 filter. Prošireni offline testovi prolaze 70/70, a leksički rezultati ostaju
+identični baseline-u. [Implementaciona beleška](embeddings-status.md) i
+[quickstart](../specs/005-local-embeddings/quickstart.md) opisuju upotrebu.
+Vedran je potom izvršio punu embeddings evaluaciju pri 0.10: 10/12, E05
+popravljen i E10 regresija. Na njegov zahtev urađena je zasebna
+[kalibracija](embedding-threshold-report.md): embeddings prag 0.50 daje 11/12,
+bez novih padova; lexical prag ostaje 0.10 i rezultat 10/12. Prolazi 86 testova.
+Vedranov review završnog praga 0.51 sada je potvrđen i dokumentovan iznad.
+Grounded LLM ostaje zaseban kasniji eksperiment.
 Ovaj dokument ne zamenjuje specifikaciju svakog kasnijeg eksperimenta.
 Plan je pripremljen uz Codex i read-only istraživački pregled. Brojevi polaze
 od sačuvanih merenja; budući efekti su hipoteze.

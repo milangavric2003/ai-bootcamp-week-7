@@ -1,0 +1,95 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: D:\AIBootcamp\week07\ai-bootcamp-week-7
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 16 items
+
+tests\test_refusal_thresholds.py ...F.F.F.......F                        [100%]
+
+================================== FAILURES ===================================
+____________ test_backend_threshold_boundaries[0.1-embeddings-0.5] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000145CBA188D0>
+backend = 'embeddings', threshold = 0.5, score = 0.1
+
+    @pytest.mark.parametrize("backend,threshold", [("lexical", 0.10), ("embeddings", 0.50)])
+    @pytest.mark.parametrize("score", [0.0999, 0.10, 0.1001, 0.4999, 0.50, 0.5001])
+    def test_backend_threshold_boundaries(monkeypatch, backend, threshold, score):
+        monkeypatch.setattr(config, "RETRIEVAL_BACKEND", backend)
+        monkeypatch.setattr(config, "REFUSAL_THRESHOLD", 0.10)
+        monkeypatch.setattr(config, "EMBEDDING_REFUSAL_THRESHOLD", 0.50, raising=False)
+        chunk = Chunk("proof", "doc", "Title", "2026", "current", "Evidence text.")
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *args: [RetrievalResult(chunk, score)])
+        result = rag.build_grounded_answer("Question", [chunk])
+>       assert result.refused is (score < threshold)
+E       AssertionError: assert False is (0.1 < 0.5)
+E        +  where False = RagAnswer(answer='Grounded response based on retrieved context:\n[proof] Evidence text.', citations=['proof'], refused...k(chunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.'), score=0.1)]).refused
+
+tests\test_refusal_thresholds.py:17: AssertionError
+__________ test_backend_threshold_boundaries[0.1001-embeddings-0.5] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000145CCB4C650>
+backend = 'embeddings', threshold = 0.5, score = 0.1001
+
+    @pytest.mark.parametrize("backend,threshold", [("lexical", 0.10), ("embeddings", 0.50)])
+    @pytest.mark.parametrize("score", [0.0999, 0.10, 0.1001, 0.4999, 0.50, 0.5001])
+    def test_backend_threshold_boundaries(monkeypatch, backend, threshold, score):
+        monkeypatch.setattr(config, "RETRIEVAL_BACKEND", backend)
+        monkeypatch.setattr(config, "REFUSAL_THRESHOLD", 0.10)
+        monkeypatch.setattr(config, "EMBEDDING_REFUSAL_THRESHOLD", 0.50, raising=False)
+        chunk = Chunk("proof", "doc", "Title", "2026", "current", "Evidence text.")
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *args: [RetrievalResult(chunk, score)])
+        result = rag.build_grounded_answer("Question", [chunk])
+>       assert result.refused is (score < threshold)
+E       AssertionError: assert False is (0.1001 < 0.5)
+E        +  where False = RagAnswer(answer='Grounded response based on retrieved context:\n[proof] Evidence text.', citations=['proof'], refused...hunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.'), score=0.1001)]).refused
+
+tests\test_refusal_thresholds.py:17: AssertionError
+__________ test_backend_threshold_boundaries[0.4999-embeddings-0.5] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000145CBA30D70>
+backend = 'embeddings', threshold = 0.5, score = 0.4999
+
+    @pytest.mark.parametrize("backend,threshold", [("lexical", 0.10), ("embeddings", 0.50)])
+    @pytest.mark.parametrize("score", [0.0999, 0.10, 0.1001, 0.4999, 0.50, 0.5001])
+    def test_backend_threshold_boundaries(monkeypatch, backend, threshold, score):
+        monkeypatch.setattr(config, "RETRIEVAL_BACKEND", backend)
+        monkeypatch.setattr(config, "REFUSAL_THRESHOLD", 0.10)
+        monkeypatch.setattr(config, "EMBEDDING_REFUSAL_THRESHOLD", 0.50, raising=False)
+        chunk = Chunk("proof", "doc", "Title", "2026", "current", "Evidence text.")
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *args: [RetrievalResult(chunk, score)])
+        result = rag.build_grounded_answer("Question", [chunk])
+>       assert result.refused is (score < threshold)
+E       AssertionError: assert False is (0.4999 < 0.5)
+E        +  where False = RagAnswer(answer='Grounded response based on retrieved context:\n[proof] Evidence text.', citations=['proof'], refused...hunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.'), score=0.4999)]).refused
+
+tests\test_refusal_thresholds.py:17: AssertionError
+_ test_changing_other_backend_threshold_has_no_effect[embeddings-REFUSAL_THRESHOLD] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000145CCB48730>
+backend = 'embeddings', inactive = 'REFUSAL_THRESHOLD'
+
+    @pytest.mark.parametrize("backend,inactive", [("lexical", "EMBEDDING_REFUSAL_THRESHOLD"),
+                                                  ("embeddings", "REFUSAL_THRESHOLD")])
+    def test_changing_other_backend_threshold_has_no_effect(monkeypatch, backend, inactive):
+        monkeypatch.setattr(config, "RETRIEVAL_BACKEND", backend)
+        monkeypatch.setattr(config, "REFUSAL_THRESHOLD", 0.10)
+        monkeypatch.setattr(config, "EMBEDDING_REFUSAL_THRESHOLD", 0.50, raising=False)
+        chunk = Chunk("proof", "doc", "Title", "2026", "current", "Evidence text.")
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *args: [RetrievalResult(chunk, 0.6)])
+        assert not rag.build_grounded_answer("Question", [chunk]).refused
+        monkeypatch.setattr(config, inactive, 0.99)
+>       assert not rag.build_grounded_answer("Question", [chunk]).refused
+E       AssertionError: assert not True
+E        +  where True = RagAnswer(answer='I do not have enough grounded evidence in the provided corpus to answer that question.', citations=[...k(chunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.'), score=0.6)]).refused
+E        +    where RagAnswer(answer='I do not have enough grounded evidence in the provided corpus to answer that question.', citations=[...k(chunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.'), score=0.6)]) = <function build_grounded_answer at 0x00000145CB9D5F30>('Question', [Chunk(chunk_id='proof', doc_id='doc', title='Title', version='2026', status='current', text='Evidence text.')])
+E        +      where <function build_grounded_answer at 0x00000145CB9D5F30> = rag.build_grounded_answer
+
+tests\test_refusal_thresholds.py:40: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_refusal_thresholds.py::test_backend_threshold_boundaries[0.1-embeddings-0.5]
+FAILED tests/test_refusal_thresholds.py::test_backend_threshold_boundaries[0.1001-embeddings-0.5]
+FAILED tests/test_refusal_thresholds.py::test_backend_threshold_boundaries[0.4999-embeddings-0.5]
+FAILED tests/test_refusal_thresholds.py::test_changing_other_backend_threshold_has_no_effect[embeddings-REFUSAL_THRESHOLD]
+======================== 4 failed, 12 passed in 0.14s =========================

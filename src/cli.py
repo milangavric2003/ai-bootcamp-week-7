@@ -1,5 +1,6 @@
 import argparse
 
+from . import config
 from .chunking import build_chunks
 from .corpus import load_corpus
 from .rag import build_grounded_answer
@@ -9,11 +10,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Week 7 RAG checkpoint")
     parser.add_argument("--question", required=True, help="Question to ask over the handbook")
     parser.add_argument("--show-retrieved", action="store_true", help="Also print retrieved chunks and scores")
+    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings"],
+                        default=config.RETRIEVAL_BACKEND, help="Retrieval method (default: lexical or RAG_RETRIEVAL_BACKEND)")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    config.RETRIEVAL_BACKEND = args.retrieval_backend
     chunks = build_chunks(load_corpus())
     by_id = {chunk.chunk_id: chunk for chunk in chunks}
     result = build_grounded_answer(args.question, chunks)

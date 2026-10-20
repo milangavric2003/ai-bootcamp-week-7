@@ -1,0 +1,20 @@
+[
+  {"id":"D01","question":"What is the minimum password length?","expected":"answer"},
+  {"id":"D02","question":"Where should I report a missing access badge?","expected":"answer"},
+  {"id":"D03","question":"Who helps new employees get started in their first week?","expected":"answer"},
+  {"id":"D04","question":"How can I book a parking space at the office?","expected":"answer"},
+  {"id":"D05","question":"At what times must remote employees be reachable?","expected":"answer"},
+  {"id":"D06","question":"Can unused training money be carried into the following year?","expected":"answer"},
+  {"id":"D07","question":"How far ahead should I submit an annual leave request?","expected":"answer"},
+  {"id":"D08","question":"Who approves business trips before booking?","expected":"refuse"},
+  {"id":"D09","question":"Where should I bring a laptop that will not start?","expected":"answer"},
+  {"id":"D10","question":"How do I order a mouse or headset?","expected":"answer"},
+  {"id":"D11","question":"What is the monthly parking fee?","expected":"refuse"},
+  {"id":"D12","question":"How much paid bereavement leave is available?","expected":"refuse"},
+  {"id":"D13","question":"What percentage of salary does the company contribute to a pension?","expected":"refuse"},
+  {"id":"D14","question":"Does the office cafeteria provide free lunch?","expected":"refuse"},
+  {"id":"D15","question":"What is the exchange rate between the euro and the dollar today?","expected":"refuse"},
+  {"id":"D16","question":"Who is the chief executive of the company?","expected":"refuse"},
+  {"id":"D17","question":"Are employees allowed to bring pets to the office?","expected":"refuse"},
+  {"id":"D18","question":"Which airline should employees use for business trips?","expected":"refuse"}
+]

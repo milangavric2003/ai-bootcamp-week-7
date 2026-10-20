@@ -4,7 +4,7 @@ A small local question-answering tool over a fictional employee handbook. It ret
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current state: M1 + M3 + M5; M2 implemented but disabled
+## Current state: M1 + M3 + M5; optional embeddings; M2 disabled
 
 The required M1 experiment improved evaluation from **6/12 to 9/12**.
 The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
@@ -24,6 +24,35 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
 **disabled** (`STOPWORDS_ENABLED=False`). The retained pipeline reproduces
 **10/12**, and **53/53 tests pass** in both modes. See the [M2 report](docs/m2-report.md).
 
+An optional local embeddings backend is now implemented for a separate advanced
+experiment. The default remains lexical retrieval; the expanded offline unit
+suite now passes **86/86** tests. The lexical results still match the retained 10/12
+baseline. The first embeddings run at threshold 0.10 gave 10/12 (E05 fixed,
+E10 regressed). A separate development-set calibration selected cosine refusal
+threshold **0.50**, yielding **11/12** with E10 fixed and no new regressions.
+An explicit follow-up selected **0.51 after inspecting E11**, yielding **12/12**
+without PASS-to-FAIL regressions. This is tuning on the known eval set, not held-out validation.
+Lexical refusal stays at **0.10**. See the [0.51 report](docs/threshold-051-report.md),
+[threshold report](docs/embedding-threshold-report.md),
+[implementation notes](docs/embeddings-status.md) and
+[quickstart](specs/005-local-embeddings/quickstart.md).
+
+Vedran confirmed completion of independent testing and manual CLI review on
+20 October 2026. His saved runs reproduce **86 passing tests**, **12/12 embeddings**
+at 0.51 and **10/12 lexical** at 0.10, with matching evaluation hashes and
+no reproduction differences. See the [verification evidence](docs/evidence/vedran-threshold-051-20261019-234713/verification.md),
+[his lexical JSON](results/lexical-verification-20261019-234713.json) and
+[his embeddings JSON](results/embeddings-051-verification-20261019-234713.json).
+
+The [internal PR review for Milan](docs/embeddings-pr-review.md) records fresh
+86/86 tests, matching lexical and embeddings runs, and Vedran's contribution.
+Manual review found that embeddings omits E09's request location despite its PASS;
+E07 citation precision also falls from 1.00 to 0.50. Milan confirmed his approval
+on 20 October 2026, accepting the documented limitations of this optional
+experiment. He will perform the GitHub PR approval and merge manually after
+committing and pushing these documentation updates. The assignment's separate
+review by another pair is still pending.
+
 | Experiment | Before | After | Report |
 | --- | --- | --- | --- |
 | Required M1: sentence chunking | [before.json](results/before.json), 6/12 | [after.json](results/after.json), 9/12 | [M1 report](docs/m1-report.md) |
@@ -31,15 +60,18 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
 | Optional M5: current versions | [before-m5.json](results/before-m5.json), 10/12 | [after-m5.json](results/after-m5.json), 10/12 | [M5 report](docs/m5-report.md) |
 | Optional M2: stopwords (disabled after measurement) | [before.json](docs/evidence/004-m2/before.json), 10/12 | [after.json](docs/evidence/004-m2/after.json), 9/12; [retained.json](docs/evidence/004-m2/retained.json), 10/12 | [M2 report](docs/m2-report.md) |
 
-The current code includes all three improvements. E05 and E11 still fail;
-E06 now cites only the current policy. Irrelevant padding citations remain
-possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
+The default lexical pipeline includes M1, M3 and M5. E05 and E11 still fail in
+that mode; optional embeddings at 0.51 passes all 12 known eval questions with
+the limitations above. E06 cites only the current policy. Irrelevant padding
+citations remain possible elsewhere. Preserve every saved experiment JSON;
+use fresh filenames.
 
 For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
-M5 is complete and M2 is measured but disabled. The user's human review is next,
-followed by their embedding experiment targeting E05. Grounded LLM answering
-and refusal for E11 remain a separate later experiment. No 12/12 result is
-promised. The [M2 specification](specs/004-stopword-filter/spec.md) and
+M5 is complete and M2 is measured but disabled. The local embeddings component
+targeting E05 is implemented and measured, including separate threshold calibration.
+Grounded LLM answering remains a possible later experiment. Embeddings currently
+refuses E11 through threshold tuning; its 12/12 result applies to the known eval
+set. The [M2 specification](specs/004-stopword-filter/spec.md) and
 [implementation plan](specs/004-stopword-filter/plan.md) document the completed
 experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
 
@@ -56,12 +88,30 @@ python -m pytest              # or ./scripts/run_tests.sh
 
 All tests pass on the starting state. Tests check mechanics, not quality; quality is measured by the eval runner.
 
+### Optional local embeddings
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-embeddings.txt
+.\.venv\Scripts\python.exe -m src.prepare_embeddings
+.\.venv\Scripts\python.exe -m src.cli --retrieval-backend embeddings --question "How long until I get a new notebook computer?" --show-retrieved
+```
+
+The setup commands need network access. Subsequent retrieval uses only the
+local pinned model cache in `.cache/embeddings`, on CPU. Embeddings map texts
+to 384-dimensional vectors and rank the same eligible chunks by cosine
+similarity in memory. The M5 filter runs before encoding. TOP_K, citation rules
+and the retrieval minimum keep their existing values. Refusal uses 0.10 for
+lexical scores and 0.51 for embeddings cosine scores (an eval-informed follow-up
+to the separate development calibration at 0.50).
+See the quickstart above before running full evaluation.
+
 ## Commands
 
 | Command | What it does |
 | --- | --- |
 | `python -m src.cli --question "How often do passwords need to be changed?"` | Answer or refusal with citations (title, version, status) |
 | `python -m src.cli --question "..." --show-retrieved` | Also prints retrieved chunks with their scores |
+| `python -m src.cli --retrieval-backend embeddings --question "..." --show-retrieved` | Offline local semantic retrieval after explicit model setup |
 | `python -m src.eval_runner --out results/current-verification.json` | Runs the current M1+M3+M5 code on all 12 questions; use a fresh filename for repeats |
 | `python -m src.eval_compare results/before.json results/after.json` | Fixed, regressed and unchanged questions, metric deltas, changed settings |
 | `python -m src.eval_compare results/before-m3.json results/after-m3.json` | Compares M1 with M1+M3: E10 fixed, no regressions, only refusal threshold changed |
@@ -74,6 +124,7 @@ All tests pass on the starting state. Tests check mechanics, not quality; qualit
 - `src/config.py`: every tunable setting in one place. The eval runner saves all values with each run.
 - `src/corpus.py`: ten handbook documents with title, section, version and status.
 - `src/chunking.py`, `src/retrieval.py`, `src/rag.py`: the pipeline.
+- `src/embeddings.py`, `src/prepare_embeddings.py`: optional local model and in-memory cosine retrieval; explicit first-time download.
 - `src/eval_runner.py`, `src/eval_compare.py`: evaluation and comparison.
 - `eval/eval_set.json`: the fixed eval set.
 - `docs/improvement-menu.md`: one-change options.

@@ -1,0 +1,19 @@
+D01 answer 0.644059
+D02 answer 0.600294
+D03 answer 0.555187
+D04 answer 0.578995
+D05 answer 0.722991
+D06 answer 0.657661
+D07 answer 0.685198
+D08 refuse 0.596225
+D09 answer 0.684596
+D10 answer 0.738219
+D11 refuse 0.466544
+D12 refuse 0.407444
+D13 refuse 0.33026
+D14 refuse 0.29333
+D15 refuse 0.235959
+D16 refuse 0.16241
+D17 refuse 0.302756
+D18 refuse 0.399887
+Selected: {'threshold': 0.5, 'false_refusals': 0, 'false_answers': 1, 'correct_refusals': 8}

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-c",
+    "\nimport json, os, runpy, sys, time\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom src import config\nmodule, top_k, stopwords = sys.argv[1:4]\nconfig.TOP_K = int(top_k)\nconfig.STOPWORDS_ENABLED = stopwords == 'True'\nif config.ANSWER_BACKEND == 'gemma':\n    from src import gemma_client\n    original_open = gemma_client._open\n    state = Path(os.environ['CONFIG_VERIFICATION_RATE_STATE'])\n    requests = state.with_name('rate-limit-requests.jsonl')\n    def paced_open(request, timeout):\n        # All subprocesses run sequentially and share one monotonic clock/state.\n        # Space every transport attempt, including retries and fallback, by 2.1s.\n        previous = float(state.read_text()) if state.exists() else 0.0\n        time.sleep(max(0.0, 2.1 - (time.monotonic() - previous)))\n        started = time.monotonic()\n        state.write_text(str(started))\n        with requests.open('a', encoding='utf-8') as stream:\n            stream.write(json.dumps({'started_monotonic': started,\n                'started_utc': datetime.now(timezone.utc).isoformat(),\n                'model': request.full_url.split('/models/', 1)[1].split(':', 1)[0]}) + '\\n')\n        return original_open(request, timeout=timeout)\n    gemma_client._open = paced_open\nsys.argv = [module] + sys.argv[4:]\nrunpy.run_module(module, run_name='__main__')\n",
+    "src.cli",
+    "3",
+    "True",
+    "--question",
+    "How long until I get a new notebook computer?",
+    "--show-retrieved"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": "gemma",
+  "trace": "docs\\evidence\\006-retrieval-config\\gemma-e05-cli-answers.jsonl",
+  "started_utc": "2026-10-20T22:13:06.190092+00:00",
+  "ended_utc": "2026-10-20T22:13:07.486832+00:00",
+  "returncode": 0
+}

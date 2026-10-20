@@ -1,0 +1,15 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "src.eval_compare",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\extractive-topk-only.json",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\extractive-after.json"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": null,
+  "trace": null,
+  "started_utc": "2026-10-20T22:06:20.711057+00:00",
+  "ended_utc": "2026-10-20T22:06:20.774051+00:00",
+  "returncode": 0
+}

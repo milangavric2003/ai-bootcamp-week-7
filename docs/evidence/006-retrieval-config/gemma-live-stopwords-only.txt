@@ -1,0 +1,22 @@
+ID   Category                 Expected Got     Hit  Fact  CitPrec Pass
+----------------------------------------------------------------------
+E01  supported                answer   answer  yes  yes   1.00    PASS
+E02  supported                answer   answer  yes  yes   1.00    PASS
+E03  supported                answer   answer  yes  yes   1.00    PASS
+E04  chunk-boundary           answer   answer  yes  yes   1.00    PASS
+E05  paraphrase               answer   refuse  no   no    -       FAIL
+E06  versioned                answer   answer  yes  yes   1.00    PASS
+E07  supported                answer   answer  yes  yes   1.00    PASS
+E08  supported                answer   answer  yes  yes   1.00    PASS
+E09  chunk-boundary           answer   answer  yes  no    1.00    FAIL
+E10  unsupported              refuse   refuse  -    -     -       PASS
+E11  unsupported-near-domain  refuse   refuse  -    -     -       PASS
+E12  unsupported              refuse   refuse  -    -     -       PASS
+
+Passed: 10/12
+Behaviour accuracy: 0.92
+Retrieval hit rate (supported): 0.89
+Mean citation precision (answered): 1.00
+eval_set_sha256: afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064
+
+Wrote C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\docs\evidence\006-retrieval-config\gemma-live-stopwords-only.json

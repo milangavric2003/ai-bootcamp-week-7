@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collected 163 items
+
+tests\test_chunking.py ....................                              [ 12%]
+tests\test_eval_compare.py ....                                          [ 14%]
+tests\test_eval_metrics.py ....                                          [ 17%]
+tests\test_eval_set.py ..                                                [ 18%]
+tests\test_gemma_client.py ............................................  [ 45%]
+tests\test_gemma_retries.py ........................                     [ 60%]
+tests\test_generation.py ...................................             [ 81%]
+tests\test_generation_config.py F......                                  [ 85%]
+tests\test_rag.py ......                                                 [ 89%]
+tests\test_retrieval.py .................                                [100%]
+
+================================== FAILURES ===================================
+_____________ test_key_and_trace_destination_are_not_in_snapshot ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000177CE6A1010>
+
+    def test_key_and_trace_destination_are_not_in_snapshot(monkeypatch):
+        monkeypatch.setenv("GEMINI_API_KEY", "private-test-key")
+        monkeypatch.setenv("GEMMA_TRACE_PATH", "private-location.jsonl")
+        snapshot = json.dumps(config.snapshot())
+        assert "private-test-key" not in snapshot
+        assert "private-location" not in snapshot
+        assert "GEMINI_API_KEY" not in snapshot
+>       assert config.STOPWORDS_ENABLED is False
+E       assert True is False
+E        +  where True = config.STOPWORDS_ENABLED
+
+tests\test_generation_config.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_generation_config.py::test_key_and_trace_destination_are_not_in_snapshot
+======================== 1 failed, 162 passed in 0.56s ========================

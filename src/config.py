@@ -29,9 +29,9 @@ CHUNK_SIZE = 140
 CHUNK_OVERLAP = 30
 
 # Retrieval
-TOP_K = 2
+TOP_K = 3
 RETRIEVAL_MIN_SCORE = 0.01
-STOPWORDS_ENABLED = False  # M2 implemented; disabled after the measured E09 regression.
+STOPWORDS_ENABLED = True  # Retained with TOP_K=3; see docs/retrieval-config-report.md.
 CURRENT_ONLY = True
 
 # Answering

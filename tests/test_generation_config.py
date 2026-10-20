@@ -18,7 +18,6 @@ def test_key_and_trace_destination_are_not_in_snapshot(monkeypatch):
     assert "private-test-key" not in snapshot
     assert "private-location" not in snapshot
     assert "GEMINI_API_KEY" not in snapshot
-    assert config.STOPWORDS_ENABLED is False
 
 
 def test_root_env_loading_preserves_process_precedence_and_does_not_expand_secrets(tmp_path):

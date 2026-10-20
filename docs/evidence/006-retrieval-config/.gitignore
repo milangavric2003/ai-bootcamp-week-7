@@ -1,0 +1,3 @@
+# Fresh sandbox-writable pytest temporary directories are not experiment evidence.
+_pytest/
+_rate-limit.txt

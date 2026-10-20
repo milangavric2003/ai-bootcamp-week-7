@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "src.cli",
+    "--question",
+    "How long until I get a new notebook computer?",
+    "--show-retrieved"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": "extractive",
+  "trace": "docs\\evidence\\006-retrieval-config\\offline-e05-cli-answers.jsonl",
+  "started_utc": "2026-10-20T22:08:08.676252+00:00",
+  "ended_utc": "2026-10-20T22:08:08.800664+00:00",
+  "returncode": 0
+}

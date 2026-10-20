@@ -1,0 +1,19 @@
+Question:
+How long until I get a new notebook computer?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-06-chunk-0] New colleagues follow a two-week onboarding plan.
+[hb-06-chunk-1] A buddy is assigned in your first week and helps you get started with tools, people and team habits.
+[hb-07-chunk-1] Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.
+
+Refused: False
+Citations:
+  hb-06-chunk-0: Onboarding (version 2026, current)
+  hb-06-chunk-1: Onboarding (version 2026, current)
+  hb-07-chunk-1: Annual leave (version 2026, current)
+
+Retrieved:
+  0.1429  hb-06-chunk-0: New colleagues follow a two-week onboarding plan.
+  0.0769  hb-06-chunk-1: A buddy is assigned in your first week and helps you get started with tools, people and team habits.
+  0.0714  hb-07-chunk-1: Under this policy, unused leave can be carried over until 31 March. Sick leave follows a separate policy.

@@ -1,0 +1,132 @@
+diff --git a/README.md b/README.md
+index fccf583..668298e 100644
+--- a/README.md
++++ b/README.md
+@@ -7,7 +7,18 @@ also implements optional grounded Gemma generation through Google's Gemini API.
+ 
+ This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
+ 
+-## Current state: M1 + M3 + M5; M2 implemented but disabled
++## Current branch configuration
++
++`feat/gemma-generation` now retains `TOP_K=3` and `STOPWORDS_ENABLED=True`, with
++both score thresholds unchanged. All **163 tests pass**. Fresh Gemma evaluation
++reproduces **11/12**, with citation precision **1.00**; offline evaluation scores
++**9/12**, including an E01
++citation-precision regression relative to the old two-chunk, unfiltered settings.
++See the [configuration verification report](docs/retrieval-config-report.md) for
++the separate setting comparisons, an interrupted intermediate run and answer limitations.
++This optional two-setting follow-up is separate from the required M1 experiment.
++
++## Earlier measured stages: M1, M3, M5 and M2
+ 
+ The required M1 experiment improved evaluation from **6/12 to 9/12**.
+ The separate optional M3 experiment raises `REFUSAL_THRESHOLD` from 0.02 to
+@@ -21,10 +32,10 @@ Evaluation remains **10/12 without regressions**, while E06 citation precision
+ improves **0.50 → 1.00** and mean citation precision **0.60 → 0.65**.
+ The M5 suite passed **43/43** tests; see the [M5 report](docs/m5-report.md).
+ 
+-M2 stopword filtering is now implemented and separately measured on `main`.
++M2 stopword filtering was implemented and separately measured on `main`.
+ Enabled, it improves mean citation precision **0.65 → 0.70** but regresses E09,
+-reducing evaluation **10/12 → 9/12**. At the user's request it remains
+-**disabled** (`STOPWORDS_ENABLED=False`). The retained pipeline reproduces
++reducing evaluation **10/12 → 9/12**. At that stage the user retained it
++**disabled** (`STOPWORDS_ENABLED=False`). That retained pipeline reproduces
+ **10/12**, and **53/53 tests pass** in both modes. See the [M2 report](docs/m2-report.md).
+ 
+ | Experiment | Before | After | Report |
+@@ -34,19 +45,19 @@ reducing evaluation **10/12 → 9/12**. At the user's request it remains
+ | Optional M5: current versions | [before-m5.json](results/before-m5.json), 10/12 | [after-m5.json](results/after-m5.json), 10/12 | [M5 report](docs/m5-report.md) |
+ | Optional M2: stopwords (disabled after measurement) | [before.json](docs/evidence/004-m2/before.json), 10/12 | [after.json](docs/evidence/004-m2/after.json), 9/12; [retained.json](docs/evidence/004-m2/retained.json), 10/12 | [M2 report](docs/m2-report.md) |
+ 
+-The current code includes all three improvements. E05 and E11 still fail;
++At that offline stage E05 and E11 still fail;
+ E06 now cites only the current policy. Irrelevant padding citations remain
+ possible elsewhere. Preserve every saved experiment JSON; use fresh filenames.
+ 
+-For further optional work, see the [advanced-work plan](docs/advanced-plan.md):
+-M5 is complete and M2 is measured but disabled. Human review remains for the user;
+-Vedran owns the separate embedding experiment targeting E05. Grounded LLM answering
++For earlier optional-work decisions, see the [advanced-work plan](docs/advanced-plan.md).
++Grounded LLM answering
+ is implemented on `feat/gemma-generation`; the separately measured live lexical
+ comparison improves 10/12 to 11/12, fixing E11 without PASS-to-FAIL regressions.
+ E05 remains a retrieval miss. No 12/12 result is promised.
+ The [M2 specification](specs/004-stopword-filter/spec.md) and
+ [implementation plan](specs/004-stopword-filter/plan.md) document the completed
+-experiment. Keep the plan and M2 on `main`, as requested; future work depends on time.
++experiment. The latest user request is to verify the configuration on this branch
++before a fresh embeddings implementation, without importing code from other branches.
+ 
+ ## Setup
+ 
+@@ -67,7 +78,9 @@ On `feat/gemma-generation`, the answerer sends the question and every returned
+ top-k chunk's text/metadata to `gemma-4-26b-a4b-it` via Google's Gemini API. Final
+ citations include only the selected supporting chunks. Valid evidence refusals
+ retain the existing refusal message; API/validation failures stop the run.
+-Retrieval and M2 are unchanged. See the [implementation report](docs/gemma-report.md).
++The original generation experiment kept retrieval and M2 unchanged; see its
++[implementation report](docs/gemma-report.md). The current retrieval defaults and
++their separate measurements are described above.
+ 
+ Install requirements, then create your local environment file if it does not exist:
+ 
+@@ -79,7 +92,8 @@ Copy-Item -LiteralPath .env.example -Destination .env
+ Edit `.env` locally: add `GEMINI_API_KEY` and select `ANSWER_BACKEND=gemma`.
+ No real key is supplied in the tracked [template](.env.example). Existing process
+ environment overrides `.env`; `.env` is ignored by Git and its values are not
+-expanded into other settings. Keep `STOPWORDS_ENABLED=False`.
++expanded into other settings. Current defaults are `TOP_K=3` and
++`STOPWORDS_ENABLED=True`; reproduce historical runs with their recorded settings.
+ 
+ Once the key is ready, run the synthetic live capability probe before evaluation:
+ 
+@@ -113,14 +127,16 @@ the existing evaluation config snapshot.
+ 
+ The unchanged fixed metrics inspect facts in cited chunks, not generated prose.
+ Review all 12 answers manually. See [setup and comparison commands](specs/005-grounded-gemma/quickstart.md).
+-The implementation passes **163 tests**. Offline mode reproduces **10/12** with
++The implementation passes **163 tests**. At the original two-chunk, unfiltered
++settings, offline mode reproduces **10/12** with
+ identical baseline rows; the saved Gemma-only live run scores **11/12**, with mean
+ citation precision **0.65 → 1.00** and no PASS-to-FAIL regressions. All 12 saved
+ answers were inspected against their sources. E05 still fails because the required
+ equipment evidence is not retrieved. Unit tests block all unmocked Google calls.
+ The retry/fallback update is verified separately with fault-injection tests and
+-live primary/fallback probes; its mixed-model quality has not been remeasured
+-over all 12 questions.
++live primary/fallback probes. The later configuration measurements use this policy
++over the full evaluation; all completed answers used Gemma, so they establish no
++quality result for actual fallback answers.
+ 
+ ## Commands
+ 
+diff --git a/src/config.py b/src/config.py
+index 4e306b7..11c4991 100644
+--- a/src/config.py
++++ b/src/config.py
+@@ -29,9 +29,9 @@ CHUNK_SIZE = 140
+ CHUNK_OVERLAP = 30
+ 
+ # Retrieval
+-TOP_K = 2
++TOP_K = 3
+ RETRIEVAL_MIN_SCORE = 0.01
+-STOPWORDS_ENABLED = False  # M2 implemented; disabled after the measured E09 regression.
++STOPWORDS_ENABLED = True  # Retained with TOP_K=3; see docs/retrieval-config-report.md.
+ CURRENT_ONLY = True
+ 
+ # Answering
+diff --git a/tests/test_generation_config.py b/tests/test_generation_config.py
+index 42f38a5..e4dc37f 100644
+--- a/tests/test_generation_config.py
++++ b/tests/test_generation_config.py
+@@ -18,7 +18,6 @@ def test_key_and_trace_destination_are_not_in_snapshot(monkeypatch):
+     assert "private-test-key" not in snapshot
+     assert "private-location" not in snapshot
+     assert "GEMINI_API_KEY" not in snapshot
+-    assert config.STOPWORDS_ENABLED is False
+ 
+ 
+ def test_root_env_loading_preserves_process_precedence_and_does_not_expand_secrets(tmp_path):

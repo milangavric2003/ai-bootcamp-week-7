@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "<string>", line 8, in <module>
+    runpy.run_module(module, run_name='__main__')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 229, in run_module
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\eval_runner.py", line 145, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\eval_runner.py", line 136, in main
+    run = run_eval()
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\eval_runner.py", line 90, in run_eval
+    evaluate_item(item, build_grounded_answer(item["question"], chunks), chunks_by_id)
+                        ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\rag.py", line 38, in build_grounded_answer
+    result, status, usage = _answer_from_results(question, results)
+                            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\rag.py", line 51, in _answer_from_results
+    decision = generate_answer(question, results)
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\generation.py", line 88, in generate_answer
+    response = GemmaClient().generate(build_request(question, results))
+  File "C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\src\gemma_client.py", line 96, in generate
+    raise ProviderError(
+    ...<2 lines>...
+    ) from None
+src.generation_errors.ProviderError: Google generation failed after 4 attempts. Google network request failed or timed out.

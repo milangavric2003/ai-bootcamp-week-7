@@ -1,0 +1,90 @@
+{
+  "all_checks_passed": true,
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "protected_tracked_files": 293,
+  "changed_existing_files": [
+    "README.md",
+    "src/config.py",
+    "tests/test_generation_config.py"
+  ],
+  "original_user_run_preserved": true,
+  "complete_measurements_checked": 7,
+  "operationally_interrupted_configurations": {
+    "gemma-live-topk-only": [
+      {
+        "label": "gemma-live-topk-only",
+        "traced_questions": 9,
+        "error_type": "InvalidResponseError",
+        "error": "Gemma inline citations must match the selected source IDs."
+      },
+      {
+        "label": "gemma-live-topk-only-recovery",
+        "traced_questions": 9,
+        "error_type": "InvalidResponseError",
+        "error": "Gemma inline citations must match the selected source IDs."
+      }
+    ]
+  },
+  "all_checked_runs_and_traces_aligned": true,
+  "hosted_verification_pending": false,
+  "all_other_settings_identical_within_backend": true,
+  "retained_retrieval_matches_original_user_run": true,
+  "request_rate_check": {
+    "attempts": 50,
+    "minimum_gap_seconds": 2.1000604000291787,
+    "maximum_attempts_in_rolling_minute": 22,
+    "user_limit_per_minute": 30
+  },
+  "credential_scan_performed": true,
+  "summaries": {
+    "extractive-before": {
+      "passed": 10,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.65
+    },
+    "extractive-topk-only": {
+      "passed": 8,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.5667
+    },
+    "extractive-stopwords-only": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.7
+    },
+    "extractive-after": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.6333
+    },
+    "gemma-live-before": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    },
+    "gemma-live-stopwords-only": {
+      "passed": 10,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    },
+    "gemma-live-after": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    }
+  }
+}

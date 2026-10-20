@@ -1,0 +1,17 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": "extractive",
+  "trace": null,
+  "started_utc": "2026-10-20T22:03:59.748777+00:00",
+  "ended_utc": "2026-10-20T22:04:00.576097+00:00",
+  "returncode": 1
+}

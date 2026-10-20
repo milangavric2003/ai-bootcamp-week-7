@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-c",
+    "\nimport runpy, sys\nfrom src import config\nmodule, top_k, stopwords = sys.argv[1:4]\nconfig.TOP_K = int(top_k)\nconfig.STOPWORDS_ENABLED = stopwords == 'True'\nsys.argv = [module] + sys.argv[4:]\nrunpy.run_module(module, run_name='__main__')\n",
+    "src.eval_runner",
+    "2",
+    "False",
+    "--out",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\gemma-before.json"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": "gemma",
+  "trace": "docs\\evidence\\006-retrieval-config\\gemma-before-answers.jsonl",
+  "started_utc": "2026-10-20T22:04:39.955880+00:00",
+  "ended_utc": "2026-10-20T22:04:42.374449+00:00",
+  "returncode": 1
+}

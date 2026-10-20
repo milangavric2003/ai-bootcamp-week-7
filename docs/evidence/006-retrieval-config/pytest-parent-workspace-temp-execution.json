@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-c",
+    "\nimport runpy, sys\nfrom src import config\nmodule, top_k, stopwords = sys.argv[1:4]\nconfig.TOP_K = int(top_k)\nconfig.STOPWORDS_ENABLED = stopwords == 'True'\nsys.argv = [module] + sys.argv[4:]\nrunpy.run_module(module, run_name='__main__')\n",
+    "pytest",
+    "2",
+    "False",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-parent-workspace-temp"
+  ],
+  "cwd": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7",
+  "backend": "extractive",
+  "trace": null,
+  "started_utc": "2026-10-20T22:03:56.461926+00:00",
+  "ended_utc": "2026-10-20T22:03:57.181329+00:00",
+  "returncode": 1
+}

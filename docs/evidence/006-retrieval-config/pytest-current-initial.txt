@@ -1,0 +1,175 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collected 163 items
+
+tests\test_chunking.py ....................                              [ 12%]
+tests\test_eval_compare.py ...E                                          [ 14%]
+tests\test_eval_metrics.py ....                                          [ 17%]
+tests\test_eval_set.py ..                                                [ 18%]
+tests\test_gemma_client.py ............................................  [ 45%]
+tests\test_gemma_retries.py ........................                     [ 60%]
+tests\test_generation.py ..........................EE.EEE.EE             [ 81%]
+tests\test_generation_config.py FE.....                                  [ 85%]
+tests\test_rag.py ......                                                 [ 89%]
+tests\test_retrieval.py .................                                [100%]
+
+=================================== ERRORS ====================================
+_____________ ERROR at setup of test_cli_exits_1_on_hash_mismatch _____________
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_trace_records_answers_local_refusals_and_errors_without_secrets _
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_provider_failure_stops_fixed_eval_without_writing_result _
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+______ ERROR at setup of test_existing_trace_file_is_not_silently_mixed _______
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+___ ERROR at setup of test_fallback_provenance_reaches_answer_trace_and_cli ___
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_exhausted_attempts_are_traced_and_never_become_refusals _
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_invalid_fallback_citations_fail_without_more_attempts _
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_local_refusal_trace_has_no_actual_model_or_attempts __
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+_ ERROR at setup of test_root_env_loading_preserves_process_precedence_and_does_not_expand_secrets _
+
+self = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/006-retrieval-config/_pytest/pytest-current-initial')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\006-retrieval-config\\_pytest\\pytest-current-initial'
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:722: FileNotFoundError
+================================== FAILURES ===================================
+_____________ test_key_and_trace_destination_are_not_in_snapshot ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E244C25470>
+
+    def test_key_and_trace_destination_are_not_in_snapshot(monkeypatch):
+        monkeypatch.setenv("GEMINI_API_KEY", "private-test-key")
+        monkeypatch.setenv("GEMMA_TRACE_PATH", "private-location.jsonl")
+        snapshot = json.dumps(config.snapshot())
+        assert "private-test-key" not in snapshot
+        assert "private-location" not in snapshot
+        assert "GEMINI_API_KEY" not in snapshot
+>       assert config.STOPWORDS_ENABLED is False
+E       assert True is False
+E        +  where True = config.STOPWORDS_ENABLED
+
+tests\test_generation_config.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_generation_config.py::test_key_and_trace_destination_are_not_in_snapshot
+ERROR tests/test_eval_compare.py::test_cli_exits_1_on_hash_mismatch - FileNot...
+ERROR tests/test_generation.py::test_trace_records_answers_local_refusals_and_errors_without_secrets
+ERROR tests/test_generation.py::test_provider_failure_stops_fixed_eval_without_writing_result
+ERROR tests/test_generation.py::test_existing_trace_file_is_not_silently_mixed
+ERROR tests/test_generation.py::test_fallback_provenance_reaches_answer_trace_and_cli
+ERROR tests/test_generation.py::test_exhausted_attempts_are_traced_and_never_become_refusals
+ERROR tests/test_generation.py::test_invalid_fallback_citations_fail_without_more_attempts
+ERROR tests/test_generation.py::test_local_refusal_trace_has_no_actual_model_or_attempts
+ERROR tests/test_generation_config.py::test_root_env_loading_preserves_process_precedence_and_does_not_expand_secrets
+=================== 1 failed, 153 passed, 9 errors in 0.45s ===================

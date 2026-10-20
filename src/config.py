@@ -18,6 +18,7 @@ EMBEDDING_DEVICE = "cpu"
 EMBEDDING_CACHE_DIR = ".cache/embeddings"
 TOP_K = 2
 RETRIEVAL_MIN_SCORE = 0.01
+HYBRID_RRF_CONSTANT = 60  # Hybrid keeps the semantic leader, then fills by RRF.
 STOPWORDS_ENABLED = False  # M2 implemented; disabled after the measured E09 regression.
 CURRENT_ONLY = True
 

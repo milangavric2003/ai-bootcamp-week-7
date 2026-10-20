@@ -1,0 +1,257 @@
+[
+  {
+    "id": "E01",
+    "question": "How many days of annual leave do employees get?",
+    "answer": "Grounded response based on retrieved context:\n[hb-07-chunk-0] Annual leave policy: employees get 22 days of annual leave per calendar year. Leave requests must be made two weeks in advance in HR portal.\n[hb-03-chunk-0] Remote work: employees can work remotely up to 3 days per week.",
+    "refused": false,
+    "citations": [
+      "hb-07-chunk-0",
+      "hb-03-chunk-0"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-07-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.8109420414312462
+      },
+      {
+        "chunk_id": "hb-03-chunk-0",
+        "rrf_score": 0.03200204813108039,
+        "semantic_score": 0.43868451347409415
+      }
+    ]
+  },
+  {
+    "id": "E02",
+    "question": "How often do passwords need to be changed?",
+    "answer": "Grounded response based on retrieved context:\n[hb-05-chunk-0] Passwords must be changed every 90 days and must contain at least 12 characters.\n[hb-05-chunk-2] Never share passwords, also not with colleagues from IT.",
+    "refused": false,
+    "citations": [
+      "hb-05-chunk-0",
+      "hb-05-chunk-2"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-05-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.739621887175911
+      },
+      {
+        "chunk_id": "hb-05-chunk-2",
+        "rrf_score": 0.03200204813108039,
+        "semantic_score": 0.45719453815619543
+      }
+    ]
+  },
+  {
+    "id": "E03",
+    "question": "What is the yearly training budget per employee?",
+    "answer": "Grounded response based on retrieved context:\n[hb-08-chunk-0] Each employee has a training budget of 800 EUR per year for courses, conferences and certifications.\n[hb-08-chunk-1] Agree training with your manager before booking. Unused budget does not carry over to next year.",
+    "refused": false,
+    "citations": [
+      "hb-08-chunk-0",
+      "hb-08-chunk-1"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-08-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.7940280840475706
+      },
+      {
+        "chunk_id": "hb-08-chunk-1",
+        "rrf_score": 0.03225806451612903,
+        "semantic_score": 0.5549965814484383
+      }
+    ]
+  },
+  {
+    "id": "E04",
+    "question": "How many business days does a laptop replacement take?",
+    "answer": "Grounded response based on retrieved context:\n[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.\n[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced.",
+    "refused": false,
+    "citations": [
+      "hb-01-chunk-1",
+      "hb-01-chunk-0"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-01-chunk-1",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.7388446425145531
+      },
+      {
+        "chunk_id": "hb-01-chunk-0",
+        "rrf_score": 0.03225806451612903,
+        "semantic_score": 0.5943710592242607
+      }
+    ]
+  },
+  {
+    "id": "E05",
+    "question": "How long until I get a new notebook computer?",
+    "answer": "Grounded response based on retrieved context:\n[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.\n[hb-06-chunk-0] New colleagues follow a two-week onboarding plan.",
+    "refused": false,
+    "citations": [
+      "hb-01-chunk-1",
+      "hb-06-chunk-0"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-01-chunk-1",
+        "rrf_score": 0.030886196246139225,
+        "semantic_score": 0.632195791483886
+      },
+      {
+        "chunk_id": "hb-06-chunk-0",
+        "rrf_score": 0.03177805800756621,
+        "semantic_score": 0.29412439056283896
+      }
+    ]
+  },
+  {
+    "id": "E06",
+    "question": "How many days per week can I work remotely?",
+    "answer": "Grounded response based on retrieved context:\n[hb-03-chunk-0] Remote work: employees can work remotely up to 3 days per week.\n[hb-03-chunk-2] Remote work days can be moved within same week.",
+    "refused": false,
+    "citations": [
+      "hb-03-chunk-0",
+      "hb-03-chunk-2"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-03-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.8534131748973931
+      },
+      {
+        "chunk_id": "hb-03-chunk-2",
+        "rrf_score": 0.03225806451612903,
+        "semantic_score": 0.7166683812724632
+      }
+    ]
+  },
+  {
+    "id": "E07",
+    "question": "What are the IT support hours?",
+    "answer": "Grounded response based on retrieved context:\n[hb-10-chunk-0] IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.\n[hb-03-chunk-3] Core hours from 10:00 to 15:00 apply on remote days, and you must be reachable by chat and phone during core hours.",
+    "refused": false,
+    "citations": [
+      "hb-10-chunk-0",
+      "hb-03-chunk-3"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-10-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.7701678364738013
+      },
+      {
+        "chunk_id": "hb-03-chunk-3",
+        "rrf_score": 0.0315136476426799,
+        "semantic_score": 0.5864500961047614
+      }
+    ]
+  },
+  {
+    "id": "E08",
+    "question": "By when must travel receipts be submitted?",
+    "answer": "Grounded response based on retrieved context:\n[hb-04-chunk-0] Business travel must be approved before booking. Travel receipts must be submitted within 30 days of your return, through finance app.\n[hb-04-chunk-1] Keep original receipts for hotels and flights. Daily allowances follow national rules for each destination.",
+    "refused": false,
+    "citations": [
+      "hb-04-chunk-0",
+      "hb-04-chunk-1"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-04-chunk-0",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.7497067194159397
+      },
+      {
+        "chunk_id": "hb-04-chunk-1",
+        "rrf_score": 0.030834914611005692,
+        "semantic_score": 0.5931018278849387
+      }
+    ]
+  },
+  {
+    "id": "E09",
+    "question": "Where do I request a replacement laptop and how long does it take?",
+    "answer": "Grounded response based on retrieved context:\n[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.\n[hb-01-chunk-2] Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware.",
+    "refused": false,
+    "citations": [
+      "hb-01-chunk-1",
+      "hb-01-chunk-2"
+    ],
+    "retrieved": [
+      {
+        "chunk_id": "hb-01-chunk-1",
+        "rrf_score": 0.03252247488101534,
+        "semantic_score": 0.6765571633901564
+      },
+      {
+        "chunk_id": "hb-01-chunk-2",
+        "rrf_score": 0.032266458495966696,
+        "semantic_score": 0.6433549273716307
+      }
+    ]
+  },
+  {
+    "id": "E10",
+    "question": "What is the current company stock price?",
+    "answer": "I do not have enough grounded evidence in the provided corpus to answer that question.",
+    "refused": true,
+    "citations": [],
+    "retrieved": [
+      {
+        "chunk_id": "hb-08-chunk-0",
+        "rrf_score": 0.01639344262295082,
+        "semantic_score": 0.1751216588919885
+      },
+      {
+        "chunk_id": "hb-01-chunk-1",
+        "rrf_score": 0.030117753623188408,
+        "semantic_score": 0.030674804299131518
+      }
+    ]
+  },
+  {
+    "id": "E11",
+    "question": "What is the parental leave policy?",
+    "answer": "I do not have enough grounded evidence in the provided corpus to answer that question.",
+    "refused": true,
+    "citations": [],
+    "retrieved": [
+      {
+        "chunk_id": "hb-07-chunk-1",
+        "rrf_score": 0.03278688524590164,
+        "semantic_score": 0.504503071265686
+      },
+      {
+        "chunk_id": "hb-07-chunk-0",
+        "rrf_score": 0.03225806451612903,
+        "semantic_score": 0.48323177098323966
+      }
+    ]
+  },
+  {
+    "id": "E12",
+    "question": "Who won the 1958 football world cup?",
+    "answer": "I do not have enough grounded evidence in the provided corpus to answer that question.",
+    "refused": true,
+    "citations": [],
+    "retrieved": [
+      {
+        "chunk_id": "hb-05-chunk-2",
+        "rrf_score": 0.01639344262295082,
+        "semantic_score": 0.078146932542188
+      },
+      {
+        "chunk_id": "hb-01-chunk-0",
+        "rrf_score": 0.016129032258064516,
+        "semantic_score": 0.07008026339257169
+      }
+    ]
+  }
+]

@@ -1,0 +1,131 @@
+diff --git a/src/cli.py b/src/cli.py
+index 00c3e5d..d6f7c9e 100644
+--- a/src/cli.py
++++ b/src/cli.py
+@@ -10,7 +10,7 @@ def parse_args() -> argparse.Namespace:
+     parser = argparse.ArgumentParser(description="Week 7 RAG checkpoint")
+     parser.add_argument("--question", required=True, help="Question to ask over the handbook")
+     parser.add_argument("--show-retrieved", action="store_true", help="Also print retrieved chunks and scores")
+-    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings"],
++    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings", "hybrid"],
+                         default=config.RETRIEVAL_BACKEND, help="Retrieval method (default: lexical or RAG_RETRIEVAL_BACKEND)")
+     return parser.parse_args()
+ 
+@@ -37,7 +37,11 @@ def main() -> None:
+     if args.show_retrieved:
+         print("\nRetrieved:")
+         for item in result.retrieved:
+-            print(f"  {item.score:.4f}  {item.chunk.chunk_id}: {item.chunk.text}")
++            if item.semantic_score is not None:
++                print(f"  RRF={item.score:.4f} cosine={item.semantic_score:.4f}  "
++                      f"{item.chunk.chunk_id}: {item.chunk.text}")
++            else:
++                print(f"  {item.score:.4f}  {item.chunk.chunk_id}: {item.chunk.text}")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/src/config.py b/src/config.py
+index 93f0a9c..68ae4ea 100644
+--- a/src/config.py
++++ b/src/config.py
+@@ -18,6 +18,7 @@ EMBEDDING_DEVICE = "cpu"
+ EMBEDDING_CACHE_DIR = ".cache/embeddings"
+ TOP_K = 2
+ RETRIEVAL_MIN_SCORE = 0.01
++HYBRID_RRF_CONSTANT = 60  # Hybrid keeps the semantic leader, then fills by RRF.
+ STOPWORDS_ENABLED = False  # M2 implemented; disabled after the measured E09 regression.
+ CURRENT_ONLY = True
+ 
+diff --git a/src/rag.py b/src/rag.py
+index 016e2e9..ae2f14c 100644
+--- a/src/rag.py
++++ b/src/rag.py
+@@ -26,8 +26,13 @@ def select_citations(results: list[RetrievalResult]) -> list[RetrievalResult]:
+ def build_grounded_answer(question: str, chunks: list[Chunk]) -> RagAnswer:
+     results = retrieve_top_k(question, chunks)
+     threshold = (config.EMBEDDING_REFUSAL_THRESHOLD
+-                 if config.RETRIEVAL_BACKEND == "embeddings" else config.REFUSAL_THRESHOLD)
+-    if not results or results[0].score < threshold:
++                 if config.RETRIEVAL_BACKEND in {"embeddings", "hybrid"} else config.REFUSAL_THRESHOLD)
++    confidence = results[0].score if results else 0.0
++    if config.RETRIEVAL_BACKEND == "hybrid":
++        # Relative fused rank cannot establish support; use selected raw cosines.
++        confidence = max((item.semantic_score for item in results
++                          if item.semantic_score is not None), default=float("-inf"))
++    if not results or confidence < threshold:
+         return RagAnswer(answer=REFUSAL_MESSAGE, citations=[], refused=True, retrieved=results)
+ 
+     cited = select_citations(results)
+diff --git a/src/retrieval.py b/src/retrieval.py
+index 4f3ea78..79bcb6f 100644
+--- a/src/retrieval.py
++++ b/src/retrieval.py
+@@ -26,6 +26,7 @@ def tokenize(text: str) -> list[str]:
+ class RetrievalResult:
+     chunk: Chunk
+     score: float
++    semantic_score: float | None = None  # Raw cosine; hybrid score itself is RRF.
+ 
+ 
+ def lexical_score(query: str, chunk_text: str) -> float:
+@@ -45,23 +46,54 @@ def searchable_chunks(chunks: list[Chunk]) -> list[Chunk]:
+     return chunks
+ 
+ 
++def _rank_results(chunks: list[Chunk], scores: list[float]) -> list[RetrievalResult]:
++    scored = [RetrievalResult(chunk=chunk, score=score)
++              for chunk, score in zip(chunks, scores, strict=True)]
++    filtered = [item for item in scored if item.score >= config.RETRIEVAL_MIN_SCORE]
++    filtered.sort(key=lambda item: (-item.score, item.chunk.chunk_id))
++    return filtered
++
++
++def _retrieve_hybrid(query: str, chunks: list[Chunk], k: int) -> list[RetrievalResult]:
++    """Keep the semantic leader, then select complementary evidence by RRF."""
++    if config.HYBRID_RRF_CONSTANT <= 0:
++        raise ValueError("HYBRID_RRF_CONSTANT must be > 0")
++    from .embeddings import score_chunks
++
++    semantic_scores = score_chunks(query, chunks)
++    semantic = _rank_results(chunks, semantic_scores)
++    lexical = _rank_results(chunks, [lexical_score(query, chunk.text) for chunk in chunks])
++    fused: dict[str, float] = {}
++    for ranking in (lexical, semantic):
++        for rank, item in enumerate(ranking, start=1):
++            chunk_id = item.chunk.chunk_id
++            fused[chunk_id] = fused.get(chunk_id, 0.0) + 1 / (config.HYBRID_RRF_CONSTANT + rank)
++
++    ordered = sorted(fused, key=lambda chunk_id: (-fused[chunk_id], chunk_id))
++    if semantic:
++        anchor = semantic[0].chunk.chunk_id
++        ordered = [anchor] + [chunk_id for chunk_id in ordered if chunk_id != anchor]
++    by_id = {chunk.chunk_id: (chunk, score)
++             for chunk, score in zip(chunks, semantic_scores, strict=True)}
++    # RRF is a ranking score, not evidence confidence or a raw-score filter.
++    return [RetrievalResult(by_id[cid][0], fused[cid], by_id[cid][1]) for cid in ordered[:k]]
++
++
+ def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> list[RetrievalResult]:
+     k = config.TOP_K if k is None else k
+     if k <= 0:
+         raise ValueError("k must be > 0")
+ 
+-    if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
++    if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings", "hybrid"}:
+         raise ValueError(f"Unknown RETRIEVAL_BACKEND: {config.RETRIEVAL_BACKEND}")
+     eligible = searchable_chunks(chunks)
+     if not eligible or not query.strip():
+         return []
++    if config.RETRIEVAL_BACKEND == "hybrid":
++        return _retrieve_hybrid(query, eligible, k)
+     if config.RETRIEVAL_BACKEND == "embeddings":
+         from .embeddings import score_chunks
+         scores = score_chunks(query, eligible)
+     else:
+         scores = [lexical_score(query, chunk.text) for chunk in eligible]
+-    scored = [RetrievalResult(chunk=chunk, score=score)
+-              for chunk, score in zip(eligible, scores, strict=True)]
+-    filtered = [item for item in scored if item.score >= config.RETRIEVAL_MIN_SCORE]
+-    filtered.sort(key=lambda item: (-item.score, item.chunk.chunk_id))
+-    return filtered[:k]
++    return _rank_results(eligible, scores)[:k]

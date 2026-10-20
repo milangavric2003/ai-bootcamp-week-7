@@ -1,0 +1,54 @@
+{
+  "strategy": "semantic-anchor-rrf",
+  "rrf_constant": 60,
+  "checks": {
+    "lexical_rows_and_summary_unchanged": true,
+    "embeddings_rows_and_summary_unchanged": true,
+    "eval_hashes_match": true,
+    "e09_complete": true,
+    "e09_missing_location_before": true,
+    "unsupported_refuse_without_citations": true,
+    "answer_citations_match_eval": true
+  },
+  "citation_changes": [
+    {
+      "id": "E01",
+      "before_citations": [
+        "hb-07-chunk-0",
+        "hb-07-chunk-1"
+      ],
+      "after_citations": [
+        "hb-07-chunk-0",
+        "hb-03-chunk-0"
+      ],
+      "before_precision": 1.0,
+      "after_precision": 0.5
+    },
+    {
+      "id": "E05",
+      "before_citations": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-0"
+      ],
+      "after_citations": [
+        "hb-01-chunk-1",
+        "hb-06-chunk-0"
+      ],
+      "before_precision": 1.0,
+      "after_precision": 0.5
+    },
+    {
+      "id": "E09",
+      "before_citations": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-0"
+      ],
+      "after_citations": [
+        "hb-01-chunk-1",
+        "hb-01-chunk-2"
+      ],
+      "before_precision": 1.0,
+      "after_precision": 1.0
+    }
+  ]
+}

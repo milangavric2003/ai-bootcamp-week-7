@@ -1,0 +1,36 @@
+=== E07 ===
+Question:
+What are the IT support hours?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-10-chunk-0] IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+[hb-03-chunk-3] Core hours from 10:00 to 15:00 apply on remote days, and you must be reachable by chat and phone during core hours.
+
+Refused: False
+Citations:
+  hb-10-chunk-0: IT support (version 2026, current)
+  hb-03-chunk-3: Remote work policy (version 2026, current)
+
+Retrieved:
+  0.7702  hb-10-chunk-0: IT support hours are 08:00 to 18:00, Monday to Friday. Contact support through IT portal or by phone.
+  0.5865  hb-03-chunk-3: Core hours from 10:00 to 15:00 apply on remote days, and you must be reachable by chat and phone during core hours.
+
+=== E09 ===
+Question:
+Where do I request a replacement laptop and how long does it take?
+
+Answer:
+Grounded response based on retrieved context:
+[hb-01-chunk-1] After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+[hb-01-chunk-0] Laptop replacement: broken, lost or stolen laptops can be replaced.
+
+Refused: False
+Citations:
+  hb-01-chunk-1: Equipment replacement (version 2026, current)
+  hb-01-chunk-0: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.6766  hb-01-chunk-1: After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+  0.6628  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+

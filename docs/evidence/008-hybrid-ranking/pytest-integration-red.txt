@@ -1,0 +1,18 @@
+.................FFFFF..FF.                                              [100%]
+================================== FAILURES ===================================
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\tests\test_hybrid.py:147: AssertionError: assert True is (0.51 < 0.51)
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\tests\test_hybrid.py:147: AssertionError: assert True is (0.5101 < 0.51)
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\tests\test_hybrid.py:159: AssertionError: assert not True
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\tests\test_hybrid.py:169: AssertionError: assert not True
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\tests\test_hybrid.py:177: AssertionError: assert False
+C:\Users\gm220391d\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2645: SystemExit: 2
+C:\Users\gm220391d\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2645: SystemExit: 2
+=========================== short test summary info ===========================
+FAILED tests/test_hybrid.py::test_hybrid_refusal_uses_semantic_threshold_not_fused_rank[0.51]
+FAILED tests/test_hybrid.py::test_hybrid_refusal_uses_semantic_threshold_not_fused_rank[0.5101]
+FAILED tests/test_hybrid.py::test_e09_actual_answer_contains_both_required_facts
+FAILED tests/test_hybrid.py::test_confidence_can_come_from_any_selected_chunk
+FAILED tests/test_hybrid.py::test_missing_semantic_confidence_fails_closed - ...
+FAILED tests/test_hybrid.py::test_cli_accepts_explicit_hybrid_override - Syst...
+FAILED tests/test_hybrid.py::test_cli_labels_fused_and_semantic_scores - Syst...
+7 failed, 20 passed in 0.07s

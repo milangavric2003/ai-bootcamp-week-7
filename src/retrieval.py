@@ -3,6 +3,7 @@ import re
 
 from . import config
 from .chunking import Chunk
+from .retrieval_errors import RetrievalError
 
 
 TOKEN_RE = re.compile(r"[a-zA-Z0-9]+")
@@ -50,9 +51,19 @@ def retrieve_top_k(query: str, chunks: list[Chunk], k: int | None = None) -> lis
     if k <= 0:
         raise ValueError("k must be > 0")
 
+    if config.RETRIEVAL_BACKEND not in {"lexical", "embeddings"}:
+        raise RetrievalError("Unknown retrieval backend; choose lexical or embeddings.")
+    eligible = searchable_chunks(chunks)
+    if config.RETRIEVAL_BACKEND == "embeddings":
+        if not eligible or not TOKEN_RE.search(query):
+            return []
+        from .semantic_retrieval import semantic_scores
+        scores = semantic_scores(query, eligible)
+    else:
+        scores = [lexical_score(query, chunk.text) for chunk in eligible]
     scored = [
-        RetrievalResult(chunk=chunk, score=lexical_score(query, chunk.text))
-        for chunk in searchable_chunks(chunks)
+        RetrievalResult(chunk=chunk, score=score)
+        for chunk, score in zip(eligible, scores, strict=True)
     ]
     filtered = [item for item in scored if item.score >= config.RETRIEVAL_MIN_SCORE]
     filtered.sort(key=lambda item: (-item.score, item.chunk.chunk_id))

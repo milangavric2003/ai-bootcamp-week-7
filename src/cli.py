@@ -1,26 +1,32 @@
 import argparse
 import sys
 
+from . import config
 from .chunking import build_chunks
 from .corpus import load_corpus
 from .generation_errors import GenerationError
 from .rag import build_grounded_answer
+from .retrieval_errors import RetrievalError
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Week 7 RAG checkpoint")
     parser.add_argument("--question", required=True, help="Question to ask over the handbook")
     parser.add_argument("--show-retrieved", action="store_true", help="Also print retrieved chunks and scores")
+    parser.add_argument("--retrieval-backend", choices=["lexical", "embeddings"],
+                        help="Override RAG_RETRIEVAL_BACKEND for this command")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    if args.retrieval_backend is not None:
+        config.RETRIEVAL_BACKEND = args.retrieval_backend
     chunks = build_chunks(load_corpus())
     by_id = {chunk.chunk_id: chunk for chunk in chunks}
     try:
         result = build_grounded_answer(args.question, chunks)
-    except GenerationError as error:
+    except (GenerationError, RetrievalError) as error:
         print(f"Answering failed: {error}", file=sys.stderr)
         raise SystemExit(1) from None
 

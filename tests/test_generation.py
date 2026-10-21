@@ -50,6 +50,77 @@ def test_valid_decision_deduplicates_citations(evidence):
     assert result.refused is False
 
 
+@pytest.mark.parametrize("answer,expected", [
+    ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+    ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+    ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+    ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+    ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+    ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+     "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+])
+def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+    result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+    assert result.answer == expected
+    assert result.citations == ["guide-chunk-0", "leave-chunk-0"]
+    assert result.refused is False
+
+
+@pytest.mark.parametrize("answer", [
+    "Claim [guide-chunk-0, invented].",
+    "Claim [invented, guide-chunk-0].",
+    "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+    "Claim [guide-chunk-0,\n invented].",
+    "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+    "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+    "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+    "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+    "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+    "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+    "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+    "Claim [guide-chunk-0-extra].",
+])
+def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+    with pytest.raises(InvalidResponseError, match="inline citations"):
+        generation.parse_decision(decision(answer=answer), evidence)
+
+
+@pytest.mark.parametrize("answer", ["Within 8 days.", "Within 8 days. [guide-chunk-0]"])
+def test_no_inline_or_single_inline_citation_keeps_answer_text(evidence, answer):
+    assert generation.parse_decision(decision(answer=answer), evidence).answer == answer
+
+
+def test_saved_e09_model_decision_preserves_facts_and_selected_sources():
+    from src.chunking import build_chunks
+    from src.corpus import load_corpus
+    path = Path(__file__).resolve().parents[1] / "docs/evidence/007-semantic-retrieval/e09-raw-decision.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))["raw_decision"]
+    supplied = [RetrievalResult(chunk, 1.0) for chunk in build_chunks(load_corpus()) if chunk.doc_id == "hb-01"]
+    result = generation.parse_decision(raw, supplied)
+    original = json.loads(raw)
+    assert result.answer == original["answer"].replace(
+        "[hb-01-chunk-1, hb-01-chunk-2]", "[hb-01-chunk-1] [hb-01-chunk-2]")
+    assert result.citations == original["citations"]
+    assert "manager approval" in result.answer and "5 business days" in result.answer
+    assert "IT portal under Hardware" in result.answer
+
+
+def test_group_normalization_reaches_answer_and_same_run_trace(monkeypatch, evidence, tmp_path):
+    monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    path = tmp_path / "grouped.jsonl"
+    monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+    monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+    raw = decision(answer="Equipment: 8 days; annual leave: 20 days. [guide-chunk-0, leave-chunk-0]",
+                   citations=["guide-chunk-0", "leave-chunk-0"])
+    monkeypatch.setattr(generation.GemmaClient, "generate", lambda *_: ProviderResponse(raw, {}))
+    result = rag.build_grounded_answer("equipment and leave", [])
+    trace = json.loads(path.read_text())
+    assert result.answer.endswith("[guide-chunk-0] [leave-chunk-0]")
+    assert trace["answer"] == result.answer and trace["citations"] == result.citations
+    assert trace["status"] == "complete" and trace["refused"] is False
+
+
 @pytest.mark.parametrize("bad", [
     "not JSON", "```json\n{}\n```", "null", "[]", "{}",
     decision(answer=""), decision(answer=42), decision(refused="false"), decision(refused=0),

@@ -1,0 +1,17 @@
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5322.46it/s]
+Question:
+Who won the 1958 football world cup?
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:
+  0.0781  hb-05-chunk-2: Never share passwords, also not with colleagues from IT.
+  0.0701  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+  0.0614  hb-06-chunk-2: Your manager schedules a check-in at end of month one and again after three months.

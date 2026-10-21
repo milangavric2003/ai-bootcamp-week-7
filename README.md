@@ -7,10 +7,38 @@ also implements optional grounded Gemma generation through Google's Gemini API.
 
 This week you will **measure** this system on a fixed eval set, find failures, apply **exactly one** improvement and compare results before and after.
 
-## Current branch configuration
+## Optional local semantic retrieval
+
+This branch now includes a fresh local embeddings backend. **225 tests pass**;
+real-model verification retrieves E05's previously missing equipment deadline,
+and an independent live check answers it correctly. Lexical mode remains the
+default and reproduces its earlier results exactly.
+
+The grouped-citation parser fix now lets the full semantic hosted evaluation
+complete at **12/12**, with retrieval hit rate and citation precision **1.00**.
+This uses the existing Gemma/Gemini fallback policy; two answers used Gemini.
+Lexical hosted evaluation stays 11/12. Offline semantic evaluation remains 9/12
+with E01/E05 fixed and E07/E10 regressed. See the
+[citation fix and current results](docs/grouped-citations-report.md) and the earlier
+[semantic retrieval report](docs/semantic-retrieval-report.md) for source evidence,
+setup, limitations and the current commit message. No hybrid scoring was added.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-embeddings.txt
+.\.venv\Scripts\python.exe -m src.prepare_embeddings
+.\.venv\Scripts\python.exe -m src.cli --retrieval-backend embeddings --question "How long until I get a new notebook computer?" --show-retrieved
+```
+
+Model preparation downloads pinned public weights once; normal semantic retrieval
+loads them locally. Set `RAG_RETRIEVAL_BACKEND=embeddings` for evaluation or root
+`.env` selection, and `lexical` to retain the original backend. Existing answerer
+selection remains independent. The optional backend introduces no vector database
+or embedding API. Cache files are not part of the source change.
+
+## Retained configuration baseline
 
 `feat/gemma-generation` now retains `TOP_K=3` and `STOPWORDS_ENABLED=True`, with
-both score thresholds unchanged. All **163 tests pass**. Fresh Gemma evaluation
+both score thresholds unchanged. At that stage **163 tests passed**. Fresh Gemma evaluation
 reproduces **11/12**, with citation precision **1.00**; offline evaluation scores
 **9/12**, including an E01
 citation-precision regression relative to the old two-chunk, unfiltered settings.

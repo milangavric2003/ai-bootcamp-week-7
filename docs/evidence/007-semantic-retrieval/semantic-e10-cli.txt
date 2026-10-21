@@ -1,0 +1,19 @@
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5513.96it/s]
+Question:
+What is the current company stock price?
+
+Model: gemma-4-26b-a4b-it
+
+Answer:
+I do not have enough grounded evidence in the provided corpus to answer that question.
+
+Refused: True
+Citations:
+  None
+
+Retrieved:
+  0.1751  hb-08-chunk-0: Each employee has a training budget of 800 EUR per year for courses, conferences and certifications.
+  0.0954  hb-06-chunk-0: New colleagues follow a two-week onboarding plan.
+  0.0655  hb-10-chunk-1: For a laptop that does not start, bring it to IT desk on floor two. Outside support hours, urgent security incidents go to on-call line.

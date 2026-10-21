@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\008-grouped-citations\\_pytest\\pytest-after"
+  ],
+  "backend": "extractive",
+  "retrieval": "lexical",
+  "started_utc": "2026-10-21T13:36:14.427345+00:00",
+  "ended_utc": "2026-10-21T13:36:15.336879+00:00",
+  "exit_code": 0
+}

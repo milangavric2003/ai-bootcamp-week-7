@@ -1,0 +1,9 @@
+{
+  "before_error": "Gemma inline citations must match the selected source IDs.",
+  "after_answer": "You can request a replacement laptop in the IT portal under Hardware. Once manager approval is obtained, the handover can take up to 5 business days [hb-01-chunk-1] [hb-01-chunk-2].",
+  "after_citations": [
+    "hb-01-chunk-1",
+    "hb-01-chunk-2"
+  ],
+  "after_refused": false
+}

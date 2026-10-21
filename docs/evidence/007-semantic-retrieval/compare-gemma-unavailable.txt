@@ -1,0 +1,5 @@
+UNAVAILABLE: semantic-gemma-after and its one recovery both stopped at E09 with
+InvalidResponseError: Gemma inline citations must match the selected source IDs.
+Neither produced a complete twelve-question result JSON. A full before/after
+quality score or src.eval_compare output cannot be inferred from the prefix or
+separate CLI checks. Both failures and the raw diagnostic response are preserved.

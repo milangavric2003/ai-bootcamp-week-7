@@ -1,0 +1,14 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "src.eval_compare",
+    "docs/evidence/007-semantic-retrieval/lexical-extractive-after.json",
+    "docs/evidence/007-semantic-retrieval/semantic-extractive-after.json"
+  ],
+  "backend": "extractive",
+  "retrieval": "lexical",
+  "started_utc": "2026-10-21T12:48:13.380549+00:00",
+  "ended_utc": "2026-10-21T12:48:13.456101+00:00",
+  "exit_code": 0
+}

@@ -58,6 +58,24 @@ def _invalid_constant(_):
     raise InvalidResponseError("Gemma decision contains a non-JSON number.")
 
 
+def _normalize_inline_citations(answer: str, citations: list[str]) -> str:
+    groups = re.compile(r"\[([^\[\]]*)\]")
+    # Leftover brackets expose nesting or an unbalanced marker that a regex
+    # matching only complete groups would otherwise silently skip.
+    unbracketed = groups.sub("", answer)
+    if "[" in unbracketed or "]" in unbracketed:
+        raise InvalidResponseError("Gemma inline citations must be balanced, non-nested source groups.")
+    selected = set(citations)
+
+    def normalize(match):
+        members = list(dict.fromkeys(member.strip() for member in match.group(1).split(",")))
+        if any(not member or member not in selected for member in members):
+            raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+        return " ".join(f"[{member}]" for member in members)
+
+    return groups.sub(normalize, answer)
+
+
 def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
     try:
         value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
@@ -79,8 +97,7 @@ def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecis
             raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
     elif not answer.strip() or not citations:
         raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
-    if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
-        raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+    answer = _normalize_inline_citations(answer, citations)
     return GenerationDecision(answer, citations, refused)
 
 

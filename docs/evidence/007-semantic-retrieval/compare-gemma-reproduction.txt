@@ -1,0 +1,19 @@
+Fixed (fail -> pass): none
+Regressed (pass -> fail): none
+Unchanged: E01, E02, E03, E04, E05, E06, E07, E08, E09, E10, E11, E12
+
+Summary:
+  passed: 11 -> 11 (+0)
+  total: 12 -> 12 (+0)
+  behaviour_accuracy: 0.9167 -> 0.9167 (+0.0)
+  retrieval_hit_rate: 0.8889 -> 0.8889 (+0.0)
+  mean_citation_precision: 1.0 -> 1.0 (+0.0)
+
+Changed settings:
+  EMBEDDING_CACHE_DIR: None -> '.cache/semantic-retrieval'
+  EMBEDDING_DEVICE: None -> 'cpu'
+  EMBEDDING_MODEL: None -> 'sentence-transformers/all-MiniLM-L6-v2'
+  EMBEDDING_REVISION: None -> '1110a243fdf4706b3f48f1d95db1a4f5529b4d41'
+  RETRIEVAL_BACKEND: None -> 'lexical'
+
+WARNING: More than one setting changed: the difference may not be attributable to one change.

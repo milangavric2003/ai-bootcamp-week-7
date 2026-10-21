@@ -1,0 +1,571 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collected 65 items
+
+tests\test_generation.py ..FFFFFF...F...F...FF.FFF.....FF............... [ 72%]
+..................                                                       [100%]
+
+================================== FAILURES ===================================
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0, leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Facts [guide-chunk-0, leave-chunk-0].'
+expected = 'Facts [guide-chunk-0] [leave-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+>       result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+
+tests\test_generation.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "Facts [guide-chunk-0, leave-chunk-0].", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0,leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Facts [guide-chunk-0,leave-chunk-0].'
+expected = 'Facts [guide-chunk-0] [leave-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+>       result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+
+tests\test_generation.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "Facts [guide-chunk-0,leave-chunk-0].", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [ guide-chunk-0 , leave-chunk-0 ].-Facts [guide-chunk-0] [leave-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Facts [ guide-chunk-0 , leave-chunk-0 ].'
+expected = 'Facts [guide-chunk-0] [leave-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+>       result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+
+tests\test_generation.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "Facts [ guide-chunk-0 , leave-chunk-0 ].", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0,\n leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Facts [guide-chunk-0,\n leave-chunk-0].'
+expected = 'Facts [guide-chunk-0] [leave-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+        result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+>       assert result.answer == expected
+E       AssertionError: assert 'Facts [guide...ave-chunk-0].' == 'Facts [guide...ave-chunk-0].'
+E         
+E         - Facts [guide-chunk-0] [leave-chunk-0].
+E         + Facts [guide-chunk-0,
+E         +  leave-chunk-0].
+
+tests\test_generation.py:64: AssertionError
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].'
+expected = 'Facts [guide-chunk-0] [leave-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+>       result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+
+tests\test_generation.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_ test_valid_grouped_citations_are_normalized_without_changing_prose[First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].-First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].'
+expected = 'First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0].'
+
+    @pytest.mark.parametrize("answer,expected", [
+        ("Facts [guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [ guide-chunk-0 , leave-chunk-0 ].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0,\n leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].", "Facts [guide-chunk-0] [leave-chunk-0]."),
+        ("First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].",
+         "First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0]."),
+    ])
+    def test_valid_grouped_citations_are_normalized_without_changing_prose(evidence, answer, expected):
+>       result = generation.parse_decision(decision(answer=answer, citations=["guide-chunk-0", "leave-chunk-0"]), evidence)
+
+tests\test_generation.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0,\n invented].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [guide-chunk-0,\n invented].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [].] __
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [[guide-chunk-0]].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [[guide-chunk-0]].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0 [guide-chunk-0]].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [guide-chunk-0 [guide-chunk-0]].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0.] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [guide-chunk-0.'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim guide-chunk-0].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim guide-chunk-0].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_ test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0] ].] _
+
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+answer = 'Claim [guide-chunk-0] ].'
+
+    @pytest.mark.parametrize("answer", [
+        "Claim [guide-chunk-0, invented].",
+        "Claim [invented, guide-chunk-0].",
+        "Claim [guide-chunk-0, leave-chunk-0].",  # supplied, but not selected
+        "Claim [guide-chunk-0,\n invented].",
+        "Claim [guide-chunk-0, ].", "Claim [, guide-chunk-0].",
+        "Claim [guide-chunk-0,,guide-chunk-0].", "Claim [].", "Claim [ ].",
+        "Claim [guide-chunk-0; guide-chunk-0].", "Claim [guide-chunk-0 and guide-chunk-0].",
+        "Claim [[guide-chunk-0]].", "Claim [guide-chunk-0 [guide-chunk-0]].",
+        "Claim [guide-chunk-0, [invented]].", "Claim [guide-chunk-0.",
+        "Claim guide-chunk-0].", "Claim [guide-chunk-0] ].",
+        "Claim [guide-chunk-0] [invented].", "Claim [GUIDE-CHUNK-0].",
+        "Claim [guide-chunk-0-extra].",
+    ])
+    def test_bad_inline_groups_are_rejected_instead_of_dropping_members(evidence, answer):
+>       with pytest.raises(InvalidResponseError, match="inline citations"):
+E       Failed: DID NOT RAISE <class 'src.generation_errors.InvalidResponseError'>
+
+tests\test_generation.py:84: Failed
+_____ test_saved_e09_model_decision_preserves_facts_and_selected_sources ______
+
+    def test_saved_e09_model_decision_preserves_facts_and_selected_sources():
+        from src.chunking import build_chunks
+        from src.corpus import load_corpus
+        path = Path(__file__).resolve().parents[1] / "docs/evidence/007-semantic-retrieval/e09-raw-decision.json"
+        raw = json.loads(path.read_text(encoding="utf-8"))["raw_decision"]
+        supplied = [RetrievalResult(chunk, 1.0) for chunk in build_chunks(load_corpus()) if chunk.doc_id == "hb-01"]
+>       result = generation.parse_decision(raw, supplied)
+
+tests\test_generation.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "You can request a replacement laptop in the IT portal under Hardware. Once manager approval is obtained, ...o 5 business days [hb-01-chunk-1, hb-01-chunk-2].", "citations": ["hb-01-chunk-1", "hb-01-chunk-2"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='hb-01-chunk-0', doc_id='hb-01', title='Equipment replacement', version='2026', ...'2026', status='current', text='Accessories such as mouse or headset are ordered through that same form.'), score=1.0)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+_________ test_group_normalization_reaches_answer_and_same_run_trace __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001867F80EF90>
+evidence = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+tmp_path = WindowsPath('C:/Users/gm220391d/Carrier/AIBootcamp2026/week-7/docs/evidence/008-grouped-citations/_pytest/pytest-red/test_group_normalization_reach0')
+
+    def test_group_normalization_reaches_answer_and_same_run_trace(monkeypatch, evidence, tmp_path):
+        monkeypatch.setattr(config, "ANSWER_BACKEND", "gemma")
+        monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+        path = tmp_path / "grouped.jsonl"
+        monkeypatch.setenv("GEMMA_TRACE_PATH", str(path))
+        monkeypatch.setattr(rag, "retrieve_top_k", lambda *_: evidence)
+        raw = decision(answer="Equipment: 8 days; annual leave: 20 days. [guide-chunk-0, leave-chunk-0]",
+                       citations=["guide-chunk-0", "leave-chunk-0"])
+        monkeypatch.setattr(generation.GemmaClient, "generate", lambda *_: ProviderResponse(raw, {}))
+>       result = rag.build_grounded_answer("equipment and leave", [])
+
+tests\test_generation.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\rag.py:38: in build_grounded_answer
+    result, status, usage = _answer_from_results(question, results)
+src\rag.py:51: in _answer_from_results
+    decision = generate_answer(question, results)
+src\generation.py:94: in generate_answer
+    raise error from None
+src\generation.py:91: in generate_answer
+    decision = parse_decision(response.text, results)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"answer": "Equipment: 8 days; annual leave: 20 days. [guide-chunk-0, leave-chunk-0]", "citations": ["guide-chunk-0", "leave-chunk-0"], "refused": false}'
+results = [RetrievalResult(chunk=Chunk(chunk_id='guide-chunk-0', doc_id='guide', title='Guide', version='2026', status='current'...hunk-0', doc_id='leave', title='Leave', version='2026', status='current', text='Annual leave is 20 days.'), score=0.4)]
+
+    def parse_decision(text: str, results: list[RetrievalResult]) -> GenerationDecision:
+        try:
+            value = json.loads(text, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        except (ValueError, TypeError, RecursionError):
+            raise InvalidResponseError("Gemma decision must be strict JSON without Markdown fences.") from None
+        if not isinstance(value, dict) or set(value) != {"answer", "citations", "refused"}:
+            raise InvalidResponseError("Gemma decision must contain exactly answer, citations and refused.")
+        answer, citations, refused = value["answer"], value["citations"], value["refused"]
+        if not isinstance(answer, str) or type(refused) is not bool:
+            raise InvalidResponseError("Gemma answer must be a string and refused must be a boolean.")
+        if not isinstance(citations, list) or any(not isinstance(c, str) for c in citations):
+            raise InvalidResponseError("Gemma citations must be an array of chunk ID strings.")
+        allowed = {r.chunk.chunk_id for r in results}
+        if any(c not in allowed for c in citations):
+            raise InvalidResponseError("Gemma cited a chunk that was not supplied.")
+        citations = list(dict.fromkeys(citations))
+        if refused:
+            if answer != "" or citations:
+                raise InvalidResponseError("Gemma refusal must have empty answer and citations.")
+        elif not answer.strip() or not citations:
+            raise InvalidResponseError("Gemma answer must have nonempty text and supporting citations.")
+        if any(marker not in citations for marker in re.findall(r"\[([^\[\]\n]+)\]", answer)):
+>           raise InvalidResponseError("Gemma inline citations must match the selected source IDs.")
+E           src.generation_errors.InvalidResponseError: Gemma inline citations must match the selected source IDs.
+
+src\generation.py:83: InvalidResponseError
+=========================== short test summary info ===========================
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0, leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].]
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0,leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].]
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [ guide-chunk-0 , leave-chunk-0 ].-Facts [guide-chunk-0] [leave-chunk-0].]
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0,\n leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].]
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[Facts [guide-chunk-0, guide-chunk-0, leave-chunk-0].-Facts [guide-chunk-0] [leave-chunk-0].]
+FAILED tests/test_generation.py::test_valid_grouped_citations_are_normalized_without_changing_prose[First [guide-chunk-0]. Both [leave-chunk-0, guide-chunk-0].-First [guide-chunk-0]. Both [leave-chunk-0] [guide-chunk-0].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0,\n invented].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [[guide-chunk-0]].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0 [guide-chunk-0]].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0.]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim guide-chunk-0].]
+FAILED tests/test_generation.py::test_bad_inline_groups_are_rejected_instead_of_dropping_members[Claim [guide-chunk-0] ].]
+FAILED tests/test_generation.py::test_saved_e09_model_decision_preserves_facts_and_selected_sources
+FAILED tests/test_generation.py::test_group_normalization_reaches_answer_and_same_run_trace
+======================== 15 failed, 50 passed in 0.30s ========================

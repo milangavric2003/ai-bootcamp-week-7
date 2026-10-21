@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-8.3.3, pluggy-1.7.0
+rootdir: C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1
+collected 225 items
+
+tests\test_chunking.py ....................                              [  8%]
+tests\test_eval_compare.py ....                                          [ 10%]
+tests\test_eval_metrics.py ....                                          [ 12%]
+tests\test_eval_set.py ..                                                [ 13%]
+tests\test_gemma_client.py ............................................  [ 32%]
+tests\test_gemma_retries.py ........................                     [ 43%]
+tests\test_generation.py ............................................... [ 64%]
+..................                                                       [ 72%]
+tests\test_generation_config.py .......                                  [ 75%]
+tests\test_rag.py ......                                                 [ 78%]
+tests\test_retrieval.py .................                                [ 85%]
+tests\test_semantic_retrieval.py ................................        [100%]
+
+============================= 225 passed in 0.56s =============================

@@ -1,0 +1,19 @@
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4329.83it/s]
+Question:
+How long until I get a new notebook computer?
+
+Model: gemma-4-26b-a4b-it
+
+Answer:
+After receiving manager approval, the handover of a replacement laptop can take up to 5 business days [hb-01-chunk-1].
+
+Refused: False
+Citations:
+  hb-01-chunk-1: Equipment replacement (version 2026, current)
+
+Retrieved:
+  0.6322  hb-01-chunk-1: After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days.
+  0.4767  hb-01-chunk-0: Laptop replacement: broken, lost or stolen laptops can be replaced.
+  0.4357  hb-01-chunk-2: Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware.

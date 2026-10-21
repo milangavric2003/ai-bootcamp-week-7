@@ -1,0 +1,82 @@
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 3405.14it/s]
+C:\Users\gm220391d\Carrier\AIBootcamp2026\week-7\docs\evidence\007-semantic-retrieval\model_probe.py:42: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  dimension = model.get_sentence_embedding_dimension()
+{
+  "identity": {
+    "name": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "device": "cpu",
+    "cache": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.cache\\semantic-retrieval"
+  },
+  "versions": {
+    "sentence-transformers": "6.1.0",
+    "torch": "2.14.1",
+    "transformers": "5.20.2",
+    "huggingface-hub": "1.33.0",
+    "numpy": "2.5.4"
+  },
+  "model_load_seconds": 5.489045100053772,
+  "dimension": 384,
+  "eligible_chunks": 24,
+  "encoding_batch_sizes": [
+    24,
+    1,
+    1
+  ],
+  "maximum_chunk_tokens": 37,
+  "model_max_sequence_length": 256,
+  "all_chunks_fit_model": true,
+  "model_cache_bytes": 91585009,
+  "queries": [
+    {
+      "question": "How long until I get a new notebook computer?",
+      "seconds": 0.14918690000195056,
+      "top_k": [
+        {
+          "chunk_id": "hb-01-chunk-1",
+          "doc_id": "hb-01",
+          "score": 0.6321956999791446,
+          "text": "After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days."
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "doc_id": "hb-01",
+          "score": 0.47671259038703306,
+          "text": "Laptop replacement: broken, lost or stolen laptops can be replaced."
+        },
+        {
+          "chunk_id": "hb-01-chunk-2",
+          "doc_id": "hb-01",
+          "score": 0.4356916475878687,
+          "text": "Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware."
+        }
+      ]
+    },
+    {
+      "question": "Where do I request a replacement laptop and how long does it take?",
+      "seconds": 0.008866599993780255,
+      "top_k": [
+        {
+          "chunk_id": "hb-01-chunk-1",
+          "doc_id": "hb-01",
+          "score": 0.6765571312730148,
+          "text": "After manager approval, a replacement laptop is set up by IT staff with your files, accounts, email and access rights, and handover can take up to 5 business days."
+        },
+        {
+          "chunk_id": "hb-01-chunk-0",
+          "doc_id": "hb-01",
+          "score": 0.6627572464199288,
+          "text": "Laptop replacement: broken, lost or stolen laptops can be replaced."
+        },
+        {
+          "chunk_id": "hb-01-chunk-2",
+          "doc_id": "hb-01",
+          "score": 0.6433549232489175,
+          "text": "Report lost or stolen devices to security first. Request a replacement laptop in IT portal under Hardware."
+        }
+      ]
+    }
+  ]
+}

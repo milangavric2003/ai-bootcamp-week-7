@@ -29,6 +29,11 @@ CHUNK_SIZE = 140
 CHUNK_OVERLAP = 30
 
 # Retrieval
+RETRIEVAL_BACKEND = os.environ.get("RAG_RETRIEVAL_BACKEND", "lexical")
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+EMBEDDING_DEVICE = "cpu"
+EMBEDDING_CACHE_DIR = ".cache/semantic-retrieval"
 TOP_K = 3
 RETRIEVAL_MIN_SCORE = 0.01
 STOPWORDS_ENABLED = True  # Retained with TOP_K=3; see docs/retrieval-config-report.md.

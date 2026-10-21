@@ -1,0 +1,11 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\007-semantic-retrieval\\model_probe.py"
+  ],
+  "backend": "extractive",
+  "retrieval": "embeddings",
+  "started_utc": "2026-10-21T12:45:19.996417+00:00",
+  "ended_utc": "2026-10-21T12:45:26.442639+00:00",
+  "exit_code": 0
+}

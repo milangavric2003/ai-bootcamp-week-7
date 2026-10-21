@@ -7,6 +7,7 @@ from src import config, gemma_client
 
 @pytest.fixture(autouse=True)
 def offline_generation_defaults(monkeypatch):
+    monkeypatch.setattr(config, "RETRIEVAL_BACKEND", "lexical")
     monkeypatch.setattr(config, "ANSWER_BACKEND", "extractive")
     monkeypatch.setattr(config, "GEMMA_MODEL", "gemma-4-26b-a4b-it")
     monkeypatch.setattr(config, "GEMMA_FALLBACK_MODEL", "gemini-3.5-flash-lite")

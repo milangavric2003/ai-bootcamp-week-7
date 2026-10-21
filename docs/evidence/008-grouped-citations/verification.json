@@ -1,0 +1,72 @@
+{
+  "checks_passed": true,
+  "protected_starting_files": 479,
+  "changed_existing_files": [
+    "docs/semantic-retrieval-report.md",
+    "README.md",
+    "src/generation.py",
+    "tests/test_generation.py"
+  ],
+  "previous_embedding_implementation_and_evidence_preserved": true,
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "existing_settings_and_prompt_preserved": true,
+  "offline_result_rows_unchanged": true,
+  "lexical_hosted_result_rows_unchanged": true,
+  "summaries": {
+    "semantic-extractive-before": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.8333,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 0.6364
+    },
+    "semantic-extractive-after": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.8333,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 0.6364
+    },
+    "semantic-gemma-after": {
+      "passed": 12,
+      "total": 12,
+      "behaviour_accuracy": 1.0,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 1.0
+    },
+    "lexical-gemma-control": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    }
+  },
+  "semantic_fallback_answers": [
+    {
+      "question": "What is the yearly training budget per employee?",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "question": "How many days per week can I work remotely?",
+      "model": "gemini-3.5-flash-lite"
+    }
+  ],
+  "request_attempts": 28,
+  "minimum_gap_seconds": 2.100120200077072,
+  "peak_requests_per_rolling_minute": 12,
+  "user_limit": 30,
+  "request_models": {
+    "gemma-4-26b-a4b-it": 26,
+    "gemini-3.5-flash-lite": 2
+  },
+  "attempt_statuses": {
+    "success": 22,
+    "retryable_error": 6
+  },
+  "reported_total_tokens": 12444,
+  "no_hybrid_or_threshold_change": true,
+  "uncommitted_and_unstaged": true,
+  "credential_scan_performed": true,
+  "local_document_links_valid": true
+}

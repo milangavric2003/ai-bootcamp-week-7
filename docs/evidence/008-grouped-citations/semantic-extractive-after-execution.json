@@ -1,0 +1,14 @@
+{
+  "command": [
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\.venv\\Scripts\\python.exe",
+    "-m",
+    "src.eval_runner",
+    "--out",
+    "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\week-7\\docs\\evidence\\008-grouped-citations\\semantic-extractive-after.json"
+  ],
+  "backend": "extractive",
+  "retrieval": "embeddings",
+  "started_utc": "2026-10-21T13:36:55.436406+00:00",
+  "ended_utc": "2026-10-21T13:37:02.661668+00:00",
+  "exit_code": 0
+}

@@ -1,0 +1,82 @@
+{
+  "checks_passed": true,
+  "original_commit": "95657b9e51abf41ab9cfeccd53d49b1a565f1a8e",
+  "protected_existing_files": 387,
+  "changed_existing_files": [
+    ".env.example",
+    "README.md",
+    "src/cli.py",
+    "src/config.py",
+    "src/retrieval.py",
+    "tests/conftest.py"
+  ],
+  "eval_set_sha256": "afe46db1e75a0b85bb5c9a93b6763e3b96e5cd7b289e12da6d2671e4d8650064",
+  "all_existing_config_values_preserved": true,
+  "only_backend_differs_in_same_snapshot_control": true,
+  "lexical_result_rows_reproduced_exactly": true,
+  "complete_evaluations": {
+    "lexical-extractive-before": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.6333
+    },
+    "lexical-extractive-after": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 0.6333
+    },
+    "semantic-extractive-after": {
+      "passed": 9,
+      "total": 12,
+      "behaviour_accuracy": 0.8333,
+      "retrieval_hit_rate": 1.0,
+      "mean_citation_precision": 0.6364
+    },
+    "lexical-gemma-before": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    },
+    "lexical-gemma-control": {
+      "passed": 11,
+      "total": 12,
+      "behaviour_accuracy": 0.9167,
+      "retrieval_hit_rate": 0.8889,
+      "mean_citation_precision": 1.0
+    }
+  },
+  "interrupted_evaluations": {
+    "semantic-gemma-after": {
+      "questions_traced": 9,
+      "last_error": "Gemma inline citations must match the selected source IDs."
+    },
+    "semantic-gemma-recovery": {
+      "questions_traced": 9,
+      "last_error": "Gemma inline citations must match the selected source IDs."
+    }
+  },
+  "e05_live_answer_verified": true,
+  "unsupported_live_cli_refusals_verified": true,
+  "e09_combined_inline_citation_diagnosed": true,
+  "request_attempts": 46,
+  "minimum_request_gap_seconds": 2.1000654000090435,
+  "peak_requests_in_rolling_minute": 12,
+  "user_limit_per_minute": 30,
+  "requested_models": {
+    "gemma-4-26b-a4b-it": 46
+  },
+  "attempt_statuses": {
+    "success": 43,
+    "retryable_error": 3
+  },
+  "fallback_records": 0,
+  "reported_total_tokens": 21930,
+  "credential_scan_performed": true,
+  "work_uncommitted_and_unstaged": true
+}
